@@ -12,6 +12,7 @@ struct ReadingMemoryApp: App {
     @Environment(\.colorScheme) var colorScheme
     @State private var router = Router()
     @State private var searchViewModel = SearchViewModel()
+    @State private var libraryViewModel = LibraryViewModel()
     
     let migrator = Migrator()
     
@@ -22,6 +23,7 @@ struct ReadingMemoryApp: App {
             AppTabView()
                 .environmentObject(router)
                 .environmentObject(searchViewModel)
+                .environmentObject(libraryViewModel)
         }
     }
 }

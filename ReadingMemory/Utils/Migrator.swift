@@ -16,8 +16,8 @@ class Migrator {
     
     func updateSchema() {
         
-        let config = Realm.Configuration(schemaVersion: 8) { migration, oldSchemaVersion in
-            if oldSchemaVersion < 7 {
+        let config = Realm.Configuration(schemaVersion: 12) { migration, oldSchemaVersion in
+            if oldSchemaVersion < 11 {
                 // add new fields
                 migration.enumerateObjects(ofType: Book.className()) { _, newObject in
 //                    newObject!["isbn"] = ""

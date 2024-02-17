@@ -1,17 +1,16 @@
 //
-//  Sentence.swift
+//  Thought.swift
 //  ReadingMemory
 //
-//  Created by 김효석 on 2/5/24.
+//  Created by 김효석 on 2/14/24.
 //
 
 import Foundation
 import RealmSwift
 
-class Sentence: Object, Identifiable {
+class Thought: Object, Identifiable {
     @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var sentence: String
-    @Persisted var idea: String
+    @Persisted var thought: String
     @Persisted var page: String
     
     @Persisted var addDate: Date

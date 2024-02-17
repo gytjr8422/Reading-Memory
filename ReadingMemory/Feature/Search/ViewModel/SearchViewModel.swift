@@ -5,8 +5,7 @@
 //  Created by 김효석 on 1/12/24.
 //
 
-import Foundation
-import UIKit
+import SwiftUI
 
 final class SearchViewModel: ObservableObject {
     private let kakaoUrl: String = "https://dapi.kakao.com/v3/search/book"

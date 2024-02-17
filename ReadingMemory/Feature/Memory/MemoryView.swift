@@ -5,18 +5,19 @@
 //  Created by 김효석 on 2/9/24.
 //
 
+import RealmSwift
 import SwiftUI
 
-enum MemoryFilter: Int, CaseIterable, Identifiable {
+enum MemoryCategory: Int, CaseIterable, Identifiable {
     case sentence
     case word
-    case idea
+    case thought
     
     var title: String {
         switch self {
         case .sentence: return "문장"
         case .word: return "단어"
-        case .idea: return "생각"
+        case .thought: return "생각"
         }
     }
     
@@ -24,12 +25,13 @@ enum MemoryFilter: Int, CaseIterable, Identifiable {
 }
 
 struct MemoryView: View {
+    @ObservedResults(Book.self) private var savedBooks
     
     @Environment(\.colorScheme) private var colorScheme
     @Namespace private var animation
     
-    @State private var selectedSegment: MemoryFilter = .sentence
-    @State private var editButtonFilter: MemoryFilter = .sentence
+    @State private var selectedSegment: MemoryCategory = .sentence
+    @State private var editButtonFilter: MemoryCategory = .sentence
     @State private var offset: CGSize = CGSize()
     @State private var isShowingEditSheet: Bool = false
     
@@ -43,11 +45,20 @@ struct MemoryView: View {
                     LazyVStack {
                         switch selectedSegment {
                         case .sentence:
-                            Text("문장")
+                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].sentences, id: \.self) { sentence in
+                                MemoryCell(anyMemory: sentence, category: .sentence)
+                                    .padding(.horizontal, 20)
+                            }
                         case .word:
-                            Text("단어")
-                        case .idea:
-                            Text("생각")
+                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].words, id: \.self) { word in
+                                MemoryCell(anyMemory: word, category: .word)
+                                    .padding(.horizontal, 20)
+                            }
+                        case .thought:
+                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].thoughts, id: \.self) { thought in
+                                MemoryCell(anyMemory: thought, category: .thought)
+                                    .padding(.horizontal, 20)
+                            }
                         }
                     }
                 }
@@ -63,8 +74,8 @@ struct MemoryView: View {
                                     case .sentence:
                                         selectedSegment = .word
                                     case .word:
-                                        selectedSegment = .idea
-                                    case .idea:
+                                        selectedSegment = .thought
+                                    case .thought:
                                         break
                                     }
                                 } else if gesture.translation.width > 100 {
@@ -73,7 +84,7 @@ struct MemoryView: View {
                                         break
                                     case .word:
                                         selectedSegment = .sentence
-                                    case .idea:
+                                    case .thought:
                                         selectedSegment = .word
                                     }
                                 }
@@ -89,13 +100,13 @@ struct MemoryView: View {
         .navigationTitle(book.title)
         .background(colorScheme == .light ? .white : Color.BackgroundBlue)
         .fullScreenCover(isPresented: $isShowingEditSheet, content: {
-            MemoryEditorView()
+            MemoryEditorView(isShowingEditSheet: $isShowingEditSheet, book: book, editCategory: editButtonFilter)
         })
     }
 
     private var headerFilterView: some View {
         HStack(spacing: 0) {
-            ForEach(MemoryFilter.allCases, id: \.self) { segment in
+            ForEach(MemoryCategory.allCases, id: \.self) { segment in
                 VStack {
                     Text(segment.title)
                         .foregroundColor(selectedSegment == segment ? colorScheme == .light ? Color.BackgroundBlue : .white : colorScheme == .light ? .black : .white)
@@ -125,14 +136,16 @@ struct MemoryView: View {
     private var addButton: some View {
         Menu("\(Image(systemName: "plus.circle.fill"))") {
             Button("생각", action: {
+                editButtonFilter = .thought
                 isShowingEditSheet = true
             })
             Button("단어", action: {
+                editButtonFilter = .word
                 isShowingEditSheet = true
             })
             Button("문장", action: {
-                isShowingEditSheet = true
                 editButtonFilter = .sentence
+                isShowingEditSheet = true
             })
         }
         .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))

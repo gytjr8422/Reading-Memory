@@ -75,10 +75,6 @@ struct SavedBookDetailView: View {
                         .frame(width: UIScreen.main.bounds.width / 3)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 5))
-//                    } placeholder: {
-//                        ProgressView()
-//                            .frame(width: UIScreen.main.bounds.width / 3, height: 200)
-//                    }
                         .padding(.bottom)
                 } else {
                     Rectangle()

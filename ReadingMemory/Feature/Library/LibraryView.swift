@@ -15,6 +15,7 @@ struct LibraryView: View {
     
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @EnvironmentObject private var router: Router
+    @EnvironmentObject private var libraryViewModel: LibraryViewModel
     
     @State private var imageHeight: CGFloat = 0
     
@@ -23,13 +24,13 @@ struct LibraryView: View {
         NavigationStack(path: $router.libraryRoutes) {
             ScrollView {
                 makeCarouselView("읽고 있는 중", savedBooks.filter("reading == true").sorted(byKeyPath: "addDate", ascending: false), .reading)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 15)
                 makeCarouselView("읽고 싶은 책", savedBooks.filter("liked == true").sorted(byKeyPath: "addDate", ascending: false), .like)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 15)
                 makeCarouselView("읽은 책", savedBooks.filter("finished == true").sorted(byKeyPath: "addDate", ascending: false), .finished)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 15)
                 makeCarouselView("전체 저장한 책", savedBooks.sorted(byKeyPath: "addDate", ascending: false), .all)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 15)
             }
             .padding()
             .background(colorScheme == .light ? .white : Color.BackgroundBlue) // 101820, 1a1d1a
@@ -98,80 +99,94 @@ struct LibraryView: View {
             LazyHStack {
                 ForEach(books, id: \.self) { book in
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width * 0.8, height: 210)
+                        .frame(width: UIScreen.main.bounds.width * 0.8, height: 250)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .foregroundColor(Color(hexCode: "22333B")) // 22333B, 262730, 1A1B25, 2A2D34
                         .overlay {
-                            HStack {
-                                Button {
-                                    router.libraryRoutes.append(.savedBookDetail(book))
-                                } label: {
-                                    HStack {
-                                        if let url = URL(string: book.thumbnail) {
-                                            KFImage(url)
-                                                .placeholder({ _ in
-                                                    ProgressView()
-                                                        .frame(width: UIScreen.main.bounds.width * 0.3)
-                                                })
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: UIScreen.main.bounds.width * 0.3)
-                                                .clipped()
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                        } else {
-                                            Rectangle()
-                                                .frame(width: UIScreen.main.bounds.width * 0.3, height: UIScreen.main.bounds.width * 0.3 * 1.45)
-                                                .clipped()
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                        }
-                                    }
-                                }
-                                .padding(.leading, 10)
-                                
-                                VStack {
-                                    Text(book.title)
-                                        .lineLimit(3)
-                                        .font(.callout)
-                                        .frame(width: UIScreen.main.bounds.width * 0.4)
-                                        .padding(.top, 10)
-                                    
-                                    Spacer()
-                                    
+                            VStack {
+                                HStack {
                                     Button {
                                         router.libraryRoutes.append(.savedBookDetail(book))
                                     } label: {
-                                        Rectangle()
-                                            .frame(width: UIScreen.main.bounds.width * 0.4, height: 35)
-                                        //                                            .foregroundColor(Color(hexCode: "90C2E7"))
-                                            .clipped()
-                                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                                            .overlay {
-                                                Text("상세정보 보기")
-                                                    .foregroundColor(.black)
-                                                    .font(.subheadline)
+                                        HStack {
+                                            if let url = URL(string: book.thumbnail) {
+                                                KFImage(url)
+                                                    .placeholder({ _ in
+                                                        ProgressView()
+                                                            .frame(width: UIScreen.main.bounds.width * 0.3)
+                                                    })
+                                                    .resizable()
+                                                    .frame(width: UIScreen.main.bounds.width * 0.28, height: UIScreen.main.bounds.width * 0.3 * 1.35)
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .clipped()
+                                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                            } else {
+                                                Rectangle()
+                                                    .frame(width: UIScreen.main.bounds.width * 0.28, height: UIScreen.main.bounds.width * 0.3 * 1.35)
+                                                    .clipped()
+                                                    .clipShape(RoundedRectangle(cornerRadius: 5))
                                             }
+                                        }
                                     }
-                                    .padding(.bottom, 5)
                                     
-                                    Button {
-                                        router.libraryRoutes.append(.memory(book))
-                                    } label: {
-                                        Rectangle()
-                                            .frame(width: UIScreen.main.bounds.width * 0.4, height: 35)
-                                            .clipped()
-                                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                                            .overlay {
-                                                Text("기억하러 가기")
-                                                    .foregroundColor(.black)
-                                                    .font(.subheadline)
-                                            }
+                                    VStack(alignment: .leading) {
+                                        Text(book.title)
+                                            .lineLimit(3)
+                                            .font(.body)
+                                            .bold()
+                                            .padding(.top, 15)
+                                        
+                                        Spacer()
+                                        
+                                        Group {
+                                            Text("최초 기억 날짜")
+                                            Text(libraryViewModel.fetchFirstAndLatestInputDates(sentences: book.sentences, words: book.words, thoughts: book.thoughts).0)
+                                                .padding(.bottom, 5)
+                                            Text("최근 기억 날짜")
+                                            Text(libraryViewModel.fetchFirstAndLatestInputDates(sentences: book.sentences, words: book.words, thoughts: book.thoughts).1)
+                                                .padding(.bottom, 15)
+                                        }
+                                        .font(.caption)
                                     }
-                                    .padding(.bottom, 5)
+                                    .frame(height: UIScreen.main.bounds.width * 0.3 * 1.45)
+                                    .padding(.leading, 5)
+                                    
+                                    Spacer()
                                     
                                 }
-                                .frame(height: UIScreen.main.bounds.width * 0.3 * 1.45)
-                                .padding(.horizontal, 5)
+                                .frame(width: UIScreen.main.bounds.width * 0.7)
+                                
+                                Button {
+                                    router.libraryRoutes.append(.memory(book))
+                                } label: {
+                                    Rectangle()
+                                        .frame(width: UIScreen.main.bounds.width * 0.7, height: 40)
+                                        .clipped()
+                                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                                        .overlay {
+                                            Text("기억하러 가기")
+                                                .foregroundColor(.black)
+                                                .font(.subheadline)
+                                        }
+                                }
+                                .padding(.bottom, 5)
+                                
+                                
+//                                Button {
+//                                    router.libraryRoutes.append(.savedBookDetail(book))
+//                                } label: {
+//                                    Rectangle()
+//                                        .frame(width: UIScreen.main.bounds.width * 0.7, height: 40)
+//                                        .clipped()
+//                                        .clipShape(RoundedRectangle(cornerRadius: 5))
+//                                        .overlay {
+//                                            Text("상세정보 보기")
+//                                                .foregroundColor(.black)
+//                                                .font(.subheadline)
+//                                        }
+//                                }
+//                                .padding(.bottom, 5)
                             }
                         }
                 }
@@ -217,7 +232,7 @@ struct LibraryView: View {
                     }
                 }
             }
-            .frame(height: 240)
+//            .frame(height: 235)
         }
     }
 }
@@ -226,5 +241,6 @@ struct LibraryView: View {
     NavigationStack {
         LibraryView()
             .environmentObject(Router())
+            .environmentObject(LibraryViewModel())
     }
 }

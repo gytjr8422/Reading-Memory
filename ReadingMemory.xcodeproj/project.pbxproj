@@ -43,6 +43,8 @@
 		CEDA5E422B5BB5760068A410 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA5E412B5BB5760068A410 /* UIColor+Extensions.swift */; };
 		CEDA5E442B5BB5A20068A410 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA5E432B5BB5A20068A410 /* UIImage+Extensions.swift */; };
 		CEDA5E462B5BDAA40068A410 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA5E452B5BDAA40068A410 /* SafariView.swift */; };
+		CEE8A3A42B7CC5120068CA1E /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A32B7CC5120068CA1E /* Thought.swift */; };
+		CEE8A3A62B7F392B0068CA1E /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */; };
 		CEE8B2D72B7A0B39005F7FED /* MemoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */; };
 		CEF5E4E32B70B97B00D379D9 /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E22B70B97B00D379D9 /* Sentence.swift */; };
 		CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E42B70BD2F00D379D9 /* Word.swift */; };
@@ -83,6 +85,8 @@
 		CEDA5E412B5BB5760068A410 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		CEDA5E432B5BB5A20068A410 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		CEDA5E452B5BDAA40068A410 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		CEE8A3A32B7CC5120068CA1E /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
+		CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryEditorView.swift; sourceTree = "<group>"; };
 		CEF5E4E22B70B97B00D379D9 /* Sentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
 		CEF5E4E42B70BD2F00D379D9 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 				CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */,
 				CE5D49F62B526D7E005E22B0 /* SavedBookDetailView.swift */,
 				CE7E4BF92B74B68800F0CF83 /* AllSavedBookListView.swift */,
+				CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				CEF5E4E22B70B97B00D379D9 /* Sentence.swift */,
 				CEF5E4E42B70BD2F00D379D9 /* Word.swift */,
 				CE7E4BF72B7372F400F0CF83 /* RealmViewModel.swift */,
+				CEE8A3A32B7CC5120068CA1E /* Thought.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -342,6 +348,7 @@
 				CE5D49ED2B512F53005E22B0 /* RMTextField.swift in Sources */,
 				CE5D49E72B510CB5005E22B0 /* Router.swift in Sources */,
 				CE5D49F02B5132C0005E22B0 /* Color+Extensions.swift in Sources */,
+				CEE8A3A62B7F392B0068CA1E /* LibraryViewModel.swift in Sources */,
 				CE5D49EB2B511477005E22B0 /* SearchView.swift in Sources */,
 				CEF5E4E32B70B97B00D379D9 /* Sentence.swift in Sources */,
 				CEF5E4E72B721CB000D379D9 /* Migrator.swift in Sources */,
@@ -353,6 +360,7 @@
 				CE5D49F72B526D7E005E22B0 /* SavedBookDetailView.swift in Sources */,
 				CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */,
 				CEDA5E442B5BB5A20068A410 /* UIImage+Extensions.swift in Sources */,
+				CEE8A3A42B7CC5120068CA1E /* Thought.swift in Sources */,
 				CE7E4BF82B7372F400F0CF83 /* RealmViewModel.swift in Sources */,
 				CEDA5E422B5BB5760068A410 /* UIColor+Extensions.swift in Sources */,
 				CE9699762B5FA61E000D3135 /* TextAlignment.swift in Sources */,
@@ -503,7 +511,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,7 +549,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
