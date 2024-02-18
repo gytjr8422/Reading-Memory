@@ -46,6 +46,8 @@ struct LibraryView: View {
                     AllSavedBookListView()
                 case .memory(let book):
                     MemoryView(book: book)
+                case .memoryDetail(let memory, let category):
+                    MemoryDetailView(anyMemory: memory, category: category)
                 }
             }
         }

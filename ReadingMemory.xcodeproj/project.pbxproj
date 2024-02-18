@@ -45,6 +45,7 @@
 		CEDA5E462B5BDAA40068A410 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDA5E452B5BDAA40068A410 /* SafariView.swift */; };
 		CEE8A3A42B7CC5120068CA1E /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A32B7CC5120068CA1E /* Thought.swift */; };
 		CEE8A3A62B7F392B0068CA1E /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */; };
+		CEE8A3AA2B81980F0068CA1E /* MemoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */; };
 		CEE8B2D72B7A0B39005F7FED /* MemoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */; };
 		CEF5E4E32B70B97B00D379D9 /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E22B70B97B00D379D9 /* Sentence.swift */; };
 		CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E42B70BD2F00D379D9 /* Word.swift */; };
@@ -87,6 +88,7 @@
 		CEDA5E452B5BDAA40068A410 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		CEE8A3A32B7CC5120068CA1E /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailView.swift; sourceTree = "<group>"; };
 		CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryEditorView.swift; sourceTree = "<group>"; };
 		CEF5E4E22B70B97B00D379D9 /* Sentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
 		CEF5E4E42B70BD2F00D379D9 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				CE7E4BFD2B76511200F0CF83 /* MemoryView.swift */,
 				CE7E4C032B79F92A00F0CF83 /* MemoryCell.swift */,
 				CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */,
+				CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */,
 			);
 			path = Memory;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */,
 				CE5D49F72B526D7E005E22B0 /* SavedBookDetailView.swift in Sources */,
 				CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */,
+				CEE8A3AA2B81980F0068CA1E /* MemoryDetailView.swift in Sources */,
 				CEDA5E442B5BB5A20068A410 /* UIImage+Extensions.swift in Sources */,
 				CEE8A3A42B7CC5120068CA1E /* Thought.swift in Sources */,
 				CE7E4BF82B7372F400F0CF83 /* RealmViewModel.swift in Sources */,

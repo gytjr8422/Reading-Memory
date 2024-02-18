@@ -11,7 +11,7 @@ import SwiftUI
 struct MemoryCell: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    let anyMemory: AnyObject
+    let anyMemory: Object
     let category: MemoryCategory
     
     var body: some View {
@@ -23,10 +23,12 @@ struct MemoryCell: View {
                     Group {
                         Text("문장")
                         Text(sentence.sentence)
+                            .lineLimit(2)
                         Divider()
                             .background(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
                         Text("내 생각")
                         Text(sentence.idea)
+                            .lineLimit(2)
                     }
                     .font(.callout)
                 }

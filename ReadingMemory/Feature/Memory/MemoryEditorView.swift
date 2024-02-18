@@ -8,6 +8,10 @@
 import RealmSwift
 import SwiftUI
 
+enum EditorMode {
+    case add
+    case modify
+}
 
 // 기억하기로 넘어오면 빈 텍스트, 수정으로 들어오면 해당 메모로 채우기
 struct MemoryEditorView: View {
@@ -29,6 +33,8 @@ struct MemoryEditorView: View {
     @Binding var isShowingEditSheet: Bool
     let book: Book
     let editCategory: MemoryCategory
+    let editorMode: EditorMode
+    let memoryId: ObjectId?
     
     var firstTitle: String {
         switch editCategory {
@@ -104,7 +110,7 @@ struct MemoryEditorView: View {
                         Spacer()
                         
                         Text("페이지")
-//                        TextMaster(text: $pageText, isFocused: $isPageFocused, maxLine: 1, fontSize: 17, height: UIScreen.main.bounds.height * 0.03)
+                        
                         TextField("", text: $pageText)
                             .font(.callout)
                             .background(
@@ -116,6 +122,7 @@ struct MemoryEditorView: View {
                             .frame(width: 60)
                             .padding(.horizontal, 5)
                     }
+                    
                     TextMaster(text: $firstText, isFocused: $isFirstFocused, maxLine: editCategory == .word ? 2 : 10, fontSize: 17, height: firstEditorHeight)
                         .background(colorScheme == .light ? Color(hexCode: "DCE2F0") : Color(hexCode: "22333B"))
                         .padding(.bottom)
@@ -162,7 +169,12 @@ struct MemoryEditorView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            Book.addMemory(book, category: editCategory, firstText: firstText, secondText: secondText, thirdText: thirdText, pageText: pageText)
+                            switch editorMode {
+                            case .add:
+                                Book.addMemory(book, category: editCategory, firstText: firstText, secondText: secondText, thirdText: thirdText, pageText: pageText)
+                            case .modify:
+                                Book.editMemory(book, memoryId: memoryId, category: editCategory, firstText: firstText, secondText: secondText, thirdText: thirdText, pageText: pageText)
+                            }
                             dismiss()
                         } label: {
                             Text("저장")
@@ -175,6 +187,33 @@ struct MemoryEditorView: View {
             .scrollDismissesKeyboard(.immediately)
         }
         .accentColor(colorScheme == .light ? .black : .white)
+        .onAppear {
+            switch editorMode {
+            case .add:
+                break
+            case .modify:
+                switch editCategory {
+                case .sentence:
+                    if let sentence = book.sentences.first(where: { $0.id == memoryId }) {
+                        firstText = sentence.sentence
+                        thirdText = sentence.idea
+                        pageText = sentence.page
+                    }
+                case .word:
+                    if let word = book.words.first(where: { $0.id == memoryId }) {
+                        firstText = word.word
+                        secondText = word.meaning
+                        thirdText = word.sentence
+                        pageText = word.page
+                    }
+                case .thought:
+                    if let thought = book.thoughts.first(where: { $0.id == memoryId }) {
+                        firstText = thought.thought
+                        pageText = thought.page
+                    }
+                }
+            }
+        }
         .alert("취소 시 작성한 기록은 저장되지 않습니다.", isPresented: $isShowingAlert) {
             Button {
                 
@@ -192,5 +231,5 @@ struct MemoryEditorView: View {
 }
 
 #Preview {
-    MemoryEditorView(isShowingEditSheet: .constant(true), book:Book.dummyBook, editCategory: .word)
+    MemoryEditorView(isShowingEditSheet: .constant(true), book:Book.dummyBook, editCategory: .word, editorMode: .add, memoryId: nil)
 }

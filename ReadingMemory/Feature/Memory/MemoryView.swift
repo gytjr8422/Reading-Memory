@@ -29,11 +29,14 @@ struct MemoryView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     @Namespace private var animation
+    @EnvironmentObject private var router: Router
     
     @State private var selectedSegment: MemoryCategory = .sentence
     @State private var editButtonFilter: MemoryCategory = .sentence
     @State private var offset: CGSize = CGSize()
     @State private var isShowingEditSheet: Bool = false
+    @State private var editorMode: EditorMode = .add
+    @State private var memoryId: ObjectId?
     
     let book: Book
     
@@ -46,18 +49,25 @@ struct MemoryView: View {
                         switch selectedSegment {
                         case .sentence:
                             ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].sentences, id: \.self) { sentence in
-                                MemoryCell(anyMemory: sentence, category: .sentence)
-                                    .padding(.horizontal, 20)
+                                Button {
+                                    router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
+                                } label: {
+                                    MemoryCell(anyMemory: sentence, category: .sentence)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 5)
+                                }
                             }
-                        case .word:
+                        case .word: 
                             ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].words, id: \.self) { word in
                                 MemoryCell(anyMemory: word, category: .word)
                                     .padding(.horizontal, 20)
+                                    .padding(.vertical, 5)
                             }
                         case .thought:
                             ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].thoughts, id: \.self) { thought in
                                 MemoryCell(anyMemory: thought, category: .thought)
                                     .padding(.horizontal, 20)
+                                    .padding(.vertical, 5)
                             }
                         }
                     }
@@ -100,7 +110,13 @@ struct MemoryView: View {
         .navigationTitle(book.title)
         .background(colorScheme == .light ? .white : Color.BackgroundBlue)
         .fullScreenCover(isPresented: $isShowingEditSheet, content: {
-            MemoryEditorView(isShowingEditSheet: $isShowingEditSheet, book: book, editCategory: editButtonFilter)
+            MemoryEditorView(
+                isShowingEditSheet: $isShowingEditSheet,
+                book: book,
+                editCategory: editButtonFilter,
+                editorMode: .add,
+                memoryId: memoryId
+            )
         })
     }
 
@@ -137,14 +153,20 @@ struct MemoryView: View {
         Menu("\(Image(systemName: "plus.circle.fill"))") {
             Button("생각", action: {
                 editButtonFilter = .thought
+                editorMode = .add
+                memoryId = nil
                 isShowingEditSheet = true
             })
             Button("단어", action: {
                 editButtonFilter = .word
+                editorMode = .add
+                memoryId = nil
                 isShowingEditSheet = true
             })
             Button("문장", action: {
                 editButtonFilter = .sentence
+                editorMode = .add
+                memoryId = nil
                 isShowingEditSheet = true
             })
         }

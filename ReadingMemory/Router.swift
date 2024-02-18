@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import RealmSwift
 
 enum LibraryRoute: Hashable {
     case savedBookDetail(Book)
     case bookList(String, EditList)
     case allSavedBookList
     case memory(Book)
+    case memoryDetail(RealmSwift.Object, MemoryCategory)
 }
 
 enum DictionaryRoute: Hashable {

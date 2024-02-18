@@ -179,7 +179,7 @@ extension Book {
         }
     }
     
-    static func editMemory(_ book: Book, memoryId: ObjectId, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+    static func editMemory(_ book: Book, memoryId: ObjectId?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
         if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
             switch category {
             case .sentence:
