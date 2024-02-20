@@ -17,15 +17,16 @@ struct TextAlignment: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UILabel {
         let label = UILabel()
-        //        label.textAlignment = NSTextAlignment(rawValue: textAlignmentStyle.rawValue)!
+                label.textAlignment = NSTextAlignment(rawValue: textAlignmentStyle.rawValue)!
         label.preferredMaxLayoutWidth = width
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentHuggingPriority(.required, for: .vertical)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        if let superview = label.superview {
-            label.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
-        }
+//        label.widthAnchor.constraint(equalToConstant: width).isActive = true
+//        if let superview = label.superview {
+//            label.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 10).isActive = true
+//            label.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: 10).isActive = true
+//        }
         return label
     }
     

@@ -15,6 +15,10 @@ enum EditorMode {
 
 // 기억하기로 넘어오면 빈 텍스트, 수정으로 들어오면 해당 메모로 채우기
 struct MemoryEditorView: View {
+    @ObservedResults(Sentence.self) private var sentences
+    @ObservedResults(Word.self) private var words
+    @ObservedResults(Thought.self) private var thoughts
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
     
@@ -31,7 +35,7 @@ struct MemoryEditorView: View {
     @FocusState private var isPageFocused: Bool
     
     @Binding var isShowingEditSheet: Bool
-    let book: Book
+    let book: Book?
     let editCategory: MemoryCategory
     let editorMode: EditorMode
     let memoryId: ObjectId?
@@ -194,27 +198,39 @@ struct MemoryEditorView: View {
             case .modify:
                 switch editCategory {
                 case .sentence:
-                    if let sentence = book.sentences.first(where: { $0.id == memoryId }) {
+                    if let sentence = book?.sentences.first(where: { $0.id == memoryId }) {
+                        firstText = sentence.sentence
+                        thirdText = sentence.idea
+                        pageText = sentence.page
+                    } else if let sentence = sentences.first(where: { $0.id == memoryId }) {
                         firstText = sentence.sentence
                         thirdText = sentence.idea
                         pageText = sentence.page
                     }
                 case .word:
-                    if let word = book.words.first(where: { $0.id == memoryId }) {
+                    if let word = book?.words.first(where: { $0.id == memoryId }) {
+                        firstText = word.word
+                        secondText = word.meaning
+                        thirdText = word.sentence
+                        pageText = word.page
+                    } else if let word = words.first(where: { $0.id == memoryId }) {
                         firstText = word.word
                         secondText = word.meaning
                         thirdText = word.sentence
                         pageText = word.page
                     }
                 case .thought:
-                    if let thought = book.thoughts.first(where: { $0.id == memoryId }) {
+                    if let thought = book?.thoughts.first(where: { $0.id == memoryId }) {
+                        firstText = thought.thought
+                        pageText = thought.page
+                    } else if let thought = thoughts.first(where: { $0.id == memoryId }) {
                         firstText = thought.thought
                         pageText = thought.page
                     }
                 }
             }
         }
-        .alert("취소 시 작성한 기록은 저장되지 않습니다.", isPresented: $isShowingAlert) {
+        .alert("취소 시 작성/수정한 기록은 저장되지 않습니다.", isPresented: $isShowingAlert) {
             Button {
                 
             } label: {

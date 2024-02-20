@@ -15,6 +15,7 @@
 		CE3158B12B452A45006C3749 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE3158B02B452A45006C3749 /* RealmSwift */; };
 		CE3158B42B46A013006C3749 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3158B32B46A013006C3749 /* LibraryView.swift */; };
 		CE40CF502B49B5B40073EAFD /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE40CF4F2B49B5B40073EAFD /* TestView.swift */; };
+		CE4945622B8493FB002449C2 /* DateToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945612B8493FB002449C2 /* DateToString.swift */; };
 		CE5755542B52812500CC471C /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5755532B52812500CC471C /* SearchResult.swift */; };
 		CE5D49E32B4FB2E2005E22B0 /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */; };
 		CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E42B510C7F005E22B0 /* AppScreen.swift */; };
@@ -60,6 +61,7 @@
 		CE3158A62B440976006C3749 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE3158B32B46A013006C3749 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		CE40CF4F2B49B5B40073EAFD /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		CE4945612B8493FB002449C2 /* DateToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateToString.swift; sourceTree = "<group>"; };
 		CE5755532B52812500CC471C /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListView.swift; sourceTree = "<group>"; };
 		CE5D49E42B510C7F005E22B0 /* AppScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScreen.swift; sourceTree = "<group>"; };
@@ -209,8 +211,8 @@
 				CED42B9A2B584AF000F826E3 /* BookViewModel.swift */,
 				CEF5E4E22B70B97B00D379D9 /* Sentence.swift */,
 				CEF5E4E42B70BD2F00D379D9 /* Word.swift */,
-				CE7E4BF72B7372F400F0CF83 /* RealmViewModel.swift */,
 				CEE8A3A32B7CC5120068CA1E /* Thought.swift */,
+				CE7E4BF72B7372F400F0CF83 /* RealmViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -232,6 +234,7 @@
 				CE9699752B5FA61E000D3135 /* TextAlignment.swift */,
 				CEF5E4E62B721CB000D379D9 /* Migrator.swift */,
 				CE7E4C072B7A05CD00F0CF83 /* TextMaster.swift */,
+				CE4945612B8493FB002449C2 /* DateToString.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				CE7E4BFA2B74B68800F0CF83 /* AllSavedBookListView.swift in Sources */,
 				CED42B9B2B584AF000F826E3 /* BookViewModel.swift in Sources */,
 				CE7E4C042B79F92A00F0CF83 /* MemoryCell.swift in Sources */,
+				CE4945622B8493FB002449C2 /* DateToString.swift in Sources */,
 				CE5D49ED2B512F53005E22B0 /* RMTextField.swift in Sources */,
 				CE5D49E72B510CB5005E22B0 /* Router.swift in Sources */,
 				CE5D49F02B5132C0005E22B0 /* Color+Extensions.swift in Sources */,

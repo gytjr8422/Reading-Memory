@@ -77,7 +77,7 @@ struct LibraryView: View {
                 Spacer()
             }
             
-            if #available(iOS 17.0, *) {
+//            if #available(iOS 17.0, *) {
                 if category == .reading {
                     makeReadingScrollView(books)
                         .scrollTargetLayout()
@@ -89,10 +89,10 @@ struct LibraryView: View {
                         .scrollTargetBehavior(.viewAligned)
                         .scrollIndicators(.hidden)
                 }
-            } else {
-                makeBookScrollView(books)
-                    .scrollIndicators(.hidden)
-            }
+//            } else {
+//                makeBookScrollView(books)
+//                    .scrollIndicators(.hidden)
+//            }
         }
     }
     
@@ -208,11 +208,11 @@ struct LibraryView: View {
                                 KFImage(url)
                                     .placeholder({ _ in
                                         ProgressView()
-                                            .frame(width: UIScreen.main.bounds.width / 3)
+                                            .frame(width: UIScreen.main.bounds.width * 0.28, height: UIScreen.main.bounds.width * 0.3 * 1.35)
                                     })
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: UIScreen.main.bounds.width / 3)
+                                    .frame(width: UIScreen.main.bounds.width * 0.3, height: UIScreen.main.bounds.width * 0.43)
                                     .clipped()
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .padding(.horizontal, 3)
@@ -226,9 +226,10 @@ struct LibraryView: View {
 //                                    isLineLimit: .constant(true)
 //                                )
                                 Text(books[index].title)
-                                    .lineLimit(1)
-                                    .font(.body)
-                                    .frame(width: UIScreen.main.bounds.width / 3)
+                                    .lineLimit(2)
+                                    .font(.subheadline)
+                                    .frame(width: UIScreen.main.bounds.width * 0.28, height: UIScreen.main.bounds.width * 0.12, alignment: .topLeading)
+                                    .multilineTextAlignment(.leading)
                             }
                         }
                     }

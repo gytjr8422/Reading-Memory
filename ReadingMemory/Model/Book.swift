@@ -136,7 +136,8 @@ extension Book {
         }
     }
     
-    static func addMemory(_ book: Book, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+    static func addMemory(_ book: Book?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+        guard let book else { return }
         if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
             var sentence: Sentence = Sentence()
             var word: Word = Word()
@@ -148,6 +149,7 @@ extension Book {
                     "sentence": firstText,
                     "idea": secondText == nil ? "" : secondText!,
                     "page": pageText == nil ? "" : pageText!,
+                    "liked": false,
                     "addDate": Date(),
                 ])
             case .word:
@@ -156,12 +158,14 @@ extension Book {
                     "meaning": secondText == nil ? "" : secondText!,
                     "sentence": thirdText == nil ? "" : thirdText!,
                     "page": pageText == nil ? "" : pageText!,
+                    "liked": false,
                     "addDate": Date()
                 ])
             case .thought:
                 thought = Thought(value: [
                     "thought": firstText,
                     "page": pageText == nil ? "" : pageText!,
+                    "liked": false,
                     "addDate": Date()
                 ])
             }
@@ -179,38 +183,65 @@ extension Book {
         }
     }
     
-    static func editMemory(_ book: Book, memoryId: ObjectId?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
-        if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
-            switch category {
-            case .sentence:
-                if let sentenceToEdit = editingBook.sentences.first(where: { $0.id == memoryId }) {
-                    try! realm.write {
-                        sentenceToEdit.sentence = firstText
-                        sentenceToEdit.idea = secondText == nil ? "" : secondText!
-                        sentenceToEdit.page = pageText == nil ? "" : pageText!
-                        sentenceToEdit.editDate = Date()
-                    }
+    static func editMemory(_ book: Book?, memoryId: ObjectId?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+//        if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
+        @ObservedResults(Sentence.self) var sentences
+        @ObservedResults(Word.self) var words
+        @ObservedResults(Thought.self) var thoughts
+        
+        switch category {
+        case .sentence:
+            if let sentenceToEdit = sentences.first(where: { $0.id == memoryId }) {
+                try! realm.write {
+                    sentenceToEdit.sentence = firstText
+                    sentenceToEdit.idea = thirdText == nil ? "" : thirdText!
+                    sentenceToEdit.page = pageText == nil ? "" : pageText!
+                    sentenceToEdit.editDate = Date()
                 }
-            case .word:
-                if let wordToEdit = editingBook.words.first(where: { $0.id == memoryId }) {
-                    try! realm.write {
-                        wordToEdit.word = firstText
-                        wordToEdit.meaning = secondText == nil ? "" : secondText!
-                        wordToEdit.sentence = thirdText == nil ? "" : thirdText!
-                        wordToEdit.page = pageText == nil ? "" : pageText!
-                        wordToEdit.editDate = Date()
-                    }
+            }
+        case .word:
+            if let wordToEdit = words.first(where: { $0.id == memoryId }) {
+                try! realm.write {
+                    wordToEdit.word = firstText
+                    wordToEdit.meaning = secondText == nil ? "" : secondText!
+                    wordToEdit.sentence = thirdText == nil ? "" : thirdText!
+                    wordToEdit.page = pageText == nil ? "" : pageText!
+                    wordToEdit.editDate = Date()
                 }
-            case .thought:
-                if let thoughtToEdit = editingBook.thoughts.first(where: { $0.id == memoryId }) {
-                    try! realm.write {
-                        thoughtToEdit.thought = firstText
-                        thoughtToEdit.page = pageText == nil ? "" : pageText!
-                        thoughtToEdit.editDate = Date()
-                    }
+            }
+        case .thought:
+            if let thoughtToEdit = thoughts.first(where: { $0.id == memoryId }) {
+                try! realm.write {
+                    thoughtToEdit.thought = firstText
+                    thoughtToEdit.page = pageText == nil ? "" : pageText!
+                    thoughtToEdit.editDate = Date()
                 }
             }
         }
+//        }
+    }
+    
+    static func likeMemory(memoryId: ObjectId, category: MemoryCategory) {
+            switch category {
+            case .sentence:
+                if let sentenceToEdit = realm.object(ofType: Sentence.self, forPrimaryKey: memoryId) {
+                    try! realm.write {
+                        sentenceToEdit.liked.toggle()
+                    }
+                }
+            case .word:
+                if let wordToEdit = realm.object(ofType: Word.self, forPrimaryKey: memoryId) {
+                    try! realm.write {
+                        wordToEdit.liked.toggle()
+                    }
+                }
+            case .thought:
+                if let thoughtToEdit = realm.object(ofType: Thought.self, forPrimaryKey: memoryId) {
+                    try! realm.write {
+                        thoughtToEdit.liked.toggle()
+                    }
+                }
+            }
     }
     
     static func findSavedBook(_ isbn: String) -> Book? {

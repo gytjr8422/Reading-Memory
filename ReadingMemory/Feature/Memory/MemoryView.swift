@@ -38,6 +38,8 @@ struct MemoryView: View {
     @State private var editorMode: EditorMode = .add
     @State private var memoryId: ObjectId?
     
+    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    
     let book: Book
     
     var body: some View {
@@ -45,32 +47,42 @@ struct MemoryView: View {
             VStack {
                 headerFilterView
                 ScrollView {
-                    LazyVStack {
+                    LazyVGrid(columns: columns) {
                         switch selectedSegment {
                         case .sentence:
-                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].sentences, id: \.self) { sentence in
+                            let sentences = savedBooks.filter("isbn == %@", book.isbn)[0].sentences.sorted(by: [
+                                SortDescriptor(keyPath: "liked", ascending: false), // liked 속성이 true인 것이 먼저 오도록 내림차순 정렬
+                                SortDescriptor(keyPath: "editDate", ascending: false) // addDate를 기준으로 최신순으로 내림차순 정렬
+                            ])
+                            ForEach(sentences, id: \.self) { sentence in
                                 Button {
                                     router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
                                 } label: {
                                     MemoryCell(anyMemory: sentence, category: .sentence)
-                                        .padding(.horizontal, 20)
                                         .padding(.vertical, 5)
                                 }
                             }
                         case .word: 
                             ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].words, id: \.self) { word in
-                                MemoryCell(anyMemory: word, category: .word)
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 5)
+                                Button {
+                                    router.libraryRoutes.append(.memoryDetail(word, .word))
+                                } label: {
+                                    MemoryCell(anyMemory: word, category: .word)
+                                        .padding(.vertical, 5)
+                                }
                             }
                         case .thought:
                             ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].thoughts, id: \.self) { thought in
-                                MemoryCell(anyMemory: thought, category: .thought)
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 5)
+                                Button {
+                                    router.libraryRoutes.append(.memoryDetail(thought, .thought))
+                                } label: {
+                                    MemoryCell(anyMemory: thought, category: .thought)
+                                        .padding(.vertical, 5)
+                                }
                             }
                         }
                     }
+                    .padding(.horizontal, 15)
                 }
                 .gesture(
                     DragGesture()
