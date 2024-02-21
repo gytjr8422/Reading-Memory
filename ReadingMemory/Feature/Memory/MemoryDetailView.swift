@@ -38,19 +38,16 @@ struct MemoryDetailView<T: Object>: View {
         .onAppear {
             switch category {
             case .sentence:
-                let sentence = anyMemory as? Sentence
-                if let id = sentence?.id {
-                    memoryId = id
+                if let sentence = anyMemory as? Sentence {
+                    memoryId = sentence.id
                 }
             case .word:
-                let word = anyMemory as? Word
-                if let id = word?.id {
-                    memoryId = id
+                if let word = anyMemory as? Word {
+                    memoryId = word.id
                 }
             case .thought:
-                let thought = anyMemory as? Thought
-                if let id = thought?.id {
-                    memoryId = id
+                if let thought = anyMemory as? Thought {
+                    memoryId = thought.id
                 }
             }
         }
@@ -64,8 +61,7 @@ struct MemoryDetailView<T: Object>: View {
             VStack {
                 switch category {
                 case .sentence:
-                    let sentence = anyMemory as? Sentence
-                    if let sentence {
+                    if let memory = anyMemory as? Sentence, let sentence = sentences.filter("id == %@", memory.id).first {
                         HStack {
                             Text("문장")
                                 .font(.title3)
@@ -80,9 +76,8 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         
-                        let memory = sentences.filter("id == %@", sentence.id)[0]
-                        if memory.sentence.count > 0 {
-                            makeTextView(memory.sentence)
+                        if sentence.sentence.count > 0 {
+                            makeTextView(sentence.sentence)
                         }
                         
                         HStack {
@@ -94,8 +89,8 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         
-                        if memory.idea.count > 0 {
-                            makeTextView(memory.idea)
+                        if sentence.idea.count > 0 {
+                            makeTextView(sentence.idea)
                         } else {
                             Text("문장에 대한 생각을 적어보세요.")
                                 .font(.subheadline)
@@ -103,8 +98,7 @@ struct MemoryDetailView<T: Object>: View {
                     }
                     
                 case .word:
-                    let memory = anyMemory as? Word
-                    if let memory, let word = words.filter("id == %@", memory.id).first {
+                    if let memory = anyMemory as? Word, let word = words.filter("id == %@", memory.id).first {
                         HStack {
                             Text("단어")
                                 .font(.title3)
@@ -117,8 +111,6 @@ struct MemoryDetailView<T: Object>: View {
                         }
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        
-//                        let memory = words.filter("id == %@", memory.id)[0]
                         
                         makeTextView(word.word)
                         
@@ -150,9 +142,21 @@ struct MemoryDetailView<T: Object>: View {
                     }
                     
                 case .thought:
-                    let memory = anyMemory as? Thought
-                    if let memory, let  thought = thoughts.filter("id == %@", memory.id).first {
-                        Text("내 생각: \(thought.thought)")
+                    if let memory = anyMemory as? Thought, let thought = thoughts.filter("id == %@", memory.id).first {
+                        HStack {
+                            Text("내 생각")
+                                .font(.title3)
+                                .bold()
+                            
+                            if thought.page.count > 0 {
+                                Text("p.\(thought.page)")
+                            }
+                            Spacer()
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        
+                        makeTextView(thought.thought)
                     }
                 }
             }
@@ -173,6 +177,10 @@ struct MemoryDetailView<T: Object>: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 15)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 7)
+                        .stroke(lineWidth: 1)
+                }
 //            }
         }
         .frame(width: UIScreen.main.bounds.width * 0.9)

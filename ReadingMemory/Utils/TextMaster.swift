@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+
+//TextMaster(text: $firstText, isFocused: $isFirstFocused, maxLine: editCategory == .word ? 2 : 10, fontSize: 17, height: firstEditorHeight)
+//    .background(colorScheme == .light ? Color(hexCode: "DCE2F0") : Color(hexCode: "22333B"))
+//    .padding(.bottom)
+
 struct TextMaster: View {
     
     @Binding var text: String
@@ -16,6 +21,7 @@ struct TextMaster: View {
     let minLine: Int
     let maxLine: Int
     let font: UIFont
+    let fontSize: CGFloat
     let becomeFirstResponder: Bool
     let height: CGFloat
     
@@ -33,6 +39,7 @@ struct TextMaster: View {
         self.isFocused = isFocused
         self.minLine = minLine
         self.maxLine = maxLine
+        self.fontSize = fontSize
         self.becomeFirstResponder = becomeFirstResponder
         
         let font = UIFont.systemFont(ofSize: fontSize)
@@ -49,6 +56,7 @@ struct TextMaster: View {
             minLine: minLine,
             maxLine: maxLine,
             font: font,
+            fontSize: fontSize,
             becomeFirstResponder: becomeFirstResponder)
         .frame(height: height)
         .lineSpacing(10)
@@ -66,6 +74,7 @@ fileprivate struct UITextViewRepresentable: UIViewRepresentable {
     let minLine: Int
     let maxLine: Int
     let font: UIFont
+    let fontSize: CGFloat
     let becomeFirstResponder: Bool
     
     func makeUIView(context: UIViewRepresentableContext<UITextViewRepresentable>) -> UITextView {
@@ -91,6 +100,26 @@ fileprivate struct UITextViewRepresentable: UIViewRepresentable {
     func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewRepresentable>) {
         guard uiView.text == self.text else { // 외부에서 주입되는 텍스트에 대한 반응을 위해 필요
             uiView.text = self.text
+            
+            let style = NSMutableParagraphStyle()
+            style.lineSpacing = 8
+
+            let attributedString = NSMutableAttributedString(string: uiView.text)
+            
+            let font = UIFont.systemFont(ofSize: self.fontSize) // 원하는 폰트 및 크기 선택
+            attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: NSRange(location: 0, length: attributedString.length))
+            
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSRange(location: 0, length: attributedString.length))
+            
+            // 다크 모드인지 확인하여 폰트 색상 설정
+            if uiView.traitCollection.userInterfaceStyle == .dark {
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.white, range: NSRange(location: 0, length: attributedString.length))
+            } else {
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: attributedString.length))
+            }
+
+            uiView.attributedText = attributedString
+            
             return
         }
     }

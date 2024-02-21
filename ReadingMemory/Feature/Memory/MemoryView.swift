@@ -46,44 +46,7 @@ struct MemoryView: View {
         ZStack {
             VStack {
                 headerFilterView
-                ScrollView {
-                    LazyVGrid(columns: columns) {
-                        switch selectedSegment {
-                        case .sentence:
-                            let sentences = savedBooks.filter("isbn == %@", book.isbn)[0].sentences.sorted(by: [
-                                SortDescriptor(keyPath: "liked", ascending: false), // liked 속성이 true인 것이 먼저 오도록 내림차순 정렬
-                                SortDescriptor(keyPath: "editDate", ascending: false) // addDate를 기준으로 최신순으로 내림차순 정렬
-                            ])
-                            ForEach(sentences, id: \.self) { sentence in
-                                Button {
-                                    router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
-                                } label: {
-                                    MemoryCell(anyMemory: sentence, category: .sentence)
-                                        .padding(.vertical, 5)
-                                }
-                            }
-                        case .word: 
-                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].words, id: \.self) { word in
-                                Button {
-                                    router.libraryRoutes.append(.memoryDetail(word, .word))
-                                } label: {
-                                    MemoryCell(anyMemory: word, category: .word)
-                                        .padding(.vertical, 5)
-                                }
-                            }
-                        case .thought:
-                            ForEach(savedBooks.filter("isbn == %@", book.isbn)[0].thoughts, id: \.self) { thought in
-                                Button {
-                                    router.libraryRoutes.append(.memoryDetail(thought, .thought))
-                                } label: {
-                                    MemoryCell(anyMemory: thought, category: .thought)
-                                        .padding(.vertical, 5)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 15)
-                }
+                memoryCardView
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
@@ -158,6 +121,59 @@ struct MemoryView: View {
                     }
                 }
             }
+        }
+    }
+    
+    private var memoryCardView: some View {
+        ScrollView {
+            LazyVGrid(columns: columns) {
+                switch selectedSegment {
+                case .sentence:
+                    if let sentences = savedBooks.filter("isbn == %@", book.isbn).first?.sentences.sorted(by: [
+                        SortDescriptor(keyPath: "liked", ascending: false), // liked 속성이 true인 것이 먼저 오도록 내림차순 정렬
+                        SortDescriptor(keyPath: "editDate", ascending: false) // addDate를 기준으로 최신순으로 내림차순 정렬
+                    ]) {
+                        ForEach(sentences, id: \.self) { sentence in
+                            Button {
+                                router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
+                            } label: {
+                                MemoryCell(anyMemory: sentence, category: .sentence)
+                                    .padding(.vertical, 5)
+                            }
+                        }
+                    }
+                    
+                case .word:
+                    if let words = savedBooks.filter("isbn == %@", book.isbn).first?.words.sorted(by: [
+                        SortDescriptor(keyPath: "liked", ascending: false),
+                        SortDescriptor(keyPath: "editDate", ascending: false)
+                    ]) {
+                        ForEach(words, id: \.self) { word in
+                            Button {
+                                router.libraryRoutes.append(.memoryDetail(word, .word))
+                            } label: {
+                                MemoryCell(anyMemory: word, category: .word)
+                                    .padding(.vertical, 5)
+                            }
+                        }
+                    }
+                case .thought:
+                    if let thoughts = savedBooks.filter("isbn == %@", book.isbn).first?.thoughts.sorted(by: [
+                        SortDescriptor(keyPath: "liked", ascending: false),
+                        SortDescriptor(keyPath: "editDate", ascending: false)
+                    ]) {
+                        ForEach(thoughts, id: \.self) { thought in
+                            Button {
+                                router.libraryRoutes.append(.memoryDetail(thought, .thought))
+                            } label: {
+                                MemoryCell(anyMemory: thought, category: .thought)
+                                    .padding(.vertical, 5)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 15)
         }
     }
     
