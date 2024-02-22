@@ -13,6 +13,7 @@ struct SavedBookDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject private var router: Router
     
     @ObservedResults(Book.self) var savedBooks
     
@@ -34,6 +35,10 @@ struct SavedBookDetailView: View {
                 headerView
                 saveButtons
                 Divider()
+                if let book = savedBook.first, book.reading || book.finished {
+                    memoryButton
+                    Divider()
+                }
                 detailView
             }
             .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
@@ -85,14 +90,6 @@ struct SavedBookDetailView: View {
                         .padding(.bottom)
                 }
                 
-//                TextAlignment(
-//                    text: book.title,
-//                    textAlignmentStyle: .justified,
-//                    font: .systemFont(ofSize: 20),
-//                    width: UIScreen.main.bounds.width - 120,
-//                    lineLimit: 2,
-//                    isLineLimit: $isLineLimit
-//                )
                 Text(book.title)
                     .font(.title3)
                     .lineLimit(2)
@@ -167,6 +164,23 @@ struct SavedBookDetailView: View {
         .foregroundColor(colorScheme == .light ? .black : .white)
         .padding(.vertical)
         .padding(.horizontal, 30)
+    }
+    
+    private var memoryButton: some View {
+        Button {
+            router.libraryRoutes.append(.memory(book))
+        } label: {
+            Rectangle()
+                .frame(width: UIScreen.main.bounds.width * 0.8, height: 40)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .overlay {
+                    Text("기억하러 가기")
+                        .foregroundColor(.black)
+                        .font(.subheadline)
+                }
+        }
+        .padding(.vertical, 5)
     }
     
     private var detailView: some View {

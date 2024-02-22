@@ -131,6 +131,20 @@ struct SearchView: View {
                 SearchedBookDetailView(book: searchedBook)
             }
         }
+        .navigationDestination(for: LibraryRoute.self) { route in
+            switch route {
+            case .savedBookDetail(let book):
+                SavedBookDetailView(book: book)
+            case .bookList(let title, let editCategory):
+                BookListView(title: title, category: editCategory)
+            case .allSavedBookList:
+                AllSavedBookListView()
+            case .memory(let book):
+                MemoryView(book: book)
+            case .memoryDetail(let memory, let memoryCategory):
+                MemoryDetailView(anyMemory: memory, category: memoryCategory)
+            }
+        }
     }
     
     private var barcodeScanButton: some View {

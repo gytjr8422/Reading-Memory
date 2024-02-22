@@ -151,6 +151,7 @@ extension Book {
                     "page": pageText == nil ? "" : pageText!,
                     "liked": false,
                     "addDate": Date(),
+                    "isbn": book.isbn
                 ])
             case .word:
                 word = Word(value: [
@@ -159,14 +160,16 @@ extension Book {
                     "sentence": thirdText == nil ? "" : thirdText!,
                     "page": pageText == nil ? "" : pageText!,
                     "liked": false,
-                    "addDate": Date()
+                    "addDate": Date(),
+                    "isbn": book.isbn
                 ])
             case .thought:
                 thought = Thought(value: [
                     "thought": firstText,
                     "page": pageText == nil ? "" : pageText!,
                     "liked": false,
-                    "addDate": Date()
+                    "addDate": Date(),
+                    "isbn": book.isbn
                 ])
             }
             

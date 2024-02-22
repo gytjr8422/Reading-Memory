@@ -13,6 +13,7 @@ struct SearchedBookDetailView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject private var router: Router
     
     @ObservedResults(Book.self) var savedBooks
     
@@ -36,18 +37,15 @@ struct SearchedBookDetailView: View {
                 headerView
                 saveButtons
                 Divider()
+                if let _ = savedBook.first {
+                    memoryButton
+                }
                 detailView
             }
             .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
         }
         .onAppear {
             Task {
-//                headerColor = await searchViewModel.getAverageColor(book.thumbnail)
-//
-//                var brightness: CGFloat = 0
-//                headerColor.getHue(nil, saturation: nil, brightness: &brightness, alpha: nil)
-//                accentColor = brightness > 0.5 ? UIColor.black : UIColor.white
-                
                 let isbnArray = book.isbn.split(separator: " ")
                 bookDescription = try await searchViewModel.searchIsbn(String(isbnArray.count > 1 ? isbnArray[1] : isbnArray[0]))
                 isLoading = false
@@ -196,6 +194,26 @@ struct SearchedBookDetailView: View {
         .padding(.vertical)
         .padding(.horizontal, 30)
     }
+    
+    private var memoryButton: some View {
+            Button {
+                if let book = savedBook.first {
+                    router.selectedTab = .library
+                    router.libraryRoutes.append(.memory(book))
+                }
+            } label: {
+                Rectangle()
+                    .frame(width: UIScreen.main.bounds.width * 0.8, height: 40)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .overlay {
+                        Text("기억하러 가기")
+                            .foregroundColor(.black)
+                            .font(.subheadline)
+                    }
+            }
+            .padding(.vertical, 5)
+        }
     
     private var detailView: some View {
         VStack {

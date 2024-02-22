@@ -10,10 +10,10 @@ import SwiftUI
 
 struct AppTabView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var selection: AppScreen = .library
+    @EnvironmentObject private var router: Router
     
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $router.selectedTab) {
             ForEach(AppScreen.allCases) { screen in
                 screen.destination
                     .tag(screen)

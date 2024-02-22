@@ -16,6 +16,8 @@
 		CE3158B42B46A013006C3749 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3158B32B46A013006C3749 /* LibraryView.swift */; };
 		CE40CF502B49B5B40073EAFD /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE40CF4F2B49B5B40073EAFD /* TestView.swift */; };
 		CE4945622B8493FB002449C2 /* DateToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945612B8493FB002449C2 /* DateToString.swift */; };
+		CE4945642B872063002449C2 /* AllMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945632B872063002449C2 /* AllMemoryView.swift */; };
+		CE4945662B872075002449C2 /* MemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945652B872075002449C2 /* MemoryViewModel.swift */; };
 		CE5755542B52812500CC471C /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5755532B52812500CC471C /* SearchResult.swift */; };
 		CE5D49E32B4FB2E2005E22B0 /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */; };
 		CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E42B510C7F005E22B0 /* AppScreen.swift */; };
@@ -62,6 +64,8 @@
 		CE3158B32B46A013006C3749 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		CE40CF4F2B49B5B40073EAFD /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		CE4945612B8493FB002449C2 /* DateToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateToString.swift; sourceTree = "<group>"; };
+		CE4945632B872063002449C2 /* AllMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryView.swift; sourceTree = "<group>"; };
+		CE4945652B872075002449C2 /* MemoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViewModel.swift; sourceTree = "<group>"; };
 		CE5755532B52812500CC471C /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListView.swift; sourceTree = "<group>"; };
 		CE5D49E42B510C7F005E22B0 /* AppScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScreen.swift; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 				CE7E4C032B79F92A00F0CF83 /* MemoryCell.swift */,
 				CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */,
 				CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */,
+				CE4945632B872063002449C2 /* AllMemoryView.swift */,
+				CE4945652B872075002449C2 /* MemoryViewModel.swift */,
 			);
 			path = Memory;
 			sourceTree = "<group>";
@@ -339,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE5D49F22B516BC0005E22B0 /* SearchViewModel.swift in Sources */,
+				CE4945642B872063002449C2 /* AllMemoryView.swift in Sources */,
 				CE40CF502B49B5B40073EAFD /* TestView.swift in Sources */,
 				CE96997B2B61851F000D3135 /* UILabel+Extensions.swift in Sources */,
 				CED42B972B581A3B00F826E3 /* Book.swift in Sources */,
@@ -350,6 +357,7 @@
 				CE7E4BFE2B76511200F0CF83 /* MemoryView.swift in Sources */,
 				CE7E4BFA2B74B68800F0CF83 /* AllSavedBookListView.swift in Sources */,
 				CED42B9B2B584AF000F826E3 /* BookViewModel.swift in Sources */,
+				CE4945662B872075002449C2 /* MemoryViewModel.swift in Sources */,
 				CE7E4C042B79F92A00F0CF83 /* MemoryCell.swift in Sources */,
 				CE4945622B8493FB002449C2 /* DateToString.swift in Sources */,
 				CE5D49ED2B512F53005E22B0 /* RMTextField.swift in Sources */,

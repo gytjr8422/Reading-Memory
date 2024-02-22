@@ -8,7 +8,13 @@
 import Foundation
 import RealmSwift
 
-class Sentence: Object, Identifiable {
+protocol Memory {
+    var id: ObjectId { get }
+    var addDate: Date { get set }
+    var editDate: Date { get set }
+}
+
+class Sentence: Object, Identifiable, Memory {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var sentence: String
     @Persisted var idea: String
@@ -17,6 +23,8 @@ class Sentence: Object, Identifiable {
     
     @Persisted var addDate: Date
     @Persisted var editDate: Date
+    
+    @Persisted var isbn: String
     
     override class func primaryKey() -> String? {
         "id"

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DateToString {
+struct DateToString {
     static func toString(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd"

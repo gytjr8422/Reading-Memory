@@ -42,7 +42,7 @@ extension AppScreen {
         case .dictionary:
             Text("dictionary")
         case .memories:
-            Text("memory")
+            AllMemoryView()
         case .search:
             SearchView()
         case .setting:

@@ -77,7 +77,6 @@ struct LibraryView: View {
                 Spacer()
             }
             
-//            if #available(iOS 17.0, *) {
                 if category == .reading {
                     makeReadingScrollView(books)
                         .scrollTargetLayout()
@@ -89,13 +88,11 @@ struct LibraryView: View {
                         .scrollTargetBehavior(.viewAligned)
                         .scrollIndicators(.hidden)
                 }
-//            } else {
-//                makeBookScrollView(books)
-//                    .scrollIndicators(.hidden)
-//            }
         }
     }
     
+    
+
     private func makeReadingScrollView(_ books: Results<Book>) -> some View {
         ScrollView(.horizontal) {
             LazyHStack {
@@ -173,22 +170,6 @@ struct LibraryView: View {
                                         }
                                 }
                                 .padding(.bottom, 5)
-                                
-                                
-//                                Button {
-//                                    router.libraryRoutes.append(.savedBookDetail(book))
-//                                } label: {
-//                                    Rectangle()
-//                                        .frame(width: UIScreen.main.bounds.width * 0.7, height: 40)
-//                                        .clipped()
-//                                        .clipShape(RoundedRectangle(cornerRadius: 5))
-//                                        .overlay {
-//                                            Text("상세정보 보기")
-//                                                .foregroundColor(.black)
-//                                                .font(.subheadline)
-//                                        }
-//                                }
-//                                .padding(.bottom, 5)
                             }
                         }
                 }
@@ -217,14 +198,7 @@ struct LibraryView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .padding(.horizontal, 3)
                                     .padding(.bottom, 3)
-//                                TextAlignment(
-//                                    text: books[index].title,
-//                                    textAlignmentStyle: .justified,
-//                                    font: .systemFont(ofSize: 15),
-//                                    width:  UIScreen.main.bounds.width / 3,
-//                                    lineLimit: 1,
-//                                    isLineLimit: .constant(true)
-//                                )
+                                
                                 Text(books[index].title)
                                     .lineLimit(2)
                                     .font(.subheadline)
@@ -235,10 +209,10 @@ struct LibraryView: View {
                     }
                 }
             }
-//            .frame(height: 235)
         }
     }
 }
+
 
 #Preview {
     NavigationStack {

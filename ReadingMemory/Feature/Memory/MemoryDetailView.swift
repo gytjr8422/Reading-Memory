@@ -10,12 +10,14 @@ import SwiftUI
 
 struct MemoryDetailView<T: Object>: View {
     @Environment(\.colorScheme) private var colorScheme
+    @ObservedResults(Book.self) private var savedBooks
     @ObservedResults(Sentence.self) private var sentences
     @ObservedResults(Word.self) private var words
     @ObservedResults(Thought.self) private var thoughts
     
     @State private var isShowingEditorSheet: Bool = false
     @State private var memoryId: ObjectId = ObjectId()
+    @State private var bookTitle: String = ""
     
     let anyMemory: T
     let category: MemoryCategory
@@ -25,6 +27,7 @@ struct MemoryDetailView<T: Object>: View {
             memoryView
         }
         .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+        .navigationTitle(bookTitle)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -40,14 +43,23 @@ struct MemoryDetailView<T: Object>: View {
             case .sentence:
                 if let sentence = anyMemory as? Sentence {
                     memoryId = sentence.id
+                    if let title = savedBooks.filter("isbn == %@", sentence.isbn).first?.title {
+                        bookTitle = title
+                    }
                 }
             case .word:
                 if let word = anyMemory as? Word {
                     memoryId = word.id
+                    if let title = savedBooks.filter("isbn == %@", word.isbn).first?.title {
+                        bookTitle = title
+                    }
                 }
             case .thought:
                 if let thought = anyMemory as? Thought {
                     memoryId = thought.id
+                    if let title = savedBooks.filter("isbn == %@", thought.isbn).first?.title {
+                        bookTitle = title
+                    }
                 }
             }
         }

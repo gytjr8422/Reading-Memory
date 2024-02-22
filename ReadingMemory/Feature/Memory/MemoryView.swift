@@ -178,29 +178,41 @@ struct MemoryView: View {
     }
     
     private var addButton: some View {
-        Menu("\(Image(systemName: "plus.circle.fill"))") {
-            Button("생각", action: {
-                editButtonFilter = .thought
-                editorMode = .add
-                memoryId = nil
-                isShowingEditSheet = true
-            })
-            Button("단어", action: {
-                editButtonFilter = .word
-                editorMode = .add
-                memoryId = nil
-                isShowingEditSheet = true
-            })
-            Button("문장", action: {
-                editButtonFilter = .sentence
-                editorMode = .add
-                memoryId = nil
-                isShowingEditSheet = true
-            })
+        Button {
+            editButtonFilter = selectedSegment
+            editorMode = .add
+            memoryId = nil
+            isShowingEditSheet = true
+        } label: {
+            Image(systemName: "plus.circle.fill")
+            .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
+            .font(.system(size: UIScreen.main.bounds.width * 0.13))
         }
-        .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
-        .font(.system(size: UIScreen.main.bounds.width * 0.13))
-        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.3)
+        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.32)
+
+//        Menu("\(Image(systemName: "plus.circle.fill"))") {
+//            Button("생각", action: {
+//                editButtonFilter = .thought
+//                editorMode = .add
+//                memoryId = nil
+//                isShowingEditSheet = true
+//            })
+//            Button("단어", action: {
+//                editButtonFilter = .word
+//                editorMode = .add
+//                memoryId = nil
+//                isShowingEditSheet = true
+//            })
+//            Button("문장", action: {
+//                editButtonFilter = .sentence
+//                editorMode = .add
+//                memoryId = nil
+//                isShowingEditSheet = true
+//            })
+//        }
+//        .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
+//        .font(.system(size: UIScreen.main.bounds.width * 0.13))
+//        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.3)
     }
 }
 

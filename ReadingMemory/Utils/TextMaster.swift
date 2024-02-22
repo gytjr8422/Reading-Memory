@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-
-//TextMaster(text: $firstText, isFocused: $isFirstFocused, maxLine: editCategory == .word ? 2 : 10, fontSize: 17, height: firstEditorHeight)
-//    .background(colorScheme == .light ? Color(hexCode: "DCE2F0") : Color(hexCode: "22333B"))
-//    .padding(.bottom)
-
 struct TextMaster: View {
     
     @Binding var text: String

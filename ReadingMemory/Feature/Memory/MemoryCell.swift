@@ -8,7 +8,7 @@
 import RealmSwift
 import SwiftUI
 
-struct MemoryCell<T: Object>: View {
+struct MemoryCell<T: Memory>: View {
     @Environment(\.colorScheme) private var colorScheme
     
     let anyMemory: T
@@ -24,12 +24,8 @@ struct MemoryCell<T: Object>: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     HStack(alignment: .bottom) {
-                        VStack(alignment: .leading) {
-//                            Text("첫 기억: \(DateToString.toString(sentence.addDate))")
-//                                .font(.caption)
-                            Text(DateToString.toString(sentence.editDate))
-                                .font(.caption)
-                        }
+                        Text(DateToString.toString(sentence.editDate))
+                            .font(.caption)
                         
                         Spacer()
                         
@@ -45,30 +41,17 @@ struct MemoryCell<T: Object>: View {
                 let word = anyMemory as? Word
                 if let word {
                     VStack {
-//                        Text(word.word)
-//                            .lineLimit(1)
-//                            .font(.footnote)
-//                            .frame(maxWidth: .infinity, alignment: .leading)
                         TextAlignment(text: word.word, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Divider()
                             .background(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
                         TextAlignment(text: word.meaning, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                             .frame(maxWidth: .infinity, alignment: .leading)
-//                        Text(word.meaning)
-//                            .lineLimit(3)
-//                            .font(.footnote)
-//                            .multilineTextAlignment(.leading)
-//                            .frame(maxWidth: .infinity, alignment: .leading)
                         
                         Spacer()
                         HStack(alignment: .bottom) {
-                            VStack {
-    //                            Text("첫 기억: \(DateToString.toString(sentence.addDate))")
-    //                                .font(.caption)
-                                Text(DateToString.toString(word.editDate))
-                                    .font(.caption)
-                            }
+                            Text(DateToString.toString(word.editDate))
+                                .font(.caption)
                             Spacer()
                             Image(systemName: word.liked ? "heart.fill" : "heart")
                                 .font(.title3)
@@ -88,8 +71,6 @@ struct MemoryCell<T: Object>: View {
                     Spacer()
                     HStack(alignment: .bottom) {
                         VStack {
-//                            Text("첫 기억: \(DateToString.toString(sentence.addDate))")
-//                                .font(.caption)
                             Text(DateToString.toString(thought.editDate))
                                 .font(.caption)
                         }
@@ -102,11 +83,6 @@ struct MemoryCell<T: Object>: View {
                             }
                     }
                     
-//                    Text(idea.thought)
-//                        .lineLimit(5)
-//                        .font(.subheadline)
-//                        .multilineTextAlignment(.leading)
-//                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }

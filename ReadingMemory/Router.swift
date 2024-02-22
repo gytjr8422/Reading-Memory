@@ -21,14 +21,20 @@ enum DictionaryRoute: Hashable {
     case detail
 }
 
+enum MemoryRoute: Hashable {
+    case memoryDetail(RealmSwift.Object, MemoryCategory)
+}
+
 enum SearchRoute: Hashable {
     case searchedBookDetail(book: BookDocument)
 }
 
 
 final class Router: ObservableObject {
+    @Published var selectedTab: AppScreen = .library
     @Published var libraryRoutes: [LibraryRoute] = []
-    @Published var dictionaryRoute: [DictionaryRoute] = []
+    @Published var dictionaryRoutes: [DictionaryRoute] = []
+    @Published var memoryRoutes: [MemoryRoute] = []
     @Published var searchRoutes: [SearchRoute] = []
     
     func reset(screen: AppScreen) {
@@ -36,9 +42,9 @@ final class Router: ObservableObject {
         case .library:
             libraryRoutes.removeAll()
         case .dictionary:
-            dictionaryRoute.removeAll()
+            dictionaryRoutes.removeAll()
         case .memories:
-            print("memory")
+            memoryRoutes.removeAll()
         case .search:
             searchRoutes.removeAll()
         case .setting:
