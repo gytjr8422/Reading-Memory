@@ -177,23 +177,21 @@ struct MemoryDetailView<T: Object>: View {
     
     private func makeTextView(_ text: String) -> some View {
         VStack {
-//            HStack {
-                TextAlignment(
-                    text: text,
-                    textAlignmentStyle: .justified,
-                    font: .systemFont(ofSize: 15),
-                    width: UIScreen.main.bounds.width * 0.8,
-                    lineLimit: 0,
-                    isLineLimit: .constant(false)
-                )
-                .padding(.horizontal, 20)
-                .padding(.vertical, 15)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 7)
-                        .stroke(lineWidth: 1)
-                }
-//            }
+            TextAlignment(
+                text: text,
+                textAlignmentStyle: .justified,
+                font: .systemFont(ofSize: 15),
+                width: UIScreen.main.bounds.width * 0.8,
+                lineLimit: 0,
+                isLineLimit: .constant(false)
+            )
+            .padding(.horizontal, 20)
+            .padding(.vertical, 15)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay {
+                RoundedRectangle(cornerRadius: 7)
+                    .stroke(lineWidth: 1)
+            }
         }
         .frame(width: UIScreen.main.bounds.width * 0.9)
         .background(Color(hexCode: "50586C"))

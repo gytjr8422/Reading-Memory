@@ -20,54 +20,88 @@ struct AllMemoryView: View {
     
     @State private var selectedSegment: MemoryCategory = .sentence
     @State private var offset: CGSize = CGSize()
+    @State private var searchText: String = ""
     
-    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    
+    private var searchedSentences: [Sentence] {
+        if searchText.isEmpty {
+            return Array(sentences)
+        } else {
+            return sentences.filter { $0.sentence.lowercased().contains(searchText.lowercased()) }
+        }
+    }
+    
+    private var searchedWords: [Word] {
+        if searchText.isEmpty {
+            return Array(words)
+        } else {
+            return words.filter { $0.word.lowercased().contains(searchText.lowercased()) }
+        }
+    }
+    
+    private var searchedThoughts: [Thought] {
+        if searchText.isEmpty {
+            return Array(thoughts)
+        } else {
+            return thoughts.filter { $0.thought.lowercased().contains(searchText.lowercased()) }
+        }
+    }
     
     var body: some View {
         NavigationStack(path: $router.memoryRoutes) {
             VStack {
                 headerFilterView
-                memoryCardView
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                self.offset = gesture.translation
-                            }
-                            .onEnded { gesture in
-                                withAnimation(.interactiveSpring(response: 0.5)) {
-                                    if gesture.translation.width < -100 {
-                                        switch selectedSegment {
-                                        case .sentence:
-                                            selectedSegment = .word
-                                        case .word:
-                                            selectedSegment = .thought
-                                        case .thought:
-                                            break
-                                        }
-                                    } else if gesture.translation.width > 100 {
-                                        switch selectedSegment {
-                                        case .sentence:
-                                            break
-                                        case .word:
-                                            selectedSegment = .sentence
-                                        case .thought:
-                                            selectedSegment = .word
-                                        }
+                ScrollView {
+                    searchBar
+                    memoryCardView
+                }
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+                            self.offset = gesture.translation
+                        }
+                        .onEnded { gesture in
+                            withAnimation(.interactiveSpring(response: 0.5)) {
+                                if gesture.translation.width < -100 {
+                                    switch selectedSegment {
+                                    case .sentence:
+                                        selectedSegment = .word
+                                    case .word:
+                                        selectedSegment = .thought
+                                    case .thought:
+                                        break
+                                    }
+                                } else if gesture.translation.width > 100 {
+                                    switch selectedSegment {
+                                    case .sentence:
+                                        break
+                                    case .word:
+                                        selectedSegment = .sentence
+                                    case .thought:
+                                        selectedSegment = .word
                                     }
                                 }
-                                self.offset = CGSize()
                             }
-                    )
+                            self.offset = CGSize()
+                        }
+                )
             }
             .background(colorScheme == .light ? .white : Color.BackgroundBlue)
             .navigationDestination(for: MemoryRoute.self) { route in
                 switch route {
                 case .memoryDetail(let memory, let memoryCategory):
-                    MemoryDetailView(anyMemory: memory, category: selectedSegment)
+                    MemoryDetailView(anyMemory: memory, category: memoryCategory)
                 }
             }
         }
         .accentColor(colorScheme == .light ? .black : .white)
+        .scrollDismissesKeyboard(.immediately)
+    }
+    
+    private var searchBar: some View {
+        RMTextField(text: $searchText, isWrongText: false, isTextfieldDisabled: false, placeholderText: "기억을 검색해보세요.", isSearchBar: true)
+            .frame(width: UIScreen.main.bounds.width * 0.9)
     }
     
     private var headerFilterView: some View {
@@ -97,17 +131,19 @@ struct AllMemoryView: View {
                 }
             }
         }
+        .padding(.top)
     }
     
     private var memoryCardView: some View {
-        ScrollView {
             LazyVGrid(columns: columns) {
                 switch selectedSegment {
                 case .sentence:
-                    let sortedSentences = sentences.sorted(by: [
-                        SortDescriptor(keyPath: "liked", ascending: false),
-                        SortDescriptor(keyPath: "editDate", ascending: false)
-                    ])
+                    let sortedSentences = searchedSentences.sorted { (s1, s2) -> Bool in
+                        if s1.liked != s2.liked {
+                            return s1.liked
+                        }
+                        return s1.editDate > s2.editDate
+                    }
                     ForEach(sortedSentences, id: \.id) { sentence in
                         Button {
                             router.memoryRoutes.append(.memoryDetail(sentence, .sentence))
@@ -117,10 +153,12 @@ struct AllMemoryView: View {
                         }
                     }
                 case .word:
-                    let sortedWords = words.sorted(by: [
-                        SortDescriptor(keyPath: "liked", ascending: false),
-                        SortDescriptor(keyPath: "editDate", ascending: false)
-                    ])
+                    let sortedWords = searchedWords.sorted { (s1, s2) -> Bool in
+                        if s1.liked != s2.liked {
+                            return s1.liked
+                        }
+                        return s1.editDate > s2.editDate
+                    }
                     ForEach(sortedWords, id: \.id) { word in
                         Button {
                             router.memoryRoutes.append(.memoryDetail(word, .word))
@@ -130,11 +168,13 @@ struct AllMemoryView: View {
                         }
                     }
                 case .thought:
-                    let sortedthoughts = thoughts.sorted(by: [
-                        SortDescriptor(keyPath: "liked", ascending: false),
-                        SortDescriptor(keyPath: "editDate", ascending: false)
-                    ])
-                    ForEach(sortedthoughts, id: \.id) { thought in
+                    let sortedThoughts = searchedThoughts.sorted { (s1, s2) -> Bool in
+                        if s1.liked != s2.liked {
+                            return s1.liked
+                        }
+                        return s1.editDate > s2.editDate
+                    }
+                    ForEach(sortedThoughts, id: \.id) { thought in
                         Button {
                             router.memoryRoutes.append(.memoryDetail(thought, .thought))
                         } label: {
@@ -145,7 +185,6 @@ struct AllMemoryView: View {
                 }
             }
             .padding(.horizontal, 15)
-        }
     }
 }
 

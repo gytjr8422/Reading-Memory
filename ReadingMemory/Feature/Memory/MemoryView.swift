@@ -32,7 +32,6 @@ struct MemoryView: View {
     @EnvironmentObject private var router: Router
     
     @State private var selectedSegment: MemoryCategory = .sentence
-    @State private var editButtonFilter: MemoryCategory = .sentence
     @State private var offset: CGSize = CGSize()
     @State private var isShowingEditSheet: Bool = false
     @State private var editorMode: EditorMode = .add
@@ -88,7 +87,7 @@ struct MemoryView: View {
             MemoryEditorView(
                 isShowingEditSheet: $isShowingEditSheet,
                 book: book,
-                editCategory: editButtonFilter,
+                editCategory: selectedSegment,
                 editorMode: .add,
                 memoryId: memoryId
             )
@@ -179,7 +178,6 @@ struct MemoryView: View {
     
     private var addButton: some View {
         Button {
-            editButtonFilter = selectedSegment
             editorMode = .add
             memoryId = nil
             isShowingEditSheet = true
