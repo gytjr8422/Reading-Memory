@@ -8,22 +8,6 @@
 import RealmSwift
 import SwiftUI
 
-enum MemoryCategory: Int, CaseIterable, Identifiable {
-    case sentence
-    case word
-    case thought
-    
-    var title: String {
-        switch self {
-        case .sentence: return "문장"
-        case .word: return "단어"
-        case .thought: return "생각"
-        }
-    }
-    
-    var id: Int { return self.rawValue }
-}
-
 struct MemoryView: View {
     @ObservedResults(Book.self) private var savedBooks
     

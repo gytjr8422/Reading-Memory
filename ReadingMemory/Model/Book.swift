@@ -8,17 +8,6 @@
 import Foundation
 import RealmSwift
 
-enum EditList {
-    case all
-    
-    case like
-    case reading
-    case finished
-    
-    case memo
-    case word
-}
-
 class Book: Object, Identifiable {
     
     @Persisted var authors: List<String>

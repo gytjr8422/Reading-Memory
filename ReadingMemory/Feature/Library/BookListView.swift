@@ -52,10 +52,6 @@ struct BookListView: View {
                                 .clipped()
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                                 .padding(.horizontal, 3)
-//                            } placeholder: {
-//                                ProgressView()
-//                                    .frame(width: UIScreen.main.bounds.width / 3)
-//                            }
                         } else {
                             Rectangle()
                                 .overlay(content: {

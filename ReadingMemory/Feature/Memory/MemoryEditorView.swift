@@ -8,11 +8,6 @@
 import RealmSwift
 import SwiftUI
 
-enum EditorMode {
-    case add
-    case modify
-}
-
 // 기억하기로 넘어오면 빈 텍스트, 수정으로 들어오면 해당 메모로 채우기
 struct MemoryEditorView: View {
     @ObservedResults(Sentence.self) private var sentences
@@ -43,7 +38,7 @@ struct MemoryEditorView: View {
         case .word:
             return "기억할 단어"
         case .thought:
-            return "내 생각"
+            return "갈무리"
         }
     }
     
@@ -76,7 +71,7 @@ struct MemoryEditorView: View {
         case .word:
             return UIScreen.main.bounds.height * 0.07
         case .thought:
-            return UIScreen.main.bounds.height * 0.7
+            return UIScreen.main.bounds.height * 0.4
         }
     }
     
@@ -166,6 +161,7 @@ struct MemoryEditorView: View {
                 
                 Text("페이지")
                 makePageTextField($pageText)
+                    .padding(.trailing, 5)
             }
             makeTextEditor($firstText, height: firstEditorHeight)
             

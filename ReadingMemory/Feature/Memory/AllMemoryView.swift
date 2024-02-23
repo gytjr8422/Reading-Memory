@@ -100,7 +100,13 @@ struct AllMemoryView: View {
     }
     
     private var searchBar: some View {
-        RMTextField(text: $searchText, isWrongText: false, isTextfieldDisabled: false, placeholderText: "기억을 검색해보세요.", isSearchBar: true)
+        RMTextField(
+            text: $searchText,
+            isWrongText: false,
+            isTextfieldDisabled: false,
+            placeholderText: "기억을 검색해보세요.",
+            isSearchBar: true
+        )
             .frame(width: UIScreen.main.bounds.width * 0.9)
     }
     
