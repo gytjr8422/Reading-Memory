@@ -236,6 +236,24 @@ extension Book {
             }
     }
     
+    static func deleteMemories(_ memories: [Memory]) {
+        for memory in memories {
+            if let sentence = memory as? Sentence, let sentenceObject = realm.object(ofType: Sentence.self, forPrimaryKey: sentence.id) {
+                try! realm.write {
+                    realm.delete(sentenceObject)
+                }
+            } else if let word = memory as? Word, let wordObject = realm.object(ofType: Word.self, forPrimaryKey: word.id) {
+                try! realm.write {
+                    realm.delete(wordObject)
+                }
+            } else if let thought = memory as? Thought, let thoughtObject = realm.object(ofType: Thought.self, forPrimaryKey: thought.id) {
+                try! realm.write {
+                    realm.delete(thoughtObject)
+                }
+            }
+        }
+    }
+    
     static func findSavedBook(_ isbn: String) -> Book? {
         realm.object(ofType: Book.self, forPrimaryKey: isbn)
     }

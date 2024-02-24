@@ -17,9 +17,15 @@ struct MemoryView: View {
     
     @State private var selectedSegment: MemoryCategory = .sentence
     @State private var offset: CGSize = CGSize()
+    
     @State private var isShowingEditSheet: Bool = false
+    @State private var isEditing: Bool = false
+    
     @State private var editorMode: EditorMode = .add
     @State private var memoryId: ObjectId?
+    
+    @State private var selectedMemories: [Memory] = []
+    @State private var isShwoingDeleteAlert: Bool = false
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
@@ -76,6 +82,37 @@ struct MemoryView: View {
                 memoryId: memoryId
             )
         })
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack {
+                    Button {
+                        isEditing.toggle()
+                        selectedMemories.removeAll()
+                    } label: {
+                        isEditing ? Text("취소") : Text("편집")
+                    }
+                    
+                    if isEditing {
+                        Button {
+                            if !selectedMemories.isEmpty {
+                                isShwoingDeleteAlert = true
+                            }
+                        } label: {
+                            Text("삭제")
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+            }
+        }
+        .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
+            Button("삭제", role: .destructive) {
+                Book.deleteMemories(selectedMemories)
+            }
+            Button("취소", role: .cancel) { }
+        }, message: {
+            Text("기억 삭제 시 복구할 수 없습니다.")
+        })
     }
 
     private var headerFilterView: some View {
@@ -120,8 +157,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
                             } label: {
-                                MemoryCell(anyMemory: sentence, category: .sentence)
+                                MemoryCell(anyMemory: sentence, category: .sentence, route: .libraryRoute)
                                     .padding(.vertical, 5)
+                            }
+                            .disabled(isEditing)
+                            .overlay {
+                                editButton(sentence)
                             }
                         }
                     }
@@ -135,8 +176,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(word, .word))
                             } label: {
-                                MemoryCell(anyMemory: word, category: .word)
+                                MemoryCell(anyMemory: word, category: .word, route: .libraryRoute)
                                     .padding(.vertical, 5)
+                            }
+                            .disabled(isEditing)
+                            .overlay {
+                                editButton(word)
                             }
                         }
                     }
@@ -149,8 +194,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(thought, .thought))
                             } label: {
-                                MemoryCell(anyMemory: thought, category: .thought)
+                                MemoryCell(anyMemory: thought, category: .thought, route: .libraryRoute)
                                     .padding(.vertical, 5)
+                            }
+                            .disabled(isEditing)
+                            .overlay {
+                                editButton(thought)
                             }
                         }
                     }
@@ -171,30 +220,33 @@ struct MemoryView: View {
             .font(.system(size: UIScreen.main.bounds.width * 0.13))
         }
         .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.32)
-
-//        Menu("\(Image(systemName: "plus.circle.fill"))") {
-//            Button("생각", action: {
-//                editButtonFilter = .thought
-//                editorMode = .add
-//                memoryId = nil
-//                isShowingEditSheet = true
-//            })
-//            Button("단어", action: {
-//                editButtonFilter = .word
-//                editorMode = .add
-//                memoryId = nil
-//                isShowingEditSheet = true
-//            })
-//            Button("문장", action: {
-//                editButtonFilter = .sentence
-//                editorMode = .add
-//                memoryId = nil
-//                isShowingEditSheet = true
-//            })
-//        }
-//        .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
-//        .font(.system(size: UIScreen.main.bounds.width * 0.13))
-//        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.3)
+    }
+    
+    @ViewBuilder
+    private func editButton(_ memory: Memory) -> some View {
+        if isEditing {
+            if selectedMemories.contains(where: { $0.id == memory.id }) {
+                Image(systemName: "checkmark.circle")
+                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .background(Color.gray.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .font(.title)
+                    .onTapGesture {
+                        if let index = selectedMemories.firstIndex(where: { $0.id == memory.id }) {
+                            selectedMemories.remove(at: index)
+                        }
+                    }
+            } else {
+                Image(systemName: "circle")
+                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .background(Color.gray.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .font(.title)
+                    .onTapGesture {
+                        selectedMemories.append(memory)
+                    }
+            }
+        }
     }
 }
 

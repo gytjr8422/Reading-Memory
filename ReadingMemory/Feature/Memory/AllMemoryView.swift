@@ -154,7 +154,7 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(sentence, .sentence))
                         } label: {
-                            MemoryCell(anyMemory: sentence, category: .sentence)
+                            MemoryCell(anyMemory: sentence, category: .sentence, route: .memoryRoute)
                                 .padding(.vertical, 5)
                         }
                     }
@@ -169,7 +169,7 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(word, .word))
                         } label: {
-                            MemoryCell(anyMemory: word, category: .word)
+                            MemoryCell(anyMemory: word, category: .word, route: .memoryRoute)
                                 .padding(.vertical, 5)
                         }
                     }
@@ -184,7 +184,7 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(thought, .thought))
                         } label: {
-                            MemoryCell(anyMemory: thought, category: .thought)
+                            MemoryCell(anyMemory: thought, category: .thought, route: .memoryRoute)
                                 .padding(.vertical, 5)
                         }
                     }

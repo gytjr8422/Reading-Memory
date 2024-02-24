@@ -9,22 +9,50 @@ import RealmSwift
 import SwiftUI
 
 struct MemoryCell<T: Memory>: View {
+    @ObservedResults(Book.self) private var savedBooks
     @Environment(\.colorScheme) private var colorScheme
     
     let anyMemory: T
     let category: MemoryCategory
+    let route: Route
+    
+    private var bookTitle: String {
+        switch category {
+        case .sentence:
+            if let sentence = anyMemory as? Sentence,
+                let bookTitle = savedBooks.filter("isbn == %@", sentence.isbn).first?.title {
+                return bookTitle
+            }
+        case .word:
+            if let word = anyMemory as? Word,
+               let bookTitle = savedBooks.filter("isbn == %@", word.isbn).first?.title {
+                return bookTitle
+            }
+        case .thought:
+            if let thought = anyMemory as? Thought,
+               let bookTitle = savedBooks.filter("isbn == %@", thought.isbn).first?.title {
+                return bookTitle
+            }
+        }
+        return ""
+    }
     
     var body: some View {
         VStack {
             switch category {
             case .sentence:
-                let sentence = anyMemory as? Sentence
-                if let sentence {
+                if let sentence = anyMemory as? Sentence {
                     TextAlignment(text: sentence.sentence, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     HStack(alignment: .bottom) {
-                        Text(DateToString.toString(sentence.editDate))
+                        VStack(alignment: .leading) {
+                            if route == .memoryRoute {
+                                Text(bookTitle)
+                                    .lineLimit(1)
+                            }
+                            Text(DateToString.toString(sentence.editDate))
+                        }
                             .font(.caption)
                         
                         Spacer()
@@ -38,8 +66,7 @@ struct MemoryCell<T: Memory>: View {
                     }
                 }
             case .word:
-                let word = anyMemory as? Word
-                if let word {
+                if let word = anyMemory as? Word {
                     VStack {
                         TextAlignment(text: word.word, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -50,8 +77,14 @@ struct MemoryCell<T: Memory>: View {
                         
                         Spacer()
                         HStack(alignment: .bottom) {
-                            Text(DateToString.toString(word.editDate))
-                                .font(.caption)
+                            VStack(alignment:. leading) {
+                                if route == .memoryRoute {
+                                    Text(bookTitle)
+                                        .lineLimit(1)
+                                }
+                                Text(DateToString.toString(word.editDate))
+                            }
+                            .font(.caption)
                             Spacer()
                             Image(systemName: word.liked ? "heart.fill" : "heart")
                                 .font(.title3)
@@ -63,17 +96,20 @@ struct MemoryCell<T: Memory>: View {
                     }
                 }
             case .thought:
-                let thought = anyMemory as? Thought
-                if let thought {
+                if let thought = anyMemory as? Thought {
                     TextAlignment(text: thought.thought, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
                     HStack(alignment: .bottom) {
-                        VStack {
+                        VStack(alignment: .leading) {
+                            if route == .memoryRoute {
+                                Text(bookTitle)
+                                    .lineLimit(1)
+                            }
                             Text(DateToString.toString(thought.editDate))
-                                .font(.caption)
                         }
+                        .font(.caption)
                         Spacer()
                         Image(systemName: thought.liked ? "heart.fill" : "heart")
                             .font(.title3)
@@ -100,10 +136,14 @@ struct MemoryCell<T: Memory>: View {
 }
 
 #Preview {
-    MemoryCell(anyMemory: Sentence(value: [
+    MemoryCell(
+        anyMemory: Sentence(value: [
         "sentence": "Hello Sentence",
         "idea": "My Idea",
         "addDate": Date(),
         "editDate": Date()
-    ]), category: .sentence)
+    ]),
+        category: .sentence,
+        route: .libraryRoute
+    )
 }

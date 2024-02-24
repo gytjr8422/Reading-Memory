@@ -137,16 +137,10 @@ struct MemoryEditorView: View {
 
         })
         .alert("작성/수정을 취소하시겠습니까?", isPresented: $isShowingCancelAlert, actions: {
-            Button {
-                
-            } label: {
-                Text("계속 작성하기")
-            }
+            Button("계속 작성하기", role: .cancel) { }
             
-            Button {
+            Button("나가기", role: .destructive) {
                 isShowingEditSheet = false
-            } label: {
-                Text("나가기")
             }
         }, message: {
             Text("취소 시 작성 및 수정한 기록은 저장되지 않습니다.")

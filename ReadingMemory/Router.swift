@@ -8,6 +8,14 @@
 import Foundation
 import RealmSwift
 
+enum Route {
+    case libraryRoute
+    case dictionaryRoute
+    case memoryRoute
+    case searchRoute
+    case settingRoute
+}
+
 enum LibraryRoute: Hashable {
     case savedBookDetail(Book)
     case bookList(String, EditList)

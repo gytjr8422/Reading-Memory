@@ -64,7 +64,13 @@ struct MemoryDetailView<T: Object>: View {
             }
         }
         .fullScreenCover(isPresented: $isShowingEditorSheet) {
-            MemoryEditorView(isShowingEditSheet: $isShowingEditorSheet, book: nil, editCategory: category, editorMode: .modify, memoryId: memoryId)
+            MemoryEditorView(
+                isShowingEditSheet: $isShowingEditorSheet,
+                book: nil,
+                editCategory: category,
+                editorMode: .modify,
+                memoryId: memoryId
+            )
         }
     }
     
@@ -73,7 +79,8 @@ struct MemoryDetailView<T: Object>: View {
             VStack {
                 switch category {
                 case .sentence:
-                    if let memory = anyMemory as? Sentence, let sentence = sentences.filter("id == %@", memory.id).first {
+                    if let memory = anyMemory as? Sentence,
+                       let sentence = sentences.filter("id == %@", memory.id).first {
                         HStack {
                             Text("문장")
                                 .font(.title3)
@@ -110,7 +117,8 @@ struct MemoryDetailView<T: Object>: View {
                     }
                     
                 case .word:
-                    if let memory = anyMemory as? Word, let word = words.filter("id == %@", memory.id).first {
+                    if let memory = anyMemory as? Word,
+                       let word = words.filter("id == %@", memory.id).first {
                         HStack {
                             Text("단어")
                                 .font(.title3)
@@ -154,7 +162,8 @@ struct MemoryDetailView<T: Object>: View {
                     }
                     
                 case .thought:
-                    if let memory = anyMemory as? Thought, let thought = thoughts.filter("id == %@", memory.id).first {
+                    if let memory = anyMemory as? Thought,
+                       let thought = thoughts.filter("id == %@", memory.id).first {
                         HStack {
                             Text("내 생각")
                                 .font(.title3)
@@ -187,7 +196,7 @@ struct MemoryDetailView<T: Object>: View {
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 15)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, alignment: .leading)
             .overlay {
                 RoundedRectangle(cornerRadius: 7)
                     .stroke(lineWidth: 1)

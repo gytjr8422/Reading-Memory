@@ -58,6 +58,7 @@ struct AllSavedBookListView: View {
             Button("삭제", role: .destructive) {
                 Book.deleteBooks(selectedBooks)
             }
+            Button("취소", role: .cancel) { }
         }, message: {
             Text("저장된 도서 삭제시 저장한 메모, 단어 등 모든 기억이 함께 삭제됩니다.")
         })
