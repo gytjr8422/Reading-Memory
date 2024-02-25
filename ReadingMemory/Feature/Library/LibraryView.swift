@@ -19,11 +19,24 @@ struct LibraryView: View {
     
     @State private var imageHeight: CGFloat = 0
     
+    private var readingBooks: [Book] {
+        let sortedBooks = savedBooks.filter("reading == true").sorted(by: { book1, book2 in
+            let date1 = libraryViewModel.latestEditDate(sentences: book1.sentences, words: book1.words, thoughts: book1.thoughts)
+            let date2 = libraryViewModel.latestEditDate(sentences: book2.sentences, words: book2.words, thoughts: book2.thoughts)
+            return date1 > date2
+        })
+        return sortedBooks
+    }
+    
     var body: some View {
         // 하위뷰에도 탭바를 계속 보이도록 하기 위해서 NavigationStack을 여기 쓴다.
         NavigationStack(path: $router.libraryRoutes) {
             ScrollView {
-                makeCarouselView("읽고 있는 중", savedBooks.filter("reading == true").sorted(byKeyPath: "addDate", ascending: false), .reading)
+                makeCarouselView("읽고 있는 중", savedBooks, .reading)
+                makeReadingScrollView(readingBooks)
+                    .scrollTargetLayout()
+                    .scrollTargetBehavior(.viewAligned)
+                    .scrollIndicators(.hidden)
                     .padding(.bottom, 15)
                 makeCarouselView("읽고 싶은 책", savedBooks.filter("liked == true").sorted(byKeyPath: "addDate", ascending: false), .like)
                     .padding(.bottom, 15)
@@ -77,23 +90,18 @@ struct LibraryView: View {
                 Spacer()
             }
             
-                if category == .reading {
-                    makeReadingScrollView(books)
-                        .scrollTargetLayout()
-                        .scrollTargetBehavior(.viewAligned)
-                        .scrollIndicators(.hidden)
-                } else {
-                    makeBookScrollView(books)
-                        .scrollTargetLayout()
-                        .scrollTargetBehavior(.viewAligned)
-                        .scrollIndicators(.hidden)
-                }
+            if category != .reading {
+                makeBookScrollView(books)
+                    .scrollTargetLayout()
+                    .scrollTargetBehavior(.viewAligned)
+                    .scrollIndicators(.hidden)
+            }
         }
     }
     
     
 
-    private func makeReadingScrollView(_ books: Results<Book>) -> some View {
+    private func makeReadingScrollView(_ books: [Book]) -> some View {
         ScrollView(.horizontal) {
             LazyHStack {
                 ForEach(books, id: \.self) { book in

@@ -70,8 +70,8 @@ struct BookListView: View {
                 }
                 .padding(.bottom)
             })
+            .padding()
         }
-        .padding()
         .navigationTitle(title)
         .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
     }

@@ -28,20 +28,30 @@ class LibraryViewModel: ObservableObject {
             print("All arrays are empty.")
         }
         
-        let maxAddDateSentences = sentences.map({ $0.editDate }).max()
-        let maxAddDateWords = words.map({ $0.editDate }).max()
-        let maxAddDateThoughts = thoughts.map({ $0.editDate }).max()
+        let maxEditDateSentences = sentences.map({ $0.editDate }).max()
+        let maxEditDateWords = words.map({ $0.editDate }).max()
+        let maxEditDateThoughts = thoughts.map({ $0.editDate }).max()
 
-        let maxAddDates = [maxAddDateSentences, maxAddDateWords, maxAddDateThoughts].compactMap { $0 }
-        if let maxAddDate = maxAddDates.max() {
+        let maxEditDates = [maxEditDateSentences, maxEditDateWords, maxEditDateThoughts].compactMap { $0 }
+        if let maxEditDate = maxEditDates.max() {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy년 MM월 dd일"
-            latestDate = formatter.string(from: maxAddDate)
+            latestDate = formatter.string(from: maxEditDate)
         } else {
             print("All arrays are empty.")
         }
 
         
         return (firstDate, latestDate)
+    }
+    
+    func latestEditDate(sentences: RealmSwift.List<Sentence>, words: RealmSwift.List<Word>, thoughts: RealmSwift.List<Thought>) -> Date {
+        let maxEditDateSentences = sentences.map({ $0.editDate }).max()
+        let maxEditDateWords = words.map({ $0.editDate }).max()
+        let maxEditDateThoughts = thoughts.map({ $0.editDate }).max()
+
+        let maxEditDates = [maxEditDateSentences, maxEditDateWords, maxEditDateThoughts].compactMap { $0 }
+        
+        return maxEditDates.max() ?? Date()
     }
 }
