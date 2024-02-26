@@ -21,6 +21,11 @@
 		CE4945692B888A7E002449C2 /* MemoryCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945682B888A7E002449C2 /* MemoryCategory.swift */; };
 		CE49456B2B888AAE002449C2 /* EditorMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49456A2B888AAE002449C2 /* EditorMode.swift */; };
 		CE49456D2B888C58002449C2 /* EditList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49456C2B888C58002449C2 /* EditList.swift */; };
+		CE4945702B8B90A2002449C2 /* DictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49456F2B8B90A2002449C2 /* DictionaryView.swift */; };
+		CE4945722B8BB3DC002449C2 /* DictionaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945712B8BB3DC002449C2 /* DictionaryViewModel.swift */; };
+		CE4945742B8BBAEA002449C2 /* DictionaryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945732B8BBAEA002449C2 /* DictionaryResult.swift */; };
+		CE4945762B8C8AA2002449C2 /* DictionaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */; };
+		CE4945792B8C8B2E002449C2 /* DictionaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */; };
 		CE5755542B52812500CC471C /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5755532B52812500CC471C /* SearchResult.swift */; };
 		CE5D49E32B4FB2E2005E22B0 /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */; };
 		CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E42B510C7F005E22B0 /* AppScreen.swift */; };
@@ -72,6 +77,11 @@
 		CE4945682B888A7E002449C2 /* MemoryCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCategory.swift; sourceTree = "<group>"; };
 		CE49456A2B888AAE002449C2 /* EditorMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorMode.swift; sourceTree = "<group>"; };
 		CE49456C2B888C58002449C2 /* EditList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditList.swift; sourceTree = "<group>"; };
+		CE49456F2B8B90A2002449C2 /* DictionaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryView.swift; sourceTree = "<group>"; };
+		CE4945712B8BB3DC002449C2 /* DictionaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryViewModel.swift; sourceTree = "<group>"; };
+		CE4945732B8BBAEA002449C2 /* DictionaryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryResult.swift; sourceTree = "<group>"; };
+		CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryCell.swift; sourceTree = "<group>"; };
+		CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDetailView.swift; sourceTree = "<group>"; };
 		CE5755532B52812500CC471C /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListView.swift; sourceTree = "<group>"; };
 		CE5D49E42B510C7F005E22B0 /* AppScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScreen.swift; sourceTree = "<group>"; };
@@ -169,8 +179,9 @@
 		CE3158B22B469C4B006C3749 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				CE7E4C022B78BBCA00F0CF83 /* Memory */,
 				CE5D49E82B511415005E22B0 /* Library */,
+				CE49456E2B8B3860002449C2 /* Dictionary */,
+				CE7E4C022B78BBCA00F0CF83 /* Memory */,
 				CE5D49E92B511441005E22B0 /* Search */,
 				CE3158A12B440974006C3749 /* AppTabView.swift */,
 				CE40CF4F2B49B5B40073EAFD /* TestView.swift */,
@@ -188,6 +199,17 @@
 				CE49456C2B888C58002449C2 /* EditList.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		CE49456E2B8B3860002449C2 /* Dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				CE49456F2B8B90A2002449C2 /* DictionaryView.swift */,
+				CE4945712B8BB3DC002449C2 /* DictionaryViewModel.swift */,
+				CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */,
+				CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */,
+			);
+			path = Dictionary;
 			sourceTree = "<group>";
 		};
 		CE5D49E82B511415005E22B0 /* Library */ = {
@@ -228,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				CE5755532B52812500CC471C /* SearchResult.swift */,
+				CE4945732B8BBAEA002449C2 /* DictionaryResult.swift */,
 				CED42B962B581A3B00F826E3 /* Book.swift */,
 				CED42B9A2B584AF000F826E3 /* BookViewModel.swift */,
 				CEF5E4E22B70B97B00D379D9 /* Sentence.swift */,
@@ -371,6 +394,7 @@
 				CE3158A22B440974006C3749 /* AppTabView.swift in Sources */,
 				CE7E4C082B7A05CD00F0CF83 /* TextMaster.swift in Sources */,
 				CE8DE03D2B7C6E4300960E1A /* Bundle+Extensions.swift in Sources */,
+				CE4945722B8BB3DC002449C2 /* DictionaryViewModel.swift in Sources */,
 				CE5D49E32B4FB2E2005E22B0 /* BookListView.swift in Sources */,
 				CE49456D2B888C58002449C2 /* EditList.swift in Sources */,
 				CE7E4BFE2B76511200F0CF83 /* MemoryView.swift in Sources */,
@@ -386,10 +410,14 @@
 				CE5D49EB2B511477005E22B0 /* SearchView.swift in Sources */,
 				CEF5E4E32B70B97B00D379D9 /* Sentence.swift in Sources */,
 				CEF5E4E72B721CB000D379D9 /* Migrator.swift in Sources */,
+				CE4945742B8BBAEA002449C2 /* DictionaryResult.swift in Sources */,
+				CE4945762B8C8AA2002449C2 /* DictionaryCell.swift in Sources */,
 				CE5755542B52812500CC471C /* SearchResult.swift in Sources */,
 				CE3158A02B440974006C3749 /* ReadingMemoryApp.swift in Sources */,
 				CEDA5E462B5BDAA40068A410 /* SafariView.swift in Sources */,
+				CE4945702B8B90A2002449C2 /* DictionaryView.swift in Sources */,
 				CE3158B42B46A013006C3749 /* LibraryView.swift in Sources */,
+				CE4945792B8C8B2E002449C2 /* DictionaryDetailView.swift in Sources */,
 				CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */,
 				CE5D49F72B526D7E005E22B0 /* SavedBookDetailView.swift in Sources */,
 				CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */,

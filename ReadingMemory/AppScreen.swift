@@ -40,7 +40,7 @@ extension AppScreen {
         case .library:
             LibraryView()
         case .dictionary:
-            Text("dictionary")
+            DictionaryView()
         case .memories:
             AllMemoryView()
         case .search:

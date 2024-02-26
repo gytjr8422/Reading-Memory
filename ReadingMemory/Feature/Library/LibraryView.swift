@@ -64,7 +64,7 @@ struct LibraryView: View {
                 }
             }
         }
-        .accentColor(colorScheme == .light ? .black : .white)
+        .tint(colorScheme == .light ? .black : .white)
     }
     
     private func makeCarouselView(_ title: String, _ books: Results<Book>, _ category: EditList) -> some View {

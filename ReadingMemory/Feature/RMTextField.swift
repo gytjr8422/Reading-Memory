@@ -42,7 +42,7 @@ struct RMTextField: View {
                     .disabled(isTextfieldDisabled)
                     .padding(.leading, isSearchBar ? 0 : 10)
                     .textInputAutocapitalization(.never)
-                    .accentColor(colorScheme == .light ? .black : .white)
+                    .tint(colorScheme == .light ? .black : .white)
                 
                 if !text.isEmpty && isTextFieldFocused {
                     Button {

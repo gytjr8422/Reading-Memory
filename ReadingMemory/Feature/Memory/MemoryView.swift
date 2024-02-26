@@ -19,7 +19,7 @@ struct MemoryView: View {
     @State private var offset: CGSize = CGSize()
     
     @State private var isShowingEditSheet: Bool = false
-    @State private var isEditing: Bool = false
+    @State private var isMemoryListEditing: Bool = false
     
     @State private var editorMode: EditorMode = .add
     @State private var memoryId: ObjectId?
@@ -86,13 +86,13 @@ struct MemoryView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 HStack {
                     Button {
-                        isEditing.toggle()
+                        isMemoryListEditing.toggle()
                         selectedMemories.removeAll()
                     } label: {
-                        isEditing ? Text("취소") : Text("편집")
+                        isMemoryListEditing ? Text("취소") : Text("편집")
                     }
                     
-                    if isEditing {
+                    if isMemoryListEditing {
                         Button {
                             if !selectedMemories.isEmpty {
                                 isShwoingDeleteAlert = true
@@ -160,7 +160,7 @@ struct MemoryView: View {
                                 MemoryCell(anyMemory: sentence, category: .sentence, route: .libraryRoute)
                                     .padding(.vertical, 5)
                             }
-                            .disabled(isEditing)
+                            .disabled(isMemoryListEditing)
                             .overlay {
                                 editButton(sentence)
                             }
@@ -179,7 +179,7 @@ struct MemoryView: View {
                                 MemoryCell(anyMemory: word, category: .word, route: .libraryRoute)
                                     .padding(.vertical, 5)
                             }
-                            .disabled(isEditing)
+                            .disabled(isMemoryListEditing)
                             .overlay {
                                 editButton(word)
                             }
@@ -197,7 +197,7 @@ struct MemoryView: View {
                                 MemoryCell(anyMemory: thought, category: .thought, route: .libraryRoute)
                                     .padding(.vertical, 5)
                             }
-                            .disabled(isEditing)
+                            .disabled(isMemoryListEditing)
                             .overlay {
                                 editButton(thought)
                             }
@@ -219,12 +219,12 @@ struct MemoryView: View {
             .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
             .font(.system(size: UIScreen.main.bounds.width * 0.13))
         }
-        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.32)
+        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.34)
     }
     
     @ViewBuilder
     private func editButton(_ memory: Memory) -> some View {
-        if isEditing {
+        if isMemoryListEditing {
             if selectedMemories.contains(where: { $0.id == memory.id }) {
                 Image(systemName: "checkmark.circle")
                     .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)

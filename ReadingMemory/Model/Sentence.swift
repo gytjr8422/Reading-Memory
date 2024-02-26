@@ -14,7 +14,7 @@ protocol Memory {
     var editDate: Date { get set }
 }
 
-class Sentence: Object, Identifiable, Memory {
+final class Sentence: Object, Identifiable, Memory {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var sentence: String
     @Persisted var idea: String

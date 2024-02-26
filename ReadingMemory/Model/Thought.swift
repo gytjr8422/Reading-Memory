@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class Thought: Object, Identifiable, Memory {
+final class Thought: Object, Identifiable, Memory {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var thought: String
     @Persisted var page: String

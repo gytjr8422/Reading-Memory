@@ -101,7 +101,7 @@ struct MemoryEditorView: View {
             .background(colorScheme == .light ? .white : Color.BackgroundBlue)
             .scrollDismissesKeyboard(.immediately)
         }
-        .accentColor(colorScheme == .light ? .black : .white)
+        .tint(colorScheme == .light ? .black : .white)
         .onAppear {
             switch editorMode {
             case .add:

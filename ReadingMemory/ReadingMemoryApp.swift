@@ -11,8 +11,9 @@ import SwiftUI
 struct ReadingMemoryApp: App {
     @Environment(\.colorScheme) var colorScheme
     @State private var router = Router()
-    @State private var searchViewModel = SearchViewModel()
     @State private var libraryViewModel = LibraryViewModel()
+    @State private var dictionaryViewModel = DictionaryViewModel()
+    @State private var searchViewModel = SearchViewModel()
     
     let migrator = Migrator()
     
@@ -22,8 +23,9 @@ struct ReadingMemoryApp: App {
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
             AppTabView()
                 .environmentObject(router)
-                .environmentObject(searchViewModel)
                 .environmentObject(libraryViewModel)
+                .environmentObject(dictionaryViewModel)
+                .environmentObject(searchViewModel)
         }
     }
 }

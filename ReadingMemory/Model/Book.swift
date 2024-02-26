@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class Book: Object, Identifiable {
+final class Book: Object, Identifiable {
     
     @Persisted var authors: List<String>
     @Persisted var contents: String
@@ -99,6 +99,9 @@ extension Book {
                 // Book 객체가 현재 사용 중인 Realm에 속하는지 확인
                 if let bookInRealm = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
                     // 현재 Realm에 속하는 경우 삭제
+                    deleteBookMemories(Array(book.sentences))
+                    deleteBookMemories(Array(book.words))
+                    deleteBookMemories(Array(book.thoughts))
                     realm.delete(bookInRealm)
                 } else {
                     // 현재 Realm에 속하지 않는 경우 처리할 작업 수행
@@ -176,7 +179,6 @@ extension Book {
     }
     
     static func editMemory(_ book: Book?, memoryId: ObjectId?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
-//        if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
         @ObservedResults(Sentence.self) var sentences
         @ObservedResults(Word.self) var words
         @ObservedResults(Thought.self) var thoughts
@@ -210,7 +212,6 @@ extension Book {
                 }
             }
         }
-//        }
     }
     
     static func likeMemory(memoryId: ObjectId, category: MemoryCategory) {
@@ -250,6 +251,18 @@ extension Book {
                 try! realm.write {
                     realm.delete(thoughtObject)
                 }
+            }
+        }
+    }
+    
+    static func deleteBookMemories(_ memories: [Memory]) {
+        for memory in memories {
+            if let sentence = memory as? Sentence, let sentenceObject = realm.object(ofType: Sentence.self, forPrimaryKey: sentence.id) {
+                realm.delete(sentenceObject)
+            } else if let word = memory as? Word, let wordObject = realm.object(ofType: Word.self, forPrimaryKey: word.id) {
+                realm.delete(wordObject)
+            } else if let thought = memory as? Thought, let thoughtObject = realm.object(ofType: Thought.self, forPrimaryKey: thought.id) {
+                realm.delete(thoughtObject)
             }
         }
     }

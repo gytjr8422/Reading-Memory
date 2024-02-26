@@ -8,7 +8,7 @@
 import SwiftUI
 import RealmSwift
 
-class MemoryViewModel: ObservableObject {
+final class MemoryViewModel: ObservableObject {
     
     @ObservedResults(Sentence.self) private var savedSentences
     @ObservedResults(Word.self) private var savedWords

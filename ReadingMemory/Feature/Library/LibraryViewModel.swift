@@ -8,7 +8,7 @@
 import RealmSwift
 import SwiftUI
 
-class LibraryViewModel: ObservableObject {
+final class LibraryViewModel: ObservableObject {
     
     func fetchFirstAndLatestInputDates(sentences: RealmSwift.List<Sentence>, words: RealmSwift.List<Word>, thoughts: RealmSwift.List<Thought>) -> (String, String) {
         

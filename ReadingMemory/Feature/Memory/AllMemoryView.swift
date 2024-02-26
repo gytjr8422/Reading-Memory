@@ -22,6 +22,10 @@ struct AllMemoryView: View {
     @State private var offset: CGSize = CGSize()
     @State private var searchText: String = ""
     
+    @State private var isEditing: Bool = false
+    @State private var selectedMemories: [Memory] = []
+    @State private var isShwoingDeleteAlert: Bool = false
+    
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
     private var searchedSentences: [Sentence] {
@@ -54,6 +58,9 @@ struct AllMemoryView: View {
                 headerFilterView
                 ScrollView {
                     searchBar
+                    Divider()
+                    editButtons
+                    Divider()
                     memoryCardView
                 }
                 .gesture(
@@ -94,8 +101,16 @@ struct AllMemoryView: View {
                     MemoryDetailView(anyMemory: memory, category: memoryCategory)
                 }
             }
+            .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
+                Button("삭제", role: .destructive) {
+                    Book.deleteMemories(selectedMemories)
+                }
+                Button("취소", role: .cancel) { }
+            }, message: {
+                Text("기억 삭제 시 복구할 수 없습니다.")
+            })
         }
-        .accentColor(colorScheme == .light ? .black : .white)
+        .tint(colorScheme == .light ? .black : .white)
         .scrollDismissesKeyboard(.immediately)
     }
     
@@ -140,6 +155,50 @@ struct AllMemoryView: View {
         .padding(.top)
     }
     
+    private var editButtons: some View {
+        HStack {
+            if !isEditing {
+                Button {
+                    isEditing = true
+                } label: {
+                    Text("편집")
+                        .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.05)
+                        .foregroundStyle(colorScheme == .light ? .white : .black)
+                        .background(colorScheme == .light ? Color(hexCode: "50586C") : .white)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+
+            } else {
+                Button {
+                    isEditing = false
+                    selectedMemories.removeAll()
+                } label: {
+                    Text("취소")
+                        .frame(width: UIScreen.main.bounds.width * 0.44, height: UIScreen.main.bounds.height * 0.05)
+                        .foregroundStyle(colorScheme == .light ? .white : .black)
+                        .background(colorScheme == .light ? Color(hexCode: "50586C") : .white)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+                
+                Button {
+                    if !selectedMemories.isEmpty {
+                        isShwoingDeleteAlert = true
+                    }
+                } label: {
+                    Text("삭제")
+                        .frame(width: UIScreen.main.bounds.width * 0.44, height: UIScreen.main.bounds.height * 0.05)
+                        .foregroundStyle(.white)
+                        .background(.red)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+
+            }
+        }
+    }
+    
     private var memoryCardView: some View {
             LazyVGrid(columns: columns) {
                 switch selectedSegment {
@@ -157,6 +216,10 @@ struct AllMemoryView: View {
                             MemoryCell(anyMemory: sentence, category: .sentence, route: .memoryRoute)
                                 .padding(.vertical, 5)
                         }
+                        .disabled(isEditing)
+                        .overlay {
+                            editButton(sentence)
+                        }
                     }
                 case .word:
                     let sortedWords = searchedWords.sorted { (s1, s2) -> Bool in
@@ -171,6 +234,10 @@ struct AllMemoryView: View {
                         } label: {
                             MemoryCell(anyMemory: word, category: .word, route: .memoryRoute)
                                 .padding(.vertical, 5)
+                        }
+                        .disabled(isEditing)
+                        .overlay {
+                            editButton(word)
                         }
                     }
                 case .thought:
@@ -187,10 +254,41 @@ struct AllMemoryView: View {
                             MemoryCell(anyMemory: thought, category: .thought, route: .memoryRoute)
                                 .padding(.vertical, 5)
                         }
+                        .disabled(isEditing)
+                        .overlay {
+                            editButton(thought)
+                        }
                     }
                 }
             }
             .padding(.horizontal, 15)
+    }
+    
+    @ViewBuilder
+    private func editButton(_ memory: Memory) -> some View {
+        if isEditing {
+            if selectedMemories.contains(where: { $0.id == memory.id }) {
+                Image(systemName: "checkmark.circle")
+                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .background(Color.gray.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .font(.title)
+                    .onTapGesture {
+                        if let index = selectedMemories.firstIndex(where: { $0.id == memory.id }) {
+                            selectedMemories.remove(at: index)
+                        }
+                    }
+            } else {
+                Image(systemName: "circle")
+                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .background(Color.gray.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .font(.title)
+                    .onTapGesture {
+                        selectedMemories.append(memory)
+                    }
+            }
+        }
     }
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class Word: Object, Identifiable, Memory {
+final class Word: Object, Identifiable, Memory {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var word: String
     @Persisted var meaning: String

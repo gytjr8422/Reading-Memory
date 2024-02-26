@@ -19,4 +19,8 @@ extension Bundle {
     var naverSecretKey: String? {
         return infoDictionary?["NAVER_SECRET_KEY"] as? String
     }
+    
+    var dictionaryApiKey: String? {
+        return infoDictionary?["DICTIONARY_API_KEY"] as? String
+    }
 }
