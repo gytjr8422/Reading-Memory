@@ -161,11 +161,10 @@ struct MemoryEditorView: View {
         VStack(alignment: .leading) {
             HStack {
                 makeTitle(firstTitle)
-                Spacer()
+                    .padding(.trailing, 5)
                 
                 Text("페이지")
                 makePageTextField($pageText)
-                    .padding(.trailing, 5)
             }
             makeTextEditor($firstText, height: firstEditorHeight)
             

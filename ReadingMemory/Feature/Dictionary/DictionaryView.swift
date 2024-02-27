@@ -22,29 +22,20 @@ struct DictionaryView: View {
         NavigationStack(path: $router.dictionaryRoutes) {
             GeometryReader { geometry in
                 VStack {
-                    searchBar
-                        .padding(.top)
-                        .frame(width: geometry.size.width * 0.9)
-                    Divider()
-                    ScrollView {
-                        if !isLoading {
-                            LazyVStack {
-                                ForEach(dictionaryViewModel.dictionaryList, id: \.self) { item in
-                                    Button {
-                                        router.dictionaryRoutes.append(.dictionaryDetail(item))
-                                    } label: {
-                                        DictionaryCell(item: item)
-                                            .frame(height: geometry.size.width * 0.25)
-                                            .padding(.horizontal, geometry.size.width * 0.05)
-                                    }
-                                }
+                    ScrollViewReader { proxy in
+                        searchBar
+                            .padding(.top)
+                            .frame(width: geometry.size.width * 0.9)
+                            .onSubmit {
+                                proxy.scrollTo(1, anchor: .top)
                             }
-                        } else {
-                            ProgressView()
-                                .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                        }
+                        
+                        Divider()
+                            .id(1)
+                        
+                        makeDictionaryListView(geometry)
+                            .frame(width: geometry.size.width)
                     }
-                    .frame(width: geometry.size.width)
                 }
                 .frame(width: geometry.size.width)
                 .background(colorScheme == .light ? .white : Color.BackgroundBlue)
@@ -57,6 +48,9 @@ struct DictionaryView: View {
             }
         }
         .tint(colorScheme == .light ? .black : .white)
+        .onAppear {
+            isTextFieldFocused = true
+        }
     }
     
     private var searchBar: some View {
@@ -77,6 +71,28 @@ struct DictionaryView: View {
                 }
             }
         }
+    }
+    
+    private func makeDictionaryListView(_ geometry: GeometryProxy) -> some View {
+        ScrollView {
+            if !isLoading {
+                LazyVStack {
+                    ForEach(dictionaryViewModel.dictionaryList, id: \.self) { item in
+                        Button {
+                            router.dictionaryRoutes.append(.dictionaryDetail(item))
+                        } label: {
+                            DictionaryCell(item: item)
+                                .frame(height: geometry.size.width * 0.25)
+                                .padding(.horizontal, geometry.size.width * 0.05)
+                        }
+                    }
+                }
+            } else {
+                ProgressView()
+                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+            }
+        }
+        .scrollDismissesKeyboard(.immediately)
     }
 }
 

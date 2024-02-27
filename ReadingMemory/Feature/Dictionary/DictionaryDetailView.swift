@@ -5,14 +5,13 @@
 //  Created by 김효석 on 2/26/24.
 //
 
-import RealmSwift
 import SwiftUI
 
 struct DictionaryDetailView: View {
     @Environment(\.colorScheme) private var colorScheme
     
     @State private var isShowingSelectBookSheet: Bool = false
-    @State private var isShowingSaveSheet: Bool = false
+    @State private var isShowingEditorSheet: Bool = false
     
     @State private var selectedBook: Book?
     
@@ -57,19 +56,16 @@ struct DictionaryDetailView: View {
 
             }
         }
-        .sheet(isPresented: $isShowingSelectBookSheet) {
-            selectBookView(selectedBook: $selectedBook)
-                .presentationDragIndicator(.visible)
-        }
-        .onReceive(selectedBook.publisher) { _ in
-            isShowingSaveSheet = true
-        }
-        .fullScreenCover(isPresented: $isShowingSaveSheet) {
+        .fullScreenCover(isPresented: $isShowingEditorSheet) {
             if let sense = item.sense.first {
-                MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingSaveSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
+                MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingEditorSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
             } else {
                 Text("정보를 가져올 수 없습니다.")
             }
+        }
+        .sheet(isPresented: $isShowingSelectBookSheet) {
+            SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
+                .presentationDragIndicator(.visible)
         }
     }
     
@@ -99,38 +95,6 @@ struct DictionaryDetailView: View {
         .padding(.bottom, 10)
     }
     
-}
-
-struct selectBookView: View {
-    @Environment(\.dismiss) private var dismiss
-    @ObservedResults(Book.self) private var savedBooks
-    
-    @Binding var selectedBook: Book?
-    
-    var books: [Book] {
-        savedBooks.filter("reading == true OR finished == true").sorted { book1, book2 in
-            return book1.addDate > book2.addDate
-        }
-    }
-    
-    var body: some View {
-        NavigationStack {
-            VStack {
-                ScrollView {
-                    ForEach(books, id:\.self) { book in
-                        Button {
-                            selectedBook = book
-                            dismiss()
-                        } label: {
-                            Text(book.title)
-                        }
-                    }
-                }
-            }
-            .navigationTitle("책 선택")
-            .navigationBarTitleDisplayMode(.inline)
-        }
-    }
 }
 
 #Preview {

@@ -28,7 +28,7 @@ extension AppScreen {
         case .memories:
             Label("기억", systemImage: "brain.head.profile")
         case .search:
-            Label("검색", systemImage: "magnifyingglass")
+            Label("도서검색", systemImage: "magnifyingglass")
         case .setting:
             Label("설정", systemImage: "gearshape")
         }
