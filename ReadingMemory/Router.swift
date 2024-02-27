@@ -25,7 +25,7 @@ enum LibraryRoute: Hashable {
 }
 
 enum DictionaryRoute: Hashable {
-    case dictionaryDetail
+    case dictionaryDetail(WordItem)
 }
 
 enum MemoryRoute: Hashable {

@@ -65,6 +65,8 @@ struct MemoryDetailView<T: Object>: View {
         }
         .fullScreenCover(isPresented: $isShowingEditorSheet) {
             MemoryEditorView(
+                firstText: "",
+                secondText: "",
                 isShowingEditSheet: $isShowingEditorSheet,
                 book: nil,
                 editCategory: category,

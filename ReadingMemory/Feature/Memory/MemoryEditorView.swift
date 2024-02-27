@@ -31,6 +31,16 @@ struct MemoryEditorView: View {
     let editorMode: EditorMode
     let memoryId: ObjectId?
     
+    init(firstText: String, secondText: String, isShowingEditSheet: Binding<Bool>, book: Book?, editCategory: MemoryCategory, editorMode: EditorMode, memoryId: ObjectId?) {
+        self._firstText = State(initialValue: firstText)
+        self._secondText = State(initialValue: secondText)
+        self._isShowingEditSheet = Binding(projectedValue: isShowingEditSheet)
+        self.book = book
+        self.editCategory = editCategory
+        self.editorMode = editorMode
+        self.memoryId = memoryId
+    }
+    
     var firstTitle: String {
         switch editCategory {
         case .sentence:
@@ -263,5 +273,5 @@ struct MemoryEditorView: View {
 }
 
 #Preview {
-    MemoryEditorView(isShowingEditSheet: .constant(true), book:Book.dummyBook, editCategory: .word, editorMode: .add, memoryId: nil)
+    MemoryEditorView(firstText: "", secondText: "", isShowingEditSheet: .constant(true), book:Book.dummyBook, editCategory: .word, editorMode: .add, memoryId: nil)
 }

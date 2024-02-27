@@ -16,6 +16,8 @@ struct DictionaryView: View {
     @State private var isLoading: Bool = false
     @FocusState private var isTextFieldFocused: Bool
     
+    private let route: Route = .dictionaryRoute
+    
     var body: some View {
         NavigationStack(path: $router.dictionaryRoutes) {
             GeometryReader { geometry in
@@ -23,12 +25,13 @@ struct DictionaryView: View {
                     searchBar
                         .padding(.top)
                         .frame(width: geometry.size.width * 0.9)
+                    Divider()
                     ScrollView {
                         if !isLoading {
                             LazyVStack {
                                 ForEach(dictionaryViewModel.dictionaryList, id: \.self) { item in
                                     Button {
-                                        router.dictionaryRoutes.append(.dictionaryDetail)
+                                        router.dictionaryRoutes.append(.dictionaryDetail(item))
                                     } label: {
                                         DictionaryCell(item: item)
                                             .frame(height: geometry.size.width * 0.25)
@@ -47,8 +50,8 @@ struct DictionaryView: View {
                 .background(colorScheme == .light ? .white : Color.BackgroundBlue)
                 .navigationDestination(for: DictionaryRoute.self) { route in
                     switch route {
-                    case .dictionaryDetail:
-                        DictionaryDetailView()
+                    case .dictionaryDetail(let item):
+                        DictionaryDetailView(item: item, route: .dictionaryRoute)
                     }
                 }
             }

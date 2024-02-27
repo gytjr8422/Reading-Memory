@@ -17,6 +17,14 @@ struct ReadingMemoryApp: App {
     
     let migrator = Migrator()
     
+    init() {
+        if #available(iOS 15.0, *) {
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.configureWithDefaultBackground()
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")

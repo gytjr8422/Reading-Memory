@@ -75,6 +75,8 @@ struct MemoryView: View {
         .background(colorScheme == .light ? .white : Color.BackgroundBlue)
         .fullScreenCover(isPresented: $isShowingEditSheet, content: {
             MemoryEditorView(
+                firstText: "",
+                secondText: "",
                 isShowingEditSheet: $isShowingEditSheet,
                 book: book,
                 editCategory: selectedSegment,

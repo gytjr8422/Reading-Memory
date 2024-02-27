@@ -38,6 +38,8 @@ struct DictionaryCell: View {
             if let sense = item.sense.first {
                 Text(sense.definition)
                     .lineLimit(1)
+                    .font(.subheadline)
+                    .padding(.top, 2)
             }
         }
         .padding(15)
@@ -50,4 +52,8 @@ struct DictionaryCell: View {
         .clipShape(RoundedRectangle(cornerRadius: 7))
         .foregroundStyle(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
     }
+}
+
+#Preview {
+    DictionaryCell(item: WordItem.dummyItems)
 }
