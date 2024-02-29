@@ -94,7 +94,7 @@ struct AllMemoryView: View {
                         }
                 )
             }
-            .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+            .background(colorScheme == .light ? .white : Color.backgroundBlue)
             .navigationDestination(for: MemoryRoute.self) { route in
                 switch route {
                 case .memoryDetail(let memory, let memoryCategory):
@@ -130,7 +130,7 @@ struct AllMemoryView: View {
             ForEach(MemoryCategory.allCases, id: \.self) { segment in
                 VStack {
                     Text(segment.title)
-                        .foregroundColor(selectedSegment == segment ? colorScheme == .light ? Color.BackgroundBlue : .white : colorScheme == .light ? .black : .white)
+                        .foregroundColor(selectedSegment == segment ? colorScheme == .light ? Color.backgroundBlue : .white : colorScheme == .light ? .black : .white)
                     ZStack {
                         Divider()
                         Capsule()
@@ -164,7 +164,7 @@ struct AllMemoryView: View {
                     Text("편집")
                         .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.05)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
-                        .background(colorScheme == .light ? Color(hexCode: "50586C") : .white)
+                        .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                 }
@@ -177,7 +177,7 @@ struct AllMemoryView: View {
                     Text("취소")
                         .frame(width: UIScreen.main.bounds.width * 0.44, height: UIScreen.main.bounds.height * 0.05)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
-                        .background(colorScheme == .light ? Color(hexCode: "50586C") : .white)
+                        .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                 }

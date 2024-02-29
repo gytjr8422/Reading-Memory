@@ -72,7 +72,7 @@ struct MemoryView: View {
             
         }
         .navigationTitle(book.title)
-        .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+        .background(colorScheme == .light ? .white : Color.backgroundBlue)
         .fullScreenCover(isPresented: $isShowingEditSheet, content: {
             MemoryEditorView(
                 firstText: "",
@@ -122,7 +122,7 @@ struct MemoryView: View {
             ForEach(MemoryCategory.allCases, id: \.self) { segment in
                 VStack {
                     Text(segment.title)
-                        .foregroundColor(selectedSegment == segment ? colorScheme == .light ? Color.BackgroundBlue : .white : colorScheme == .light ? .black : .white)
+                        .foregroundColor(selectedSegment == segment ? colorScheme == .light ? Color.backgroundBlue : .white : colorScheme == .light ? .black : .white)
                     ZStack {
                         Divider()
                         Capsule()
@@ -218,7 +218,7 @@ struct MemoryView: View {
             isShowingEditSheet = true
         } label: {
             Image(systemName: "plus.circle.fill")
-            .foregroundColor(colorScheme == .light ? Color.BackgroundBlue : Color(hexCode: "DCE2F0"))
+            .foregroundColor(colorScheme == .light ? Color.backgroundBlue : Color(hexCode: "DCE2F0"))
             .font(.system(size: UIScreen.main.bounds.width * 0.13))
         }
         .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.34)

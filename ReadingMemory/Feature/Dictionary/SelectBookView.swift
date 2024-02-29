@@ -28,7 +28,7 @@ struct SelectBookView: View {
             NavigationStack {
                 makeBookListView(geometry)
                     .frame(width: geometry.size.width)
-                    .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+                    .background(colorScheme == .light ? .white : Color.backgroundBlue)
                     .navigationTitle("단어 저장 책 선택")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -54,7 +54,6 @@ struct SelectBookView: View {
                         dismiss()
                     } label: {
                         HStack {
-                            let _ = print("\(geometry.size.height), \(geometry.size.width)")
                             if let url = URL(string: book.thumbnail) {
                                 KFImage(url)
                                     .placeholder({ _ in

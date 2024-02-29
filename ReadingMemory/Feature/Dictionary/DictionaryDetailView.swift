@@ -45,7 +45,7 @@ struct DictionaryDetailView: View {
                 makeTextView(sense.definition)
             }
         }
-        .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+        .background(colorScheme == .light ? .white : Color.backgroundBlue)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -56,16 +56,19 @@ struct DictionaryDetailView: View {
 
             }
         }
+        .sheet(isPresented: $isShowingSelectBookSheet) {
+            SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
+                .presentationDragIndicator(.visible)
+        }
+        .onChange(of: selectedBook, { oldValue, newValue in
+            selectedBook = newValue
+        })
         .fullScreenCover(isPresented: $isShowingEditorSheet) {
             if let sense = item.sense.first {
                 MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingEditorSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
             } else {
                 Text("정보를 가져올 수 없습니다.")
             }
-        }
-        .sheet(isPresented: $isShowingSelectBookSheet) {
-            SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
-                .presentationDragIndicator(.visible)
         }
     }
     
@@ -88,10 +91,10 @@ struct DictionaryDetailView: View {
             }
         }
         .frame(width: UIScreen.main.bounds.width * 0.9)
-        .background(Color(hexCode: "50586C"))
+        .background(Color.cellBackgroud)
         .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 7))
-        .foregroundStyle(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
+        .foregroundStyle(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
         .padding(.bottom, 10)
     }
     

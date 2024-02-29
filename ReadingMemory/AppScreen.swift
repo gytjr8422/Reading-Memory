@@ -46,7 +46,7 @@ extension AppScreen {
         case .search:
             SearchView()
         case .setting:
-            Text("Setting")
+            SettingView()
         }
     }
 }

@@ -185,38 +185,82 @@ struct SavedBookDetailView: View {
     
     private var detailView: some View {
         VStack {
+            VStack(alignment: .leading) {
+                if book.authors.count > 0 {
+                    Text("저자")
+                        .font(.headline)
+                        .bold()
+                        .padding(.vertical, 5)
+                    Text(book.authors.joined(separator: ", "))
+                        .font(.subheadline)
+                        .padding(.bottom, 5)
+                }
+                
+                if book.translators.count > 0 {
+                    Text("역자")
+                        .font(.headline)
+                        .bold()
+                        .padding(.vertical, 5)
+                    Text(book.translators.joined(separator: ", "))
+                        .font(.subheadline)
+                        .padding(.bottom, 5)
+                }
+                
+                if book.publisher.count > 0 {
+                    Text("출판사")
+                        .font(.headline)
+                        .bold()
+                        .padding(.vertical, 5)
+                    Text(book.publisher)
+                        .font(.subheadline)
+                        .padding(.bottom, 5)
+                }
+            }
+            .frame(width: UIScreen.main.bounds.width * 0.85, alignment: .leading)
+            
+            Divider()
+            
             if book.contents.count > 0 {
                 TextAlignment(
                     text: book.contents,
                     textAlignmentStyle: .justified,
                     font: .systemFont(ofSize: 15),
-                    width: UIScreen.main.bounds.width - 30,
+                    width: UIScreen.main.bounds.width * 0.85,
                     lineLimit: 8,
                     isLineLimit: $isLineLimit
                 )
+                .padding(.vertical)
+                
+                Divider()
                 
                 Button {
                     isLineLimit.toggle()
                 } label: {
-                    Text(isLineLimit ? "더 보기" : "간락히 보기")
-                        .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.FontBackgroundDark)
+                    Text(isLineLimit ? "더 보기" : "간략히 보기")
+                        .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.fontBackgroundDark)
+                        .frame(width: UIScreen.main.bounds.width * 0.85)
                 }
-                .padding()
+                .padding(.vertical, 10)
             }
+            
+            Divider()
             
             if let url = URL(string: book.url) {
                 Button {
                     isShowingSafari = true
                 } label: {
                     Text("책 상세정보 보러가기")
-                        .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.FontBackgroundDark)
+                        .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.fontBackgroundDark)
+                        .frame(width: UIScreen.main.bounds.width * 0.85)
                 }
+                .padding(.vertical, 10)
                 .fullScreenCover(isPresented: $isShowingSafari) {
                     SafariView(url: url)
                 }
             }
+            
+            Divider()
         }
-        .padding()
     }
 }
 

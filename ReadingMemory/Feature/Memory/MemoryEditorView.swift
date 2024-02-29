@@ -108,7 +108,7 @@ struct MemoryEditorView: View {
             ScrollView {
                 editorView
             }
-            .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+            .background(colorScheme == .light ? .white : Color.backgroundBlue)
             .scrollDismissesKeyboard(.immediately)
         }
         .tint(colorScheme == .light ? .black : .white)

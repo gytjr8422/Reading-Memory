@@ -11,6 +11,7 @@ final class DictionaryViewModel: ObservableObject {
     private let dictionaryUrl: String = "https://opendict.korean.go.kr/api/search"
     
     @Published var dictionaryList: [WordItem] = []
+    @Published var isApiConnected: Bool = true
     
     func searchDictionary(_ searchString: String) async {
         if searchString.count < 1 { return }
@@ -36,9 +37,13 @@ final class DictionaryViewModel: ObservableObject {
                 let dictionaryResult = try jsonDecoder.decode(DictionaryResult.self, from: data)
                 
                 DispatchQueue.main.async {
+                    self.isApiConnected = true
                     self.dictionaryList = dictionaryResult.channel.item
                 }
             } catch {
+                DispatchQueue.main.async {
+                    self.isApiConnected = false
+                }
                 print("Dictionary Fetch Error: \(error)")
             }
         }

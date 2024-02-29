@@ -88,7 +88,9 @@ struct SearchView: View {
         }
     }
     
+    @ViewBuilder
     private var searchList: some View {
+        if !searchViewModel.books.isEmpty {
             LazyVStack(alignment: .leading) {
                 ForEach(searchViewModel.books, id: \.self) { searchedBook in
                     Button {
@@ -143,9 +145,13 @@ struct SearchView: View {
                             }
                         }
                     }
-
+                    
+                }
+                .foregroundColor(colorScheme == .light ? .black : .white)
             }
-            .foregroundColor(colorScheme == .light ? .black : .white)
+        } else {
+            Text("도서를 검색해보세요.")
+                .padding(.vertical)
         }
         
     }

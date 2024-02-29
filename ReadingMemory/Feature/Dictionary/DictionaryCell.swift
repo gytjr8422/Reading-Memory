@@ -43,14 +43,14 @@ struct DictionaryCell: View {
             }
         }
         .padding(15)
-        .background(Color(hexCode: "50586C"))
+        .background(Color.cellBackgroud)
         .clipped()
         .overlay {
             RoundedRectangle(cornerRadius: 7)
                 .stroke(lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 7))
-        .foregroundStyle(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
+        .foregroundStyle(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
     }
 }
 

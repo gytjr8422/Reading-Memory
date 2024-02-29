@@ -27,6 +27,7 @@
 		CE4945762B8C8AA2002449C2 /* DictionaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */; };
 		CE4945792B8C8B2E002449C2 /* DictionaryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */; };
 		CE49457B2B8E4AD8002449C2 /* SelectBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49457A2B8E4AD8002449C2 /* SelectBookView.swift */; };
+		CE49457D2B9053F8002449C2 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49457C2B9053F8002449C2 /* SettingView.swift */; };
 		CE5755542B52812500CC471C /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5755532B52812500CC471C /* SearchResult.swift */; };
 		CE5D49E32B4FB2E2005E22B0 /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */; };
 		CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49E42B510C7F005E22B0 /* AppScreen.swift */; };
@@ -84,6 +85,7 @@
 		CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryCell.swift; sourceTree = "<group>"; };
 		CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDetailView.swift; sourceTree = "<group>"; };
 		CE49457A2B8E4AD8002449C2 /* SelectBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectBookView.swift; sourceTree = "<group>"; };
+		CE49457C2B9053F8002449C2 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		CE5755532B52812500CC471C /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListView.swift; sourceTree = "<group>"; };
 		CE5D49E42B510C7F005E22B0 /* AppScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScreen.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				CE49456E2B8B3860002449C2 /* Dictionary */,
 				CE7E4C022B78BBCA00F0CF83 /* Memory */,
 				CE5D49E92B511441005E22B0 /* Search */,
+				CE49457E2B905F00002449C2 /* Setting */,
 				CE3158A12B440974006C3749 /* AppTabView.swift */,
 				CE40CF4F2B49B5B40073EAFD /* TestView.swift */,
 				CE5D49EC2B512F53005E22B0 /* RMTextField.swift */,
@@ -213,6 +216,14 @@
 				CE49457A2B8E4AD8002449C2 /* SelectBookView.swift */,
 			);
 			path = Dictionary;
+			sourceTree = "<group>";
+		};
+		CE49457E2B905F00002449C2 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CE49457C2B9053F8002449C2 /* SettingView.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		CE5D49E82B511415005E22B0 /* Library */ = {
@@ -408,6 +419,7 @@
 				CE7E4C042B79F92A00F0CF83 /* MemoryCell.swift in Sources */,
 				CE4945622B8493FB002449C2 /* DateToString.swift in Sources */,
 				CE5D49ED2B512F53005E22B0 /* RMTextField.swift in Sources */,
+				CE49457D2B9053F8002449C2 /* SettingView.swift in Sources */,
 				CE5D49E72B510CB5005E22B0 /* Router.swift in Sources */,
 				CE5D49F02B5132C0005E22B0 /* Color+Extensions.swift in Sources */,
 				CEE8A3A62B7F392B0068CA1E /* LibraryViewModel.swift in Sources */,

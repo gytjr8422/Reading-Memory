@@ -71,7 +71,7 @@ struct MemoryCell<T: Memory>: View {
                         TextAlignment(text: word.word, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Divider()
-                            .background(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
+                            .background(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
                         TextAlignment(text: word.meaning, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -124,14 +124,14 @@ struct MemoryCell<T: Memory>: View {
         }
         .padding(15)
         .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
-        .background(Color(hexCode: "50586C"))
+        .background(Color.cellBackgroud)
         .clipped()
         .overlay {
             RoundedRectangle(cornerRadius: 7)
                 .stroke(lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 7))
-        .foregroundStyle(colorScheme == .light ? Color(hexCode: "50586C") : Color(hexCode: "DCE2F0"))
+        .foregroundStyle(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
     }
 }
 

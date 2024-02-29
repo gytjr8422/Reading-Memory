@@ -51,16 +51,20 @@ public extension Color {
         UIColor(self)
     }
     
-    static var BackgroundBlue: Color {
+    static var backgroundBlue: Color {
         return .init(hexCode: "101820")
     }
     
-    static var FontBackgroundDark: Color {
+    static var fontBackgroundDark: Color {
         return .init(hexCode: "8AB0AB")
     }
     
     static var FontBackgroundLight: Color {
         return .init(hexCode: "3E505B")
+    }
+    
+    static var cellBackgroud: Color {
+        return .init(hexCode: "50586C")
     }
     
     static var Main: Color {
@@ -70,8 +74,6 @@ public extension Color {
     static var Sub: Color {
         return .init(hexCode: "#FF7E00")
     }
-    
-    
     
     static var LightGray1: Color {
         return .init(hexCode: "#ECECEC")
@@ -92,8 +94,6 @@ public extension Color {
     static var Black: Color {
         return .init(hexCode: "#1C1C1C")
     }
-    
-    
     
     static var Error: Color {
         return .init(hexCode: "#F05650")

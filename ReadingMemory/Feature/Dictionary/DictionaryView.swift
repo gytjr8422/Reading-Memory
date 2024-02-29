@@ -13,6 +13,7 @@ struct DictionaryView: View {
     @EnvironmentObject private var router: Router
     
     @State private var searchText: String = ""
+    @State private var emptyResultText: String = "단어를 검색해보세요."
     @State private var isLoading: Bool = false
     @FocusState private var isTextFieldFocused: Bool
     
@@ -38,7 +39,7 @@ struct DictionaryView: View {
                     }
                 }
                 .frame(width: geometry.size.width)
-                .background(colorScheme == .light ? .white : Color.BackgroundBlue)
+                .background(colorScheme == .light ? .white : Color.backgroundBlue)
                 .navigationDestination(for: DictionaryRoute.self) { route in
                     switch route {
                     case .dictionaryDetail(let item):
@@ -76,16 +77,25 @@ struct DictionaryView: View {
     private func makeDictionaryListView(_ geometry: GeometryProxy) -> some View {
         ScrollView {
             if !isLoading {
-                LazyVStack {
-                    ForEach(dictionaryViewModel.dictionaryList, id: \.self) { item in
-                        Button {
-                            router.dictionaryRoutes.append(.dictionaryDetail(item))
-                        } label: {
-                            DictionaryCell(item: item)
-                                .frame(height: geometry.size.width * 0.25)
-                                .padding(.horizontal, geometry.size.width * 0.05)
+                if dictionaryViewModel.isApiConnected {
+                    if !dictionaryViewModel.dictionaryList.isEmpty {
+                        LazyVStack {
+                            ForEach(dictionaryViewModel.dictionaryList, id: \.self) { item in
+                                Button {
+                                    router.dictionaryRoutes.append(.dictionaryDetail(item))
+                                } label: {
+                                    DictionaryCell(item: item)
+                                        .frame(height: geometry.size.width * 0.25)
+                                        .padding(.horizontal, geometry.size.width * 0.05)
+                                }
+                            }
                         }
+                    } else {
+                        Text(emptyResultText)
+                            .padding(.vertical)
                     }
+                } else {
+                    Text("검색에 실패했습니다. 다시 검색해주세요.")
                 }
             } else {
                 ProgressView()
