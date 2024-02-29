@@ -73,109 +73,113 @@ struct MemoryEditorView: View {
             return ""
         }
     }
-    
-    var firstEditorHeight: CGFloat {
-        switch editCategory {
-        case .sentence:
-            return UIScreen.main.bounds.height / 3
-        case .word:
-            return UIScreen.main.bounds.height * 0.07
-        case .thought:
-            return UIScreen.main.bounds.height * 0.4
-        }
-    }
-    
-    var secondEditorHeight: CGFloat {
-        switch editCategory {
-        case .word:
-            return UIScreen.main.bounds.height / 3
-        default:
-            return 0
-        }
-    }
-    
-    var thirdEditorHeight: CGFloat {
-        switch editCategory {
-        case .sentence, .word:
-            return UIScreen.main.bounds.height / 3
-        default:
-            return 0
-        }
-    }
-    
+
+
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                editorView
+        GeometryReader { geometry in
+            NavigationStack {
+                ScrollView {
+                    editorView(geometry)
+                }
+                .background(colorScheme == .light ? .white : Color.backgroundBlue)
+                .scrollDismissesKeyboard(.immediately)
             }
-            .background(colorScheme == .light ? .white : Color.backgroundBlue)
-            .scrollDismissesKeyboard(.immediately)
-        }
-        .tint(colorScheme == .light ? .black : .white)
-        .onAppear {
-            switch editorMode {
-            case .add:
-                break
-            case .modify:
-                switch editCategory {
-                case .sentence:
-                    if let sentence = book?.sentences.first(where: { $0.id == memoryId }) ?? sentences.first(where: { $0.id == memoryId }) {
-                        firstText = sentence.sentence
-                        thirdText = sentence.idea
-                        pageText = sentence.page
-                    }                case .word:
-                    if let word = book?.words.first(where: { $0.id == memoryId }) ?? words.first(where: { $0.id == memoryId }) {
-                        firstText = word.word
-                        secondText = word.meaning
-                        thirdText = word.sentence
-                        pageText = word.page
-                    }
-                case .thought:
-                    if let thought = book?.thoughts.first(where: { $0.id == memoryId }) ?? thoughts.first(where: { $0.id == memoryId }) {
-                        firstText = thought.thought
-                        pageText = thought.page
+            .tint(colorScheme == .light ? .black : .white)
+            .onAppear {
+                switch editorMode {
+                case .add:
+                    break
+                case .modify:
+                    switch editCategory {
+                    case .sentence:
+                        if let sentence = book?.sentences.first(where: { $0.id == memoryId }) ?? sentences.first(where: { $0.id == memoryId }) {
+                            firstText = sentence.sentence
+                            thirdText = sentence.idea
+                            pageText = sentence.page
+                        }                case .word:
+                        if let word = book?.words.first(where: { $0.id == memoryId }) ?? words.first(where: { $0.id == memoryId }) {
+                            firstText = word.word
+                            secondText = word.meaning
+                            thirdText = word.sentence
+                            pageText = word.page
+                        }
+                    case .thought:
+                        if let thought = book?.thoughts.first(where: { $0.id == memoryId }) ?? thoughts.first(where: { $0.id == memoryId }) {
+                            firstText = thought.thought
+                            pageText = thought.page
+                        }
                     }
                 }
             }
+            .alert("\(firstTitle)을 작성해주세요.", isPresented: $isShowingEmptyAlert, actions: {
+                Button {
+                    isShowingEditSheet = true
+                } label: {
+                    Text("확인")
+                }
+                
+            })
+            .alert("작성/수정을 취소하시겠습니까?", isPresented: $isShowingCancelAlert, actions: {
+                Button("계속 작성하기", role: .cancel) { }
+                
+                Button("나가기", role: .destructive) {
+                    isShowingEditSheet = false
+                }
+            }, message: {
+                Text("취소 시 작성 및 수정한 기록은 저장되지 않습니다.")
+            })
         }
-        .alert("\(firstTitle)을 작성해주세요.", isPresented: $isShowingEmptyAlert, actions: {
-            Button {
-                isShowingEditSheet = true
-            } label: {
-                Text("확인")
-            }
-
-        })
-        .alert("작성/수정을 취소하시겠습니까?", isPresented: $isShowingCancelAlert, actions: {
-            Button("계속 작성하기", role: .cancel) { }
-            
-            Button("나가기", role: .destructive) {
-                isShowingEditSheet = false
-            }
-        }, message: {
-            Text("취소 시 작성 및 수정한 기록은 저장되지 않습니다.")
-        })
     }
     
-    private var editorView: some View {
+    @ViewBuilder
+    private func editorView(_ geometry: GeometryProxy) -> some View {
+        var firstEditorHeight: CGFloat {
+            switch editCategory {
+            case .sentence:
+                return geometry.size.height / 3
+            case .word:
+                return geometry.size.height * 0.07
+            case .thought:
+                return geometry.size.height * 0.4
+            }
+        }
+        
+        var secondEditorHeight: CGFloat {
+            switch editCategory {
+            case .word:
+                return geometry.size.height / 3
+            default:
+                return 0
+            }
+        }
+        
+        var thirdEditorHeight: CGFloat {
+            switch editCategory {
+            case .sentence, .word:
+                return geometry.size.height / 3
+            default:
+                return 0
+            }
+        }
+        
         VStack(alignment: .leading) {
             HStack {
                 makeTitle(firstTitle)
                     .padding(.trailing, 5)
                 
                 Text("페이지")
-                makePageTextField($pageText)
+                makePageTextField($pageText, geometry)
             }
-            makeTextEditor($firstText, height: firstEditorHeight)
+            makeTextEditor($firstText, height: firstEditorHeight, geometry)
             
             if editCategory == .word {
                 makeTitle(secondTitle)
-                makeTextEditor($secondText, height: secondEditorHeight)
+                makeTextEditor($secondText, height: secondEditorHeight, geometry)
             }
             
             if editCategory == .sentence || editCategory == .word {
                 makeTitle(thirdTitle)
-                makeTextEditor($thirdText, height: thirdEditorHeight)
+                makeTextEditor($thirdText, height: thirdEditorHeight, geometry)
             }
         }
         .padding(.horizontal)
@@ -235,15 +239,15 @@ struct MemoryEditorView: View {
             .foregroundStyle(colorScheme == .light ? .black : .white)
     }
     
-    private func makePageTextField(_ pageText: Binding<String>) -> some View {
+    private func makePageTextField(_ pageText: Binding<String>, _ geometry: GeometryProxy) -> some View {
         TextField("", text: $pageText)
             .font(.callout)
             .background(
                 RoundedRectangle(cornerRadius: 7)
                     .fill(colorScheme == .light ? Color(hexCode: "DCE2F0") : Color(hexCode: "22333B"))
-                    .frame(width: UIScreen.main.bounds.width * 0.13, height:  UIScreen.main.bounds.width * 0.07)
+                    .frame(width: geometry.size.width * 0.13, height: geometry.size.width * 0.07)
             )
-            .frame(width: UIScreen.main.bounds.width * 0.1, height: UIScreen.main.bounds.width * 0.07)
+            .frame(width: geometry.size.width * 0.1, height: geometry.size.width * 0.07)
             .keyboardType(.numberPad)
             .padding(.horizontal, 5)
             .overlay {
@@ -252,9 +256,9 @@ struct MemoryEditorView: View {
             }
     }
 
-    private func makeTextEditor(_ text: Binding<String>, height: CGFloat) -> some View {
+    private func makeTextEditor(_ text: Binding<String>, height: CGFloat, _ geometry: GeometryProxy) -> some View {
         TextEditor(text: text)
-            .frame(width: UIScreen.main.bounds.width * 0.9, height: height)
+            .frame(width: geometry.size.width * 0.9, height: height)
             .scrollContentBackground(.hidden) // 기본 배경 숨기기
             .background(colorScheme == .light ? Color(hexCode: "DCE2F0") : Color(hexCode: "22333B"))
             .font(.body)

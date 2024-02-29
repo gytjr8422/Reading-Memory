@@ -25,43 +25,45 @@ struct SearchedBookDetailView: View {
 
     var book: BookDocument
     
-    private let headerHeight: CGFloat = UIScreen.main.bounds.height / 3
-    
     private var savedBook: Results<Book> {
         savedBooks.filter("isbn == %@", book.isbn)
     }
     
     var body: some View {
-        VStack {
-            ScrollView {
-                headerView
-                saveButtons
-                Divider()
-                if let _ = savedBook.first {
-                    memoryButton
+        GeometryReader { geo in
+            VStack {
+                ScrollView {
+                    headerView(geo)
+                    saveButtons(geo)
+                    Divider()
+                    if let _ = savedBook.first {
+                        memoryButton(geo)
+                    }
+                    detailView(geo)
                 }
-                detailView
+                .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
             }
-            .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
-        }
-        .onAppear {
-            Task {
-                let isbnArray = book.isbn.split(separator: " ")
-                bookDescription = try await searchViewModel.searchIsbn(String(isbnArray.count > 1 ? isbnArray[1] : isbnArray[0]))
-                isLoading = false
+            .onAppear {
+                Task {
+                    let isbnArray = book.isbn.split(separator: " ")
+                    bookDescription = try await searchViewModel.searchIsbn(String(isbnArray.count > 1 ? isbnArray[1] : isbnArray[0]))
+                    isLoading = false
+                }
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("상세정보")
-                    .bold()
-                    .foregroundColor(colorScheme == .light ? .black : .white)
-                    .lineLimit(1)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("상세정보")
+                        .bold()
+                        .foregroundColor(colorScheme == .light ? .black : .white)
+                        .lineLimit(1)
+                }
             }
         }
     }
     
-    private var headerView: some View {
+    @ViewBuilder
+    private func headerView(_ geo: GeometryProxy) -> some View {
+        let headerHeight = geo.size.height / 2.5
         ZStack {
             GeometryReader { geometry in
                 Color.secondary
@@ -73,8 +75,6 @@ struct SearchedBookDetailView: View {
                     )
                     .clipped()
                     .offset(y: -geometry.frame(in: .global).minY)
-                
-                
             }
             .frame(height: headerHeight)
             
@@ -84,17 +84,17 @@ struct SearchedBookDetailView: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: UIScreen.main.bounds.width / 3)
+                            .frame(width: geo.size.width / 3)
                             .clipped()
                             .clipShape(RoundedRectangle(cornerRadius: 5))
                     } placeholder: {
                         ProgressView()
-                            .frame(width: UIScreen.main.bounds.width / 5, height: 110)
+                            .frame(width: geo.size.width / 5, height: 110)
                     }
                     .padding(.bottom)
                 } else {
                     Rectangle()
-                        .frame(width: UIScreen.main.bounds.width / 3, height: 200)
+                        .frame(width: geo.size.width / 3, height: 200)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                         .padding(.horizontal, 3)
@@ -105,19 +105,17 @@ struct SearchedBookDetailView: View {
                     text: book.title,
                     textAlignmentStyle: .justified,
                     font: .systemFont(ofSize: 20),
-                    width: UIScreen.main.bounds.width - 120,
                     lineLimit: 2,
                     isLineLimit: $isLineLimit
                 )
                 .foregroundColor(colorScheme == .light ? .black : .white)
-                .frame(width: UIScreen.main.bounds.width - 20)
+                .frame(width: geo.size.width * 0.85)
             }
             .offset(x: 0, y: -headerHeight / 30)
         }
     }
     
-    // 책의 isbn이 중복되지 않는다면, primaryKey로 활용해도
-    private var saveButtons: some View {
+    private func saveButtons(_ geo: GeometryProxy) -> some View {
         HStack {
             Button {
                 if savedBook.count > 0 {
@@ -139,7 +137,7 @@ struct SearchedBookDetailView: View {
                     
                     Text("읽고 싶은 책")
                 }
-                .frame(width: UIScreen.main.bounds.width / 3.5)
+                .frame(width: geo.size.width / 3.5)
             }
             
             Divider()
@@ -163,7 +161,7 @@ struct SearchedBookDetailView: View {
                     }
                     Text("읽는 중")
                 }
-                .frame(width: UIScreen.main.bounds.width / 3.5)
+                .frame(width: geo.size.width / 3.5)
             }
             
             Divider()
@@ -187,7 +185,7 @@ struct SearchedBookDetailView: View {
                     }
                     Text("읽은 책")
                 }
-                .frame(width: UIScreen.main.bounds.width / 3.5)
+                .frame(width: geo.size.width / 3.5)
             }
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
@@ -195,7 +193,7 @@ struct SearchedBookDetailView: View {
         .padding(.horizontal, 30)
     }
     
-    private var memoryButton: some View {
+    private func memoryButton(_ geo: GeometryProxy) -> some View {
             Button {
                 if let book = savedBook.first {
                     router.selectedTab = .library
@@ -203,7 +201,7 @@ struct SearchedBookDetailView: View {
                 }
             } label: {
                 Rectangle()
-                    .frame(width: UIScreen.main.bounds.width * 0.8, height: 40)
+                    .frame(width: geo.size.width * 0.8, height: 40)
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .overlay {
@@ -215,7 +213,8 @@ struct SearchedBookDetailView: View {
             .padding(.vertical, 5)
         }
     
-    private var detailView: some View {
+    @ViewBuilder
+    private func detailView(_ geo: GeometryProxy) -> some View {
         VStack {
             if !isLoading {
                 VStack(alignment: .leading) {
@@ -241,7 +240,7 @@ struct SearchedBookDetailView: View {
                         .font(.subheadline)
                         .padding(.bottom, 5)
                 }
-                .frame(width: UIScreen.main.bounds.width * 0.85, alignment: .leading)
+                .frame(width: geo.size.width * 0.85, alignment: .leading)
                 
                 Divider()
                 
@@ -250,7 +249,6 @@ struct SearchedBookDetailView: View {
                         text: bookDescription.count > 0 ? bookDescription : book.contents,
                         textAlignmentStyle: .justified,
                         font: .systemFont(ofSize: 15),
-                        width: UIScreen.main.bounds.width * 0.85,
                         lineLimit: 8,
                         isLineLimit: $isLineLimit
                     )
@@ -263,7 +261,7 @@ struct SearchedBookDetailView: View {
                     } label: {
                         Text(isLineLimit ? "더 보기" : "간략히 보기")
                             .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.fontBackgroundDark)
-                            .frame(width: UIScreen.main.bounds.width * 0.85)
+                            .frame(width: geo.size.width * 0.85)
                     }
                     .padding(.vertical, 10)
                 }
@@ -280,7 +278,7 @@ struct SearchedBookDetailView: View {
                 } label: {
                     Text("책 상세정보 보러가기")
                         .foregroundColor(colorScheme == .light ? Color.FontBackgroundLight : Color.fontBackgroundDark)
-                        .frame(width: UIScreen.main.bounds.width * 0.85)
+                        .frame(width: geo.size.width * 0.85)
                 }
                 .padding(.vertical, 10)
                 .fullScreenCover(isPresented: $isShowingSafari) {

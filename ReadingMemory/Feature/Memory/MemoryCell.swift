@@ -15,6 +15,7 @@ struct MemoryCell<T: Memory>: View {
     let anyMemory: T
     let category: MemoryCategory
     let route: Route
+    let geometrySize: CGSize
     
     private var bookTitle: String {
         switch category {
@@ -42,7 +43,13 @@ struct MemoryCell<T: Memory>: View {
             switch category {
             case .sentence:
                 if let sentence = anyMemory as? Sentence {
-                    TextAlignment(text: sentence.sentence, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
+                    TextAlignment(
+                        text: sentence.sentence,
+                        textAlignmentStyle: .justified,
+                        font: .systemFont(ofSize: 15),
+                        lineLimit: 5,
+                        isLineLimit: .constant(true)
+                    )
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer()
                     HStack(alignment: .bottom) {
@@ -68,11 +75,23 @@ struct MemoryCell<T: Memory>: View {
             case .word:
                 if let word = anyMemory as? Word {
                     VStack {
-                        TextAlignment(text: word.word, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
+                        TextAlignment(
+                            text: word.word,
+                            textAlignmentStyle: .justified,
+                            font: .systemFont(ofSize: 15),
+                            lineLimit: 5,
+                            isLineLimit: .constant(true)
+                        )
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Divider()
                             .background(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
-                        TextAlignment(text: word.meaning, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
+                        TextAlignment(
+                            text: word.meaning,
+                            textAlignmentStyle: .justified,
+                            font: .systemFont(ofSize: 15),
+                            lineLimit: 5,
+                            isLineLimit: .constant(true)
+                        )
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         Spacer()
@@ -97,7 +116,13 @@ struct MemoryCell<T: Memory>: View {
                 }
             case .thought:
                 if let thought = anyMemory as? Thought {
-                    TextAlignment(text: thought.thought, textAlignmentStyle: .justified, font: .systemFont(ofSize: 15), width: UIScreen.main.bounds.width * 0.35, lineLimit: 5, isLineLimit: .constant(true))
+                    TextAlignment(
+                        text: thought.thought,
+                        textAlignmentStyle: .justified,
+                        font: .systemFont(ofSize: 15),
+                        lineLimit: 5,
+                        isLineLimit: .constant(true)
+                    )
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
@@ -123,7 +148,7 @@ struct MemoryCell<T: Memory>: View {
             }
         }
         .padding(15)
-        .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+        .frame(width: geometrySize.width * 0.43, height: geometrySize.width * 0.45)
         .background(Color.cellBackgroud)
         .clipped()
         .overlay {
@@ -144,6 +169,7 @@ struct MemoryCell<T: Memory>: View {
         "editDate": Date()
     ]),
         category: .sentence,
-        route: .libraryRoute
+        route: .libraryRoute,
+        geometrySize: CGSize()
     )
 }

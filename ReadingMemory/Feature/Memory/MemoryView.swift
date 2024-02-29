@@ -32,89 +32,91 @@ struct MemoryView: View {
     let book: Book
     
     var body: some View {
-        ZStack {
-            VStack {
-                headerFilterView
-                memoryCardView
-                .gesture(
-                    DragGesture()
-                        .onChanged { gesture in
-                            self.offset = gesture.translation
-                        }
-                        .onEnded { gesture in
-                            withAnimation(.interactiveSpring(response: 0.5)) {
-                                if gesture.translation.width < -100 {
-                                    switch selectedSegment {
-                                    case .sentence:
-                                        selectedSegment = .word
-                                    case .word:
-                                        selectedSegment = .thought
-                                    case .thought:
-                                        break
-                                    }
-                                } else if gesture.translation.width > 100 {
-                                    switch selectedSegment {
-                                    case .sentence:
-                                        break
-                                    case .word:
-                                        selectedSegment = .sentence
-                                    case .thought:
-                                        selectedSegment = .word
-                                    }
+        GeometryReader { geometry in
+            ZStack {
+                VStack {
+                    headerFilterView
+                    memoryCardView(geometry)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    self.offset = gesture.translation
                                 }
-                            }
-                            self.offset = CGSize()
-                        }
-                )
+                                .onEnded { gesture in
+                                    withAnimation(.interactiveSpring(response: 0.5)) {
+                                        if gesture.translation.width < -100 {
+                                            switch selectedSegment {
+                                            case .sentence:
+                                                selectedSegment = .word
+                                            case .word:
+                                                selectedSegment = .thought
+                                            case .thought:
+                                                break
+                                            }
+                                        } else if gesture.translation.width > 100 {
+                                            switch selectedSegment {
+                                            case .sentence:
+                                                break
+                                            case .word:
+                                                selectedSegment = .sentence
+                                            case .thought:
+                                                selectedSegment = .word
+                                            }
+                                        }
+                                    }
+                                    self.offset = CGSize()
+                                }
+                        )
+                }
+                
+                addButton(geometry)
+                
             }
-            
-            addButton
-            
-        }
-        .navigationTitle(book.title)
-        .background(colorScheme == .light ? .white : Color.backgroundBlue)
-        .fullScreenCover(isPresented: $isShowingEditSheet, content: {
-            MemoryEditorView(
-                firstText: "",
-                secondText: "",
-                isShowingEditSheet: $isShowingEditSheet,
-                book: book,
-                editCategory: selectedSegment,
-                editorMode: .add,
-                memoryId: memoryId
-            )
-        })
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    Button {
-                        isMemoryListEditing.toggle()
-                        selectedMemories.removeAll()
-                    } label: {
-                        isMemoryListEditing ? Text("취소") : Text("편집")
-                    }
-                    
-                    if isMemoryListEditing {
+            .navigationTitle(book.title)
+            .background(colorScheme == .light ? .white : Color.backgroundBlue)
+            .fullScreenCover(isPresented: $isShowingEditSheet, content: {
+                MemoryEditorView(
+                    firstText: "",
+                    secondText: "",
+                    isShowingEditSheet: $isShowingEditSheet,
+                    book: book,
+                    editCategory: selectedSegment,
+                    editorMode: .add,
+                    memoryId: memoryId
+                )
+            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
                         Button {
-                            if !selectedMemories.isEmpty {
-                                isShwoingDeleteAlert = true
-                            }
+                            isMemoryListEditing.toggle()
+                            selectedMemories.removeAll()
                         } label: {
-                            Text("삭제")
-                                .foregroundColor(.red)
+                            isMemoryListEditing ? Text("취소") : Text("편집")
+                        }
+                        
+                        if isMemoryListEditing {
+                            Button {
+                                if !selectedMemories.isEmpty {
+                                    isShwoingDeleteAlert = true
+                                }
+                            } label: {
+                                Text("삭제")
+                                    .foregroundColor(.red)
+                            }
                         }
                     }
                 }
             }
+            .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
+                Button("삭제", role: .destructive) {
+                    Book.deleteMemories(selectedMemories)
+                }
+                Button("취소", role: .cancel) { }
+            }, message: {
+                Text("기억 삭제 시 복구할 수 없습니다.")
+            })
         }
-        .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
-            Button("삭제", role: .destructive) {
-                Book.deleteMemories(selectedMemories)
-            }
-            Button("취소", role: .cancel) { }
-        }, message: {
-            Text("기억 삭제 시 복구할 수 없습니다.")
-        })
     }
 
     private var headerFilterView: some View {
@@ -146,7 +148,7 @@ struct MemoryView: View {
         }
     }
     
-    private var memoryCardView: some View {
+    private func memoryCardView(_ geometry: GeometryProxy) -> some View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 switch selectedSegment {
@@ -159,12 +161,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(sentence, .sentence))
                             } label: {
-                                MemoryCell(anyMemory: sentence, category: .sentence, route: .libraryRoute)
+                                MemoryCell(anyMemory: sentence, category: .sentence, route: .libraryRoute, geometrySize: geometry.size)
                                     .padding(.vertical, 5)
                             }
                             .disabled(isMemoryListEditing)
                             .overlay {
-                                editButton(sentence)
+                                editButton(sentence, geometry)
                             }
                         }
                     }
@@ -178,12 +180,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(word, .word))
                             } label: {
-                                MemoryCell(anyMemory: word, category: .word, route: .libraryRoute)
+                                MemoryCell(anyMemory: word, category: .word, route: .libraryRoute, geometrySize: geometry.size)
                                     .padding(.vertical, 5)
                             }
                             .disabled(isMemoryListEditing)
                             .overlay {
-                                editButton(word)
+                                editButton(word, geometry)
                             }
                         }
                     }
@@ -196,12 +198,12 @@ struct MemoryView: View {
                             Button {
                                 router.libraryRoutes.append(.memoryDetail(thought, .thought))
                             } label: {
-                                MemoryCell(anyMemory: thought, category: .thought, route: .libraryRoute)
+                                MemoryCell(anyMemory: thought, category: .thought, route: .libraryRoute, geometrySize: geometry.size)
                                     .padding(.vertical, 5)
                             }
                             .disabled(isMemoryListEditing)
                             .overlay {
-                                editButton(thought)
+                                editButton(thought, geometry)
                             }
                         }
                     }
@@ -211,25 +213,25 @@ struct MemoryView: View {
         }
     }
     
-    private var addButton: some View {
+    private func addButton(_ geometry: GeometryProxy) -> some View {
         Button {
             editorMode = .add
             memoryId = nil
             isShowingEditSheet = true
         } label: {
             Image(systemName: "plus.circle.fill")
-            .foregroundColor(colorScheme == .light ? Color.backgroundBlue : Color(hexCode: "DCE2F0"))
-            .font(.system(size: UIScreen.main.bounds.width * 0.13))
+                .foregroundColor(colorScheme == .light ? Color.backgroundBlue : Color(hexCode: "DCE2F0"))
+                .font(.system(size: 51))
         }
-        .offset(x: UIScreen.main.bounds.width * 0.35, y: UIScreen.main.bounds.height * 0.34)
+        .offset(x: geometry.size.width * 0.35, y: geometry.size.height * 0.4)
     }
     
     @ViewBuilder
-    private func editButton(_ memory: Memory) -> some View {
+    private func editButton(_ memory: Memory, _ geometry: GeometryProxy) -> some View {
         if isMemoryListEditing {
             if selectedMemories.contains(where: { $0.id == memory.id }) {
                 Image(systemName: "checkmark.circle")
-                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .frame(width: geometry.size.width * 0.43, height: geometry.size.width * 0.45)
                     .background(Color.gray.opacity(0.5))
                     .clipShape(RoundedRectangle(cornerRadius: 7))
                     .font(.title)
@@ -240,7 +242,7 @@ struct MemoryView: View {
                     }
             } else {
                 Image(systemName: "circle")
-                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .frame(width: geometry.size.width * 0.43, height: geometry.size.width * 0.45)
                     .background(Color.gray.opacity(0.5))
                     .clipShape(RoundedRectangle(cornerRadius: 7))
                     .font(.title)

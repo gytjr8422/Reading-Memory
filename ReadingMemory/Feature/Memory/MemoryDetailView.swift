@@ -23,60 +23,62 @@ struct MemoryDetailView<T: Object>: View {
     let category: MemoryCategory
     
     var body: some View {
-        ScrollView {
-            memoryView
-        }
-        .background(colorScheme == .light ? .white : Color.backgroundBlue)
-        .navigationTitle(bookTitle)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isShowingEditorSheet = true
-                } label: {
-                    Text("수정")
-                }
-
+        GeometryReader { geometry in
+            ScrollView {
+                memoryView(geometry)
             }
-        }
-        .onAppear {
-            switch category {
-            case .sentence:
-                if let sentence = anyMemory as? Sentence {
-                    memoryId = sentence.id
-                    if let title = savedBooks.filter("isbn == %@", sentence.isbn).first?.title {
-                        bookTitle = title
+            .background(colorScheme == .light ? .white : Color.backgroundBlue)
+            .navigationTitle(bookTitle)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingEditorSheet = true
+                    } label: {
+                        Text("수정")
                     }
-                }
-            case .word:
-                if let word = anyMemory as? Word {
-                    memoryId = word.id
-                    if let title = savedBooks.filter("isbn == %@", word.isbn).first?.title {
-                        bookTitle = title
-                    }
-                }
-            case .thought:
-                if let thought = anyMemory as? Thought {
-                    memoryId = thought.id
-                    if let title = savedBooks.filter("isbn == %@", thought.isbn).first?.title {
-                        bookTitle = title
-                    }
+                    
                 }
             }
-        }
-        .fullScreenCover(isPresented: $isShowingEditorSheet) {
-            MemoryEditorView(
-                firstText: "",
-                secondText: "",
-                isShowingEditSheet: $isShowingEditorSheet,
-                book: nil,
-                editCategory: category,
-                editorMode: .modify,
-                memoryId: memoryId
-            )
+            .onAppear {
+                switch category {
+                case .sentence:
+                    if let sentence = anyMemory as? Sentence {
+                        memoryId = sentence.id
+                        if let title = savedBooks.filter("isbn == %@", sentence.isbn).first?.title {
+                            bookTitle = title
+                        }
+                    }
+                case .word:
+                    if let word = anyMemory as? Word {
+                        memoryId = word.id
+                        if let title = savedBooks.filter("isbn == %@", word.isbn).first?.title {
+                            bookTitle = title
+                        }
+                    }
+                case .thought:
+                    if let thought = anyMemory as? Thought {
+                        memoryId = thought.id
+                        if let title = savedBooks.filter("isbn == %@", thought.isbn).first?.title {
+                            bookTitle = title
+                        }
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $isShowingEditorSheet) {
+                MemoryEditorView(
+                    firstText: "",
+                    secondText: "",
+                    isShowingEditSheet: $isShowingEditorSheet,
+                    book: nil,
+                    editCategory: category,
+                    editorMode: .modify,
+                    memoryId: memoryId
+                )
+            }
         }
     }
     
-    private var memoryView: some View {
+    private func memoryView(_ geometry: GeometryProxy) -> some View {
         HStack {
             VStack {
                 switch category {
@@ -98,7 +100,7 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.horizontal, 20)
                         
                         if sentence.sentence.count > 0 {
-                            makeTextView(sentence.sentence)
+                            makeTextView(sentence.sentence, geometry)
                         }
                         
                         HStack {
@@ -111,7 +113,7 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.horizontal, 20)
                         
                         if sentence.idea.count > 0 {
-                            makeTextView(sentence.idea)
+                            makeTextView(sentence.idea, geometry)
                         } else {
                             Text("문장에 대한 생각을 적어보세요.")
                                 .font(.subheadline)
@@ -134,7 +136,7 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         
-                        makeTextView(word.word)
+                        makeTextView(word.word, geometry)
                         
                         HStack {
                             Text("뜻")
@@ -145,7 +147,7 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         
-                        makeTextView(word.meaning)
+                        makeTextView(word.meaning, geometry)
                         
                         HStack {
                             Text("나온 문장")
@@ -157,7 +159,7 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.horizontal, 20)
                         
                         if word.sentence.count > 0 {
-                            makeTextView(word.sentence)
+                            makeTextView(word.sentence, geometry)
                         } else {
                             Text("단어가 나온 문장을 입력해보세요.")
                         }
@@ -179,32 +181,31 @@ struct MemoryDetailView<T: Object>: View {
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         
-                        makeTextView(thought.thought)
+                        makeTextView(thought.thought, geometry)
                     }
                 }
             }
         }
     }
     
-    private func makeTextView(_ text: String) -> some View {
+    private func makeTextView(_ text: String, _ geometry: GeometryProxy) -> some View {
         VStack {
             TextAlignment(
                 text: text,
                 textAlignmentStyle: .justified,
                 font: .systemFont(ofSize: 15),
-                width: UIScreen.main.bounds.width * 0.8,
                 lineLimit: 0,
                 isLineLimit: .constant(false)
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 15)
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+            .frame(maxWidth: geometry.size.width * 0.9, alignment: .leading)
             .overlay {
                 RoundedRectangle(cornerRadius: 7)
                     .stroke(lineWidth: 1)
             }
         }
-        .frame(width: UIScreen.main.bounds.width * 0.9)
+        .frame(width: geometry.size.width * 0.9)
         .background(Color.cellBackgroud)
         .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 7))

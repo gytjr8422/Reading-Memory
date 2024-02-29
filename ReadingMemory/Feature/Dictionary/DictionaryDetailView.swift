@@ -19,78 +19,79 @@ struct DictionaryDetailView: View {
     let route: Route
     
     var body: some View {
-        ScrollView {
-            HStack {
-                Text("단어")
-                    .font(.title3)
-                    .bold()
-                
-                Spacer()
-            }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 20)
-            
-            makeTextView(item.word)
-            
-            HStack {
-                Text("뜻")
-                    .font(.title3)
-                    .bold()
-                Spacer()
-            }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 20)
-            
-            if let sense = item.sense.first {
-                makeTextView(sense.definition)
-            }
-        }
-        .background(colorScheme == .light ? .white : Color.backgroundBlue)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isShowingSelectBookSheet = true
-                } label: {
-                    Text("저장")
+        GeometryReader { geometry in
+            ScrollView {
+                HStack {
+                    Text("단어")
+                        .font(.title3)
+                        .bold()
+                    
+                    Spacer()
                 }
-
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                
+                makeTextView(item.word, geometry)
+                
+                HStack {
+                    Text("뜻")
+                        .font(.title3)
+                        .bold()
+                    Spacer()
+                }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                
+                if let sense = item.sense.first {
+                    makeTextView(sense.definition, geometry)
+                }
             }
-        }
-        .sheet(isPresented: $isShowingSelectBookSheet) {
-            SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
-                .presentationDragIndicator(.visible)
-        }
-        .onChange(of: selectedBook, { oldValue, newValue in
-            selectedBook = newValue
-        })
-        .fullScreenCover(isPresented: $isShowingEditorSheet) {
-            if let sense = item.sense.first {
-                MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingEditorSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
-            } else {
-                Text("정보를 가져올 수 없습니다.")
+            .background(colorScheme == .light ? .white : Color.backgroundBlue)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingSelectBookSheet = true
+                    } label: {
+                        Text("저장")
+                    }
+                    
+                }
+            }
+            .sheet(isPresented: $isShowingSelectBookSheet) {
+                SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
+                    .presentationDragIndicator(.visible)
+            }
+            .onChange(of: selectedBook, { oldValue, newValue in
+                selectedBook = newValue
+            })
+            .fullScreenCover(isPresented: $isShowingEditorSheet) {
+                if let sense = item.sense.first {
+                    MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingEditorSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
+                } else {
+                    Text("정보를 가져올 수 없습니다.")
+                }
             }
         }
     }
     
-    private func makeTextView(_ text: String) -> some View {
+    private func makeTextView(_ text: String, _ geometry: GeometryProxy) -> some View {
         VStack {
             TextAlignment(
                 text: text,
                 textAlignmentStyle: .justified,
                 font: .systemFont(ofSize: 15),
-                width: UIScreen.main.bounds.width * 0.8,
                 lineLimit: 0,
                 isLineLimit: .constant(false)
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 15)
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, alignment: .leading)
+            .frame(maxWidth: geometry.size.width * 0.9, alignment: .leading)
             .overlay {
                 RoundedRectangle(cornerRadius: 7)
                     .stroke(lineWidth: 1)
             }
         }
-        .frame(width: UIScreen.main.bounds.width * 0.9)
+        .frame(width: geometry.size.width * 0.9)
         .background(Color.cellBackgroud)
         .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 7))

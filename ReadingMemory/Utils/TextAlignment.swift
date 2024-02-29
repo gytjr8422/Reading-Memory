@@ -11,14 +11,14 @@ struct TextAlignment: UIViewRepresentable {
     var text: String
     var textAlignmentStyle: TextAlignmentStyle
     var font: UIFont
-    var width: CGFloat
+//    var width: CGFloat
     var lineLimit: Int
     @Binding var isLineLimit: Bool
 
     func makeUIView(context: Context) -> UILabel {
         let label = UILabel()
-                label.textAlignment = NSTextAlignment(rawValue: textAlignmentStyle.rawValue)!
-        label.preferredMaxLayoutWidth = width
+        label.textAlignment = NSTextAlignment(rawValue: textAlignmentStyle.rawValue)!
+        label.preferredMaxLayoutWidth = UIScreen.main.bounds.width * 0.85
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentHuggingPriority(.required, for: .vertical)
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -25,46 +25,48 @@ struct AllSavedBookListView: View {
     }
     
     var body: some View {
-        ScrollView {
-            bookList
-                .padding()
-        }
-        .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
-        .navigationTitle("저장한 책")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    Button {
-                        isEditing.toggle()
-                        selectedBooks.removeAll()
-                    } label: {
-                        isEditing ? Text("취소") : Text("편집")
-                    }
-                    
-                    if isEditing {
+        GeometryReader { geometry in
+            ScrollView {
+                bookList(geometry)
+                    .padding()
+            }
+            .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
+            .navigationTitle("저장한 책")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
                         Button {
-                            if !selectedBooks.isEmpty {
-                                isShwoingDeleteAlert = true
-                            }
+                            isEditing.toggle()
+                            selectedBooks.removeAll()
                         } label: {
-                            Text("삭제")
-                                .foregroundColor(.red)
+                            isEditing ? Text("취소") : Text("편집")
+                        }
+                        
+                        if isEditing {
+                            Button {
+                                if !selectedBooks.isEmpty {
+                                    isShwoingDeleteAlert = true
+                                }
+                            } label: {
+                                Text("삭제")
+                                    .foregroundColor(.red)
+                            }
                         }
                     }
                 }
             }
+            .alert("삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
+                Button("삭제", role: .destructive) {
+                    Book.deleteBooks(selectedBooks)
+                }
+                Button("취소", role: .cancel) { }
+            }, message: {
+                Text("저장된 도서 삭제시 저장한 메모, 단어 등 모든 기억이 함께 삭제됩니다.")
+            })
         }
-        .alert("삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
-            Button("삭제", role: .destructive) {
-                Book.deleteBooks(selectedBooks)
-            }
-            Button("취소", role: .cancel) { }
-        }, message: {
-            Text("저장된 도서 삭제시 저장한 메모, 단어 등 모든 기억이 함께 삭제됩니다.")
-        })
     }
     
-    private var bookList: some View {
+    private func bookList(_ geometry: GeometryProxy) -> some View {
         LazyVStack(alignment: .leading) {
             ForEach(books, id: \.self) { book in
                 HStack {
@@ -108,17 +110,16 @@ struct AllSavedBookListView: View {
                                 KFImage(url)
                                     .placeholder({ _ in
                                         ProgressView()
-                                            .frame(width: UIScreen.main.bounds.width / 7, height: 80)
                                     })
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: UIScreen.main.bounds.width / 7)
+                                    .frame(width: geometry.size.width / 7)
                                     .clipped()
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .padding(.horizontal, 3)
                             } else {
                                 Rectangle()
-                                    .frame(width: UIScreen.main.bounds.width / 7, height: 80)
+                                    .frame(width: geometry.size.width / 7, height: 80)
                                     .clipped()
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .padding(.horizontal, 3)
@@ -140,7 +141,7 @@ struct AllSavedBookListView: View {
                             .padding(.leading, 5)
                             Spacer()
                         }
-                        .frame(width: UIScreen.main.bounds.width - 20)
+                        .frame(width: geometry.size.width * 0.9)
                         .padding(.vertical, 5)
                         .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
                     }

@@ -22,52 +22,54 @@ struct SearchView: View {
     @FocusState var isTextFieldFocused: Bool
     
     var body: some View {
-        NavigationStack(path: $router.searchRoutes) {
-            VStack {
-                ScrollViewReader { proxy in
-                    searchBar
-                        .padding(.top)
-                        .padding(.horizontal)
-                        .onSubmit {
-                            proxy.scrollTo(1, anchor: .top)
-                        }
-                    
-                    ScrollView {
-                        barcodeScanButton
+        GeometryReader { geometry in
+            NavigationStack(path: $router.searchRoutes) {
+                VStack {
+                    ScrollViewReader { proxy in
+                        searchBar
+                            .padding(.top)
                             .padding(.horizontal)
-                            .id(1)
-                        Divider()
-                        searchList
+                            .onSubmit {
+                                proxy.scrollTo(1, anchor: .top)
+                            }
+                        
+                        ScrollView {
+                            barcodeScanButton
+                                .padding(.horizontal)
+                                .id(1)
+                            Divider()
+                            searchList(geometry)
+                        }
+                        .scrollDismissesKeyboard(.immediately)
                     }
-                    .scrollDismissesKeyboard(.immediately)
+                }
+                .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
+                .navigationDestination(for: SearchRoute.self) { route in
+                    switch route {
+                    case .searchedBookDetail(let searchedBook):
+                        SearchedBookDetailView(book: searchedBook)
+                    }
+                }
+                .navigationDestination(for: LibraryRoute.self) { route in
+                    switch route {
+                    case .savedBookDetail(let book):
+                        SavedBookDetailView(book: book)
+                    case .bookList(let title, let editCategory):
+                        BookListView(title: title, category: editCategory)
+                    case .allSavedBookList:
+                        AllSavedBookListView()
+                    case .memory(let book):
+                        MemoryView(book: book)
+                    case .memoryDetail(let memory, let memoryCategory):
+                        MemoryDetailView(anyMemory: memory, category: memoryCategory)
+                    }
                 }
             }
-            .background(colorScheme == .light ? .white : Color(hexCode: "101820")) // 101820, 1a1d1a
-            .navigationDestination(for: SearchRoute.self) { route in
-                switch route {
-                case .searchedBookDetail(let searchedBook):
-                    SearchedBookDetailView(book: searchedBook)
-                }
+            .onAppear {
+                isTextFieldFocused = true
             }
-            .navigationDestination(for: LibraryRoute.self) { route in
-                switch route {
-                case .savedBookDetail(let book):
-                    SavedBookDetailView(book: book)
-                case .bookList(let title, let editCategory):
-                    BookListView(title: title, category: editCategory)
-                case .allSavedBookList:
-                    AllSavedBookListView()
-                case .memory(let book):
-                    MemoryView(book: book)
-                case .memoryDetail(let memory, let memoryCategory):
-                    MemoryDetailView(anyMemory: memory, category: memoryCategory)
-                }
-            }
+            .tint(colorScheme == .light ? .black : .white)
         }
-        .onAppear {
-            isTextFieldFocused = true
-        }
-        .tint(colorScheme == .light ? .black : .white)
     }
     
     private var searchBar: some View {
@@ -89,7 +91,7 @@ struct SearchView: View {
     }
     
     @ViewBuilder
-    private var searchList: some View {
+    private func searchList(_ geometry: GeometryProxy) -> some View {
         if !searchViewModel.books.isEmpty {
             LazyVStack(alignment: .leading) {
                 ForEach(searchViewModel.books, id: \.self) { searchedBook in
@@ -102,17 +104,17 @@ struct SearchView: View {
                                     image
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: UIScreen.main.bounds.width / 7)
+                                        .frame(width: geometry.size.width / 7)
                                         .clipped()
                                         .clipShape(RoundedRectangle(cornerRadius: 5))
                                         .padding(.horizontal, 3)
                                 } placeholder: {
                                     ProgressView()
-                                        .frame(width: UIScreen.main.bounds.width / 7, height: 80)
+                                        .frame(width: geometry.size.width / 7, height: 80)
                                 }
                             } else {
                                 Rectangle()
-                                    .frame(width: UIScreen.main.bounds.width / 7, height: 80)
+                                    .frame(width: geometry.size.width / 7, height: 80)
                                     .clipped()
                                     .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .padding(.horizontal, 3)
@@ -133,7 +135,7 @@ struct SearchView: View {
                             .padding(.leading, 5)
                             Spacer()
                         }
-                        .frame(width: UIScreen.main.bounds.width * 0.9)
+                        .frame(width: geometry.size.width * 0.9)
                         .padding(.vertical, 5)
                     }
                     .padding(.horizontal)

@@ -53,68 +53,70 @@ struct AllMemoryView: View {
     }
     
     var body: some View {
-        NavigationStack(path: $router.memoryRoutes) {
-            VStack {
-                headerFilterView
-                ScrollView {
-                    searchBar
-                    Divider()
-                    editButtons
-                    Divider()
-                    memoryCardView
-                }
-                .gesture(
-                    DragGesture()
-                        .onChanged { gesture in
-                            self.offset = gesture.translation
-                        }
-                        .onEnded { gesture in
-                            withAnimation(.interactiveSpring(response: 0.5)) {
-                                if gesture.translation.width < -100 {
-                                    switch selectedSegment {
-                                    case .sentence:
-                                        selectedSegment = .word
-                                    case .word:
-                                        selectedSegment = .thought
-                                    case .thought:
-                                        break
-                                    }
-                                } else if gesture.translation.width > 100 {
-                                    switch selectedSegment {
-                                    case .sentence:
-                                        break
-                                    case .word:
-                                        selectedSegment = .sentence
-                                    case .thought:
-                                        selectedSegment = .word
+        GeometryReader { geometry in
+            NavigationStack(path: $router.memoryRoutes) {
+                VStack {
+                    headerFilterView
+                    ScrollView {
+                        searchBar(geometry)
+                        Divider()
+                        editButtons(geometry)
+                        Divider()
+                        memoryCardView(geometry)
+                    }
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                self.offset = gesture.translation
+                            }
+                            .onEnded { gesture in
+                                withAnimation(.interactiveSpring(response: 0.5)) {
+                                    if gesture.translation.width < -100 {
+                                        switch selectedSegment {
+                                        case .sentence:
+                                            selectedSegment = .word
+                                        case .word:
+                                            selectedSegment = .thought
+                                        case .thought:
+                                            break
+                                        }
+                                    } else if gesture.translation.width > 100 {
+                                        switch selectedSegment {
+                                        case .sentence:
+                                            break
+                                        case .word:
+                                            selectedSegment = .sentence
+                                        case .thought:
+                                            selectedSegment = .word
+                                        }
                                     }
                                 }
+                                self.offset = CGSize()
                             }
-                            self.offset = CGSize()
-                        }
-                )
-            }
-            .background(colorScheme == .light ? .white : Color.backgroundBlue)
-            .navigationDestination(for: MemoryRoute.self) { route in
-                switch route {
-                case .memoryDetail(let memory, let memoryCategory):
-                    MemoryDetailView(anyMemory: memory, category: memoryCategory)
+                    )
                 }
-            }
-            .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
-                Button("삭제", role: .destructive) {
-                    Book.deleteMemories(selectedMemories)
+                .background(colorScheme == .light ? .white : Color.backgroundBlue)
+                .navigationDestination(for: MemoryRoute.self) { route in
+                    switch route {
+                    case .memoryDetail(let memory, let memoryCategory):
+                        MemoryDetailView(anyMemory: memory, category: memoryCategory)
+                    }
                 }
-                Button("취소", role: .cancel) { }
-            }, message: {
-                Text("기억 삭제 시 복구할 수 없습니다.")
-            })
+                .alert("\(selectedMemories.count)개의 기억을 삭제하시겠습니까?", isPresented: $isShwoingDeleteAlert, actions: {
+                    Button("삭제", role: .destructive) {
+                        Book.deleteMemories(selectedMemories)
+                    }
+                    Button("취소", role: .cancel) { }
+                }, message: {
+                    Text("기억 삭제 시 복구할 수 없습니다.")
+                })
+            }
+            .tint(colorScheme == .light ? .black : .white)
+            .scrollDismissesKeyboard(.immediately)
         }
-        .tint(colorScheme == .light ? .black : .white)
-        .scrollDismissesKeyboard(.immediately)
     }
     
-    private var searchBar: some View {
+    private func searchBar(_ geometry: GeometryProxy) -> some View {
         RMTextField(
             text: $searchText,
             isWrongText: false,
@@ -122,7 +124,7 @@ struct AllMemoryView: View {
             placeholderText: "기억을 검색해보세요.",
             isSearchBar: true
         )
-            .frame(width: UIScreen.main.bounds.width * 0.9)
+        .frame(width: geometry.size.width * 0.9)
     }
     
     private var headerFilterView: some View {
@@ -155,14 +157,14 @@ struct AllMemoryView: View {
         .padding(.top)
     }
     
-    private var editButtons: some View {
+    private func editButtons(_ geometry: GeometryProxy) -> some View {
         HStack {
             if !isEditing {
                 Button {
                     isEditing = true
                 } label: {
                     Text("편집")
-                        .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.05)
+                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.05)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -175,7 +177,7 @@ struct AllMemoryView: View {
                     selectedMemories.removeAll()
                 } label: {
                     Text("취소")
-                        .frame(width: UIScreen.main.bounds.width * 0.44, height: UIScreen.main.bounds.height * 0.05)
+                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.05)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -188,7 +190,7 @@ struct AllMemoryView: View {
                     }
                 } label: {
                     Text("삭제")
-                        .frame(width: UIScreen.main.bounds.width * 0.44, height: UIScreen.main.bounds.height * 0.05)
+                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.05)
                         .foregroundStyle(.white)
                         .background(.red)
                         .clipped()
@@ -199,7 +201,7 @@ struct AllMemoryView: View {
         }
     }
     
-    private var memoryCardView: some View {
+    private func memoryCardView(_ geometry: GeometryProxy) -> some View {
             LazyVGrid(columns: columns) {
                 switch selectedSegment {
                 case .sentence:
@@ -213,12 +215,12 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(sentence, .sentence))
                         } label: {
-                            MemoryCell(anyMemory: sentence, category: .sentence, route: .memoryRoute)
+                            MemoryCell(anyMemory: sentence, category: .sentence, route: .memoryRoute, geometrySize: geometry.size)
                                 .padding(.vertical, 5)
                         }
                         .disabled(isEditing)
                         .overlay {
-                            editButton(sentence)
+                            editButton(sentence, geometry)
                         }
                     }
                 case .word:
@@ -232,12 +234,12 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(word, .word))
                         } label: {
-                            MemoryCell(anyMemory: word, category: .word, route: .memoryRoute)
+                            MemoryCell(anyMemory: word, category: .word, route: .memoryRoute, geometrySize: geometry.size)
                                 .padding(.vertical, 5)
                         }
                         .disabled(isEditing)
                         .overlay {
-                            editButton(word)
+                            editButton(word, geometry)
                         }
                     }
                 case .thought:
@@ -251,12 +253,12 @@ struct AllMemoryView: View {
                         Button {
                             router.memoryRoutes.append(.memoryDetail(thought, .thought))
                         } label: {
-                            MemoryCell(anyMemory: thought, category: .thought, route: .memoryRoute)
+                            MemoryCell(anyMemory: thought, category: .thought, route: .memoryRoute, geometrySize: geometry.size)
                                 .padding(.vertical, 5)
                         }
                         .disabled(isEditing)
                         .overlay {
-                            editButton(thought)
+                            editButton(thought, geometry)
                         }
                     }
                 }
@@ -265,11 +267,11 @@ struct AllMemoryView: View {
     }
     
     @ViewBuilder
-    private func editButton(_ memory: Memory) -> some View {
+    private func editButton(_ memory: Memory, _ geometry: GeometryProxy) -> some View {
         if isEditing {
             if selectedMemories.contains(where: { $0.id == memory.id }) {
                 Image(systemName: "checkmark.circle")
-                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .frame(width: geometry.size.width * 0.43, height: geometry.size.width * 0.45)
                     .background(Color.gray.opacity(0.5))
                     .clipShape(RoundedRectangle(cornerRadius: 7))
                     .font(.title)
@@ -280,7 +282,7 @@ struct AllMemoryView: View {
                     }
             } else {
                 Image(systemName: "circle")
-                    .frame(width: UIScreen.main.bounds.width * 0.43, height: UIScreen.main.bounds.width * 0.45)
+                    .frame(width: geometry.size.width * 0.43, height: geometry.size.width * 0.45)
                     .background(Color.gray.opacity(0.5))
                     .clipShape(RoundedRectangle(cornerRadius: 7))
                     .font(.title)
