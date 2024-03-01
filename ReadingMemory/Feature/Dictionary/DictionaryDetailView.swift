@@ -80,6 +80,7 @@ struct DictionaryDetailView: View {
                 text: text,
                 textAlignmentStyle: .justified,
                 font: .systemFont(ofSize: 15),
+                widthRatio: 0.8,
                 lineLimit: 0,
                 isLineLimit: .constant(false)
             )

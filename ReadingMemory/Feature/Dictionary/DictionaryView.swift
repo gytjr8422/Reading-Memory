@@ -96,6 +96,7 @@ struct DictionaryView: View {
                     }
                 } else {
                     Text("검색에 실패했습니다. 다시 검색해주세요.")
+                        .padding(.vertical)
                 }
             } else {
                 ProgressView()

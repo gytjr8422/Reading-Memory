@@ -68,9 +68,6 @@ struct MemoryView: View {
                                 }
                         )
                 }
-                
-                addButton(geometry)
-                
             }
             .navigationTitle(book.title)
             .background(colorScheme == .light ? .white : Color.backgroundBlue)
@@ -150,6 +147,7 @@ struct MemoryView: View {
     
     private func memoryCardView(_ geometry: GeometryProxy) -> some View {
         ScrollView {
+            addButton(geometry)
             LazyVGrid(columns: columns) {
                 switch selectedSegment {
                 case .sentence:
@@ -219,11 +217,13 @@ struct MemoryView: View {
             memoryId = nil
             isShowingEditSheet = true
         } label: {
-            Image(systemName: "plus.circle.fill")
-                .foregroundColor(colorScheme == .light ? Color.backgroundBlue : Color(hexCode: "DCE2F0"))
-                .font(.system(size: 51))
+            Text("\(selectedSegment.title) 기억하기")
+                .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.07)
+                .foregroundStyle(colorScheme == .light ? .white : .black)
+                .background(colorScheme == .light ? Color.cellBackgroud : .white)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 5))
         }
-        .offset(x: geometry.size.width * 0.35, y: geometry.size.height * 0.4)
     }
     
     @ViewBuilder

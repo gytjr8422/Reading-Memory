@@ -46,7 +46,7 @@ struct MemoryCell<T: Memory>: View {
                     TextAlignment(
                         text: sentence.sentence,
                         textAlignmentStyle: .justified,
-                        font: .systemFont(ofSize: 15),
+                        font: .systemFont(ofSize: 15), widthRatio: 0.35,
                         lineLimit: 5,
                         isLineLimit: .constant(true)
                     )
@@ -78,7 +78,7 @@ struct MemoryCell<T: Memory>: View {
                         TextAlignment(
                             text: word.word,
                             textAlignmentStyle: .justified,
-                            font: .systemFont(ofSize: 15),
+                            font: .systemFont(ofSize: 15), widthRatio: 0.35,
                             lineLimit: 5,
                             isLineLimit: .constant(true)
                         )
@@ -88,7 +88,7 @@ struct MemoryCell<T: Memory>: View {
                         TextAlignment(
                             text: word.meaning,
                             textAlignmentStyle: .justified,
-                            font: .systemFont(ofSize: 15),
+                            font: .systemFont(ofSize: 15), widthRatio: 0.35,
                             lineLimit: 5,
                             isLineLimit: .constant(true)
                         )
@@ -119,7 +119,7 @@ struct MemoryCell<T: Memory>: View {
                     TextAlignment(
                         text: thought.thought,
                         textAlignmentStyle: .justified,
-                        font: .systemFont(ofSize: 15),
+                        font: .systemFont(ofSize: 15), widthRatio: 0.35,
                         lineLimit: 5,
                         isLineLimit: .constant(true)
                     )

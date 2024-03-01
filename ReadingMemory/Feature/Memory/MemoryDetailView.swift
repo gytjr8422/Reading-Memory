@@ -169,7 +169,7 @@ struct MemoryDetailView<T: Object>: View {
                     if let memory = anyMemory as? Thought,
                        let thought = thoughts.filter("id == %@", memory.id).first {
                         HStack {
-                            Text("내 생각")
+                            Text("갈무리")
                                 .font(.title3)
                                 .bold()
                             
@@ -193,7 +193,7 @@ struct MemoryDetailView<T: Object>: View {
             TextAlignment(
                 text: text,
                 textAlignmentStyle: .justified,
-                font: .systemFont(ofSize: 15),
+                font: .systemFont(ofSize: 15), widthRatio: 0.8,
                 lineLimit: 0,
                 isLineLimit: .constant(false)
             )

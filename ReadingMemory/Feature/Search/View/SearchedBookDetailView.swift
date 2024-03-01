@@ -36,7 +36,7 @@ struct SearchedBookDetailView: View {
                     headerView(geo)
                     saveButtons(geo)
                     Divider()
-                    if let _ = savedBook.first {
+                    if let book = savedBook.first, book.reading || book.finished {
                         memoryButton(geo)
                     }
                     detailView(geo)
@@ -87,27 +87,22 @@ struct SearchedBookDetailView: View {
                             .frame(width: geo.size.width / 3)
                             .clipped()
                             .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .padding(.vertical)
                     } placeholder: {
                         ProgressView()
-                            .frame(width: geo.size.width / 5, height: 110)
                     }
-                    .padding(.bottom)
                 } else {
                     Rectangle()
                         .frame(width: geo.size.width / 3, height: 200)
                         .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 5))
                         .padding(.horizontal, 3)
-                        .padding(.bottom)
+                        .padding(.vertical)
                 }
 
-                TextAlignment(
-                    text: book.title,
-                    textAlignmentStyle: .justified,
-                    font: .systemFont(ofSize: 20),
-                    lineLimit: 2,
-                    isLineLimit: $isLineLimit
-                )
+                Text(book.title)
+                    .font(.title3)
+                    .lineLimit(2)
                 .foregroundColor(colorScheme == .light ? .black : .white)
                 .frame(width: geo.size.width * 0.85)
             }
@@ -134,7 +129,6 @@ struct SearchedBookDetailView: View {
                             .padding(.bottom, 2)
                             .foregroundColor(colorScheme == .light ? .black : .white)
                     }
-                    
                     Text("읽고 싶은 책")
                 }
                 .frame(width: geo.size.width / 3.5)
@@ -190,7 +184,6 @@ struct SearchedBookDetailView: View {
         }
         .foregroundColor(colorScheme == .light ? .black : .white)
         .padding(.vertical)
-        .padding(.horizontal, 30)
     }
     
     private func memoryButton(_ geo: GeometryProxy) -> some View {
@@ -225,30 +218,31 @@ struct SearchedBookDetailView: View {
                     Text(book.authors.joined(separator: ", "))
                         .font(.subheadline)
                         .padding(.bottom, 5)
-                    Text("역자")
-                        .font(.headline)
-                        .bold()
-                        .padding(.vertical, 5)
-                    Text(book.translators.joined(separator: ", "))
-                        .font(.subheadline)
-                        .padding(.bottom, 5)
+                    if book.translators.count > 0 {
+                        Text("역자")
+                            .font(.headline)
+                            .bold()
+                            .padding(.vertical, 5)
+                        Text(book.translators.joined(separator: ", "))
+                            .font(.subheadline)
+                            .padding(.bottom, 5)
+                    }
                     Text("출판사")
                         .font(.headline)
                         .bold()
                         .padding(.vertical, 5)
                     Text(book.publisher)
-                        .font(.subheadline)
+                        .font(.subheadline) 
                         .padding(.bottom, 5)
                 }
                 .frame(width: geo.size.width * 0.85, alignment: .leading)
                 
-                Divider()
-                
                 if bookDescription.count > 0 {
+                    Divider()
                     TextAlignment(
                         text: bookDescription.count > 0 ? bookDescription : book.contents,
                         textAlignmentStyle: .justified,
-                        font: .systemFont(ofSize: 15),
+                        font: .systemFont(ofSize: 15), widthRatio: 0.85,
                         lineLimit: 8,
                         isLineLimit: $isLineLimit
                     )

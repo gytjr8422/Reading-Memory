@@ -112,7 +112,7 @@ struct LibraryView: View {
                 if category != .reading {
                     makeBookScrollView(books, geometry: geometry)
                         .scrollTargetLayout()
-                        .scrollTargetBehavior(.viewAligned)
+                        .scrollTargetBehavior(.viewAligned(limitBehavior: .never))
                         .scrollIndicators(.hidden)
                 }
             }

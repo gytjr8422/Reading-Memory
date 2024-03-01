@@ -228,7 +228,7 @@ struct SavedBookDetailView: View {
                 TextAlignment(
                     text: book.contents,
                     textAlignmentStyle: .justified,
-                    font: .systemFont(ofSize: 15),
+                    font: .systemFont(ofSize: 15), widthRatio: 0.85,
                     lineLimit: 8,
                     isLineLimit: $isLineLimit
                 )

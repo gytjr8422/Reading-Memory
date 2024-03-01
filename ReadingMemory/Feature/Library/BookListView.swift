@@ -35,47 +35,44 @@ struct BookListView: View {
     
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                LazyVGrid(columns: columns, content: {
-                    ForEach(books, id: \.self) { book in
-                        Button {
-                            router.libraryRoutes.append(.savedBookDetail(book))
-                        } label: {
-                            if let url = URL(string: book.thumbnail) {
-                                KFImage(url)
-                                    .placeholder({ _ in
-                                        ProgressView()
-                                            .frame(width: geometry.size.width / 3)
-                                    })
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                                    .padding(.horizontal, 3)
-                            } else {
-                                Rectangle()
-                                    .overlay(content: {
-                                        Text(book.title)
-                                            .lineLimit(2)
-                                            .font(.subheadline)
-                                            .foregroundColor(colorScheme == .light ? .white : .black)
-                                            .padding(.horizontal, 2)
-                                    })
-                                    .background(Color.secondary)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                                    .padding(.horizontal, 3)
-                            }
+        ScrollView {
+            LazyVGrid(columns: columns, content: {
+                ForEach(books, id: \.self) { book in
+                    Button {
+                        router.libraryRoutes.append(.savedBookDetail(book))
+                    } label: {
+                        if let url = URL(string: book.thumbnail) {
+                            KFImage(url)
+                                .placeholder({ _ in
+                                    ProgressView()
+                                })
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                .padding(.horizontal, 3)
+                        } else {
+                            Rectangle()
+                                .overlay(content: {
+                                    Text(book.title)
+                                        .lineLimit(2)
+                                        .font(.subheadline)
+                                        .foregroundColor(colorScheme == .light ? .white : .black)
+                                        .padding(.horizontal, 2)
+                                })
+                                .background(Color.secondary)
+                                .clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                .padding(.horizontal, 3)
                         }
                     }
-                    .padding(.bottom)
-                })
-                .padding()
-            }
-            .navigationTitle(title)
-            .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
+                }
+                .padding(.bottom)
+            })
+            .padding()
         }
+        .navigationTitle(title)
+        .background(colorScheme == .light ? .white : Color(hexCode: "101820"))
     }
 }
 
