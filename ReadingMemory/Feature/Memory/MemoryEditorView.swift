@@ -8,7 +8,6 @@
 import RealmSwift
 import SwiftUI
 
-// 기억하기로 넘어오면 빈 텍스트, 수정으로 들어오면 해당 메모로 채우기
 struct MemoryEditorView: View {
     @ObservedResults(Sentence.self) private var sentences
     @ObservedResults(Word.self) private var words

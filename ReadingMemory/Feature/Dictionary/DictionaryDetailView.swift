@@ -31,8 +31,9 @@ struct DictionaryDetailView: View {
                 .padding(.vertical, 10)
                 .padding(.horizontal, 20)
                 
-                makeTextView(item.word, geometry)
-                
+                if let sense = item.sense.first {
+                    makeTextView(sense.origin == nil ? item.word : "\(item.word)(\(sense.origin ?? ""))", geometry)
+                }
                 HStack {
                     Text("뜻")
                         .font(.title3)
@@ -61,12 +62,20 @@ struct DictionaryDetailView: View {
                 SelectBookView(selectedBook: $selectedBook, isShowingEditorSheet: $isShowingEditorSheet)
                     .presentationDragIndicator(.visible)
             }
-            .onChange(of: selectedBook, { oldValue, newValue in
+            .onChange(of: selectedBook, { _, newValue in
                 selectedBook = newValue
             })
             .fullScreenCover(isPresented: $isShowingEditorSheet) {
                 if let sense = item.sense.first {
-                    MemoryEditorView(firstText: item.word, secondText: sense.definition, isShowingEditSheet: $isShowingEditorSheet, book: selectedBook, editCategory: .word, editorMode: .add, memoryId: nil)
+                    MemoryEditorView(
+                        firstText: sense.origin == nil ? item.word : "\(item.word)(\(sense.origin ?? ""))",
+                        secondText: sense.definition,
+                        isShowingEditSheet: $isShowingEditorSheet,
+                        book: selectedBook,
+                        editCategory: .word,
+                        editorMode: .add,
+                        memoryId: nil
+                    )
                 } else {
                     Text("정보를 가져올 수 없습니다.")
                 }

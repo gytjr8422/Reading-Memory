@@ -217,7 +217,7 @@ struct MemoryView: View {
             memoryId = nil
             isShowingEditSheet = true
         } label: {
-            Text("\(selectedSegment.title) 기억하기")
+            Text(selectedSegment == .thought ? "\(selectedSegment.title) 하기" : "\(selectedSegment.title) 기억하기")
                 .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.07)
                 .foregroundStyle(colorScheme == .light ? .white : .black)
                 .background(colorScheme == .light ? Color.cellBackgroud : .white)

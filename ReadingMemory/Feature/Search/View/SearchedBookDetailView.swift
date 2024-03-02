@@ -232,7 +232,7 @@ struct SearchedBookDetailView: View {
                         .bold()
                         .padding(.vertical, 5)
                     Text(book.publisher)
-                        .font(.subheadline) 
+                        .font(.subheadline)
                         .padding(.bottom, 5)
                 }
                 .frame(width: geo.size.width * 0.85, alignment: .leading)

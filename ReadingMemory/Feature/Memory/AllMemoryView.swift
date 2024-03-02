@@ -164,7 +164,7 @@ struct AllMemoryView: View {
                     isEditing = true
                 } label: {
                     Text("편집")
-                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.05)
+                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.06)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -177,7 +177,7 @@ struct AllMemoryView: View {
                     selectedMemories.removeAll()
                 } label: {
                     Text("취소")
-                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.05)
+                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.06)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -190,7 +190,7 @@ struct AllMemoryView: View {
                     }
                 } label: {
                     Text("삭제")
-                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.05)
+                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.06)
                         .foregroundStyle(.white)
                         .background(.red)
                         .clipped()

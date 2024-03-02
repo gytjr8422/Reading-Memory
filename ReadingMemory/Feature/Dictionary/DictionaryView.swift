@@ -13,7 +13,6 @@ struct DictionaryView: View {
     @EnvironmentObject private var router: Router
     
     @State private var searchText: String = ""
-    @State private var emptyResultText: String = "단어를 검색해보세요."
     @State private var isLoading: Bool = false
     @FocusState private var isTextFieldFocused: Bool
     
@@ -91,7 +90,9 @@ struct DictionaryView: View {
                             }
                         }
                     } else {
-                        Text(emptyResultText)
+                        Text("검색 결과가 없습니다.\n단어를 검색해보세요.")
+                            .lineSpacing(5)
+                            .frame(alignment: .center)
                             .padding(.vertical)
                     }
                 } else {
