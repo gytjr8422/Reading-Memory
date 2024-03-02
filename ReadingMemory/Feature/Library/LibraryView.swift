@@ -208,7 +208,7 @@ struct LibraryView: View {
     private func makeBookScrollView(_ books: Results<Book>, geometry: GeometryProxy) -> some View {
         ScrollView(.horizontal) {
             LazyHStack {
-                ForEach(0..<books.count, id: \.self) { index in
+                ForEach(0..<(books.count >= 10 ? 10 : books.count), id: \.self) { index in
                     Button {
                         router.libraryRoutes.append(.savedBookDetail(books[index]))
                     } label: {
