@@ -174,7 +174,7 @@ struct SavedBookDetailView: View {
             router.libraryRoutes.append(.memory(book))
         } label: {
             Rectangle()
-                .frame(width: geo.size.width * 0.8, height: 40)
+                .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.06)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 5))
                 .overlay {

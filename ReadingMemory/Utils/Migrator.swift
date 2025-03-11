@@ -16,11 +16,11 @@ class Migrator {
     
     func updateSchema() {
         
-        let config = Realm.Configuration(schemaVersion: 14) { migration, oldSchemaVersion in
-            if oldSchemaVersion < 13 {
+        let config = Realm.Configuration(schemaVersion: 15) { migration, oldSchemaVersion in
+            if oldSchemaVersion < 14 {
                 // add new fields
                 migration.enumerateObjects(ofType: Book.className()) { _, newObject in
-//                    newObject!["isbn"] = ""
+                    newObject!["stars"] = 0
                 }
             }
             

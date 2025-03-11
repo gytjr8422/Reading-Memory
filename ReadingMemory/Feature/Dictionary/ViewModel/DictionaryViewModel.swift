@@ -41,6 +41,9 @@ final class DictionaryViewModel: ObservableObject {
                     self.dictionaryList = dictionaryResult.channel.item
                 }
             } catch {
+                Task {
+                    await searchDictionary(searchString)
+                }
                 DispatchQueue.main.async {
                     self.isApiConnected = false
                 }

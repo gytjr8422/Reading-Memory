@@ -21,6 +21,8 @@ final class Book: Object, Identifiable {
     @Persisted var translators: List<String>
     @Persisted var url: String
     
+    @Persisted var stars: Int
+    
     @Persisted var liked: Bool
     @Persisted var reading: Bool
     @Persisted var finished: Bool
@@ -30,6 +32,7 @@ final class Book: Object, Identifiable {
     @Persisted var thoughts = List<Thought>()
     
     @Persisted var addDate: Date = Date()
+    
     @Persisted var startDate: Date
     @Persisted var endDate: Date
     
@@ -46,7 +49,12 @@ extension Book {
         realm.objects(Book.self)
     }
     
-    // 여기부터
+    
+    /// API 요청 도서 저장 함수
+    /// - Parameters:
+    ///   - naverBook: BookDocument 인스턴스
+    ///   - bookDescription: 책 상세정보 String
+    ///   - editCategory: 편집 카테고리
     static func addBook(_ naverBook: BookDocument, _ bookDescription: String, editCategory: EditList) {
         let book = Book(value: [
             "authors": naverBook.authors,
@@ -59,77 +67,116 @@ extension Book {
             "title": naverBook.title,
             "translators": naverBook.translators,
             "url": naverBook.url,
-            "like": false,
+            "stars": 0,
+            "liked": false,
             "reading": false,
             "finished": false,
             "addDate": Date()
         ])
         
-        try! realm.write {
-            realm.add(book)
+        do {
+            try realm.write {
+                realm.add(book)
+                
+                if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
+                    switch editCategory {
+                    case .like:
+                        editingBook.liked = editingBook.liked == false ? true : false
+                    case .reading:
+                        editingBook.reading = editingBook.reading == false ? true : false
+                    case .finished:
+                        editingBook.finished = editingBook.finished == false ? true : false
+                    case .memo:
+                        break
+                    case .word:
+                        break
+                    case .all:
+                        break
+                    }
+                }
+            }
+        } catch {
             
-            if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
-                switch editCategory {
-                case .like:
-                    editingBook.liked = editingBook.liked == false ? true : false
-                case .reading:
-                    editingBook.reading = editingBook.reading == false ? true : false
-                case .finished:
-                    editingBook.finished = editingBook.finished == false ? true : false
-                case .memo:
-                    break
-                case .word:
-                    break
-                case .all:
-                    break
-                }
-            }
         }
     }
     
+    
+    /// 도서 삭제 함수
+    /// - Parameter book: Book 인스턴스
     static func deleteBook(_ book: Book) {
-        try! realm.write {
-            realm.delete(book)
+        do {
+            try realm.write {
+                realm.delete(book)
+            }
+        } catch {
+            
         }
     }
     
+    
+    /// 도서 배열 삭제 함수
+    /// - Parameter books: Book 인스턴스 배열
     static func deleteBooks(_ books: [Book]) {
-        try! realm.write {
-            for book in books {
-                // Book 객체가 현재 사용 중인 Realm에 속하는지 확인
-                if let bookInRealm = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
-                    // 현재 Realm에 속하는 경우 삭제
-                    deleteBookMemories(Array(book.sentences))
-                    deleteBookMemories(Array(book.words))
-                    deleteBookMemories(Array(book.thoughts))
-                    realm.delete(bookInRealm)
-                } else {
-                    // 현재 Realm에 속하지 않는 경우 처리할 작업 수행
-                    print("해당 책이 메모리에 존재하지 않습니다.")
+        do {
+            try realm.write {
+                for book in books {
+                    // Book 객체가 현재 사용 중인 Realm에 속하는지 확인
+                    if let bookInRealm = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
+                        // 현재 Realm에 속하는 경우 삭제
+                        deleteBookMemories(Array(book.sentences))
+                        deleteBookMemories(Array(book.words))
+                        deleteBookMemories(Array(book.thoughts))
+                        realm.delete(bookInRealm)
+                    } else {
+                        // 현재 Realm에 속하지 않는 경우 처리할 작업 수행
+                        print("해당 책이 메모리에 존재하지 않습니다.")
+                    }
                 }
             }
+        } catch {
+            
         }
     }
     
+    
+    /// 도서 편집 함수
+    /// - Parameters:
+    ///   - book: Book 인스턴스
+    ///   - editCategory: 편집 카테고리
     static func editBook(_ book: Book, editCategory: EditList) {
         if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
-            try! realm.write {
-                switch editCategory {
-                case .like:
-                    editingBook.liked = editingBook.liked == false ? true : false
-                case .reading:
-                    editingBook.reading = editingBook.reading == false ? true : false
-                case .finished:
-                    editingBook.finished = editingBook.finished == false ? true : false
-                default:
-                    break
+            do {
+                try realm.write {
+                    switch editCategory {
+                    case .like:
+                        editingBook.liked = editingBook.liked == false ? true : false
+                    case .reading:
+                        editingBook.reading = editingBook.reading == false ? true : false
+                    case .finished:
+                        editingBook.finished = editingBook.finished == false ? true : false
+                    default:
+                        break
+                    }
                 }
+            } catch {
+                
             }
         }
     }
     
+    
+    /// 기억 저장 함수
+    /// - Parameters:
+    ///   - book: Book 인스턴스
+    ///   - category: 기억 카테고리
+    ///   - firstText: 첫 번째 텍스트 필드 내용
+    ///   - secondText: 두 번째 텍스트 필드 내용
+    ///   - thirdText: 세 번째 텍스트 필드 내용
+    ///   - pageText: 페이지
     static func addMemory(_ book: Book?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+        
         guard let book else { return }
+        
         if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
             var sentence: Sentence = Sentence()
             var word: Word = Word()
@@ -165,20 +212,35 @@ extension Book {
                 ])
             }
             
-            try! realm.write {
-                switch category {
-                case .sentence:
-                    editingBook.sentences.append(sentence)
-                case .word:
-                    editingBook.words.append(word)
-                case .thought:
-                    editingBook.thoughts.append(thought)
+            do {
+                try realm.write {
+                    switch category {
+                    case .sentence:
+                        editingBook.sentences.append(sentence)
+                    case .word:
+                        editingBook.words.append(word)
+                    case .thought:
+                        editingBook.thoughts.append(thought)
+                    }
                 }
+            } catch {
+                
             }
         }
     }
     
+    
+    /// 기억 편집 함수
+    /// - Parameters:
+    ///   - book: Book 인스턴스
+    ///   - memoryId: 기억 ID
+    ///   - category: 기억 카테고리
+    ///   - firstText: 첫 번째 텍스트 필드 내용
+    ///   - secondText: 두 번째 텍스트 필드 내용
+    ///   - thirdText: 세 번째 텍스트 필드 내용
+    ///   - pageText: 페이지
     static func editMemory(_ book: Book?, memoryId: ObjectId?, category: MemoryCategory, firstText: String, secondText: String?, thirdText: String?, pageText: String?) {
+        
         @ObservedResults(Sentence.self) var sentences
         @ObservedResults(Word.self) var words
         @ObservedResults(Thought.self) var thoughts
@@ -186,75 +248,117 @@ extension Book {
         switch category {
         case .sentence:
             if let sentenceToEdit = sentences.first(where: { $0.id == memoryId }) {
-                try! realm.write {
-                    sentenceToEdit.sentence = firstText
-                    sentenceToEdit.idea = thirdText == nil ? "" : thirdText!
-                    sentenceToEdit.page = pageText == nil ? "" : pageText!
-                    sentenceToEdit.editDate = Date()
+                do {
+                    try realm.write {
+                        sentenceToEdit.sentence = firstText
+                        sentenceToEdit.idea = thirdText == nil ? "" : thirdText!
+                        sentenceToEdit.page = pageText == nil ? "" : pageText!
+                        sentenceToEdit.editDate = Date()
+                    }
+                } catch {
+                    
                 }
             }
         case .word:
             if let wordToEdit = words.first(where: { $0.id == memoryId }) {
-                try! realm.write {
-                    wordToEdit.word = firstText
-                    wordToEdit.meaning = secondText == nil ? "" : secondText!
-                    wordToEdit.sentence = thirdText == nil ? "" : thirdText!
-                    wordToEdit.page = pageText == nil ? "" : pageText!
-                    wordToEdit.editDate = Date()
+                do {
+                    try realm.write {
+                        wordToEdit.word = firstText
+                        wordToEdit.meaning = secondText == nil ? "" : secondText!
+                        wordToEdit.sentence = thirdText == nil ? "" : thirdText!
+                        wordToEdit.page = pageText == nil ? "" : pageText!
+                        wordToEdit.editDate = Date()
+                    }
+                } catch {
+                    
                 }
             }
         case .thought:
             if let thoughtToEdit = thoughts.first(where: { $0.id == memoryId }) {
-                try! realm.write {
-                    thoughtToEdit.thought = firstText
-                    thoughtToEdit.page = pageText == nil ? "" : pageText!
-                    thoughtToEdit.editDate = Date()
+                do {
+                    try realm.write {
+                        thoughtToEdit.thought = firstText
+                        thoughtToEdit.page = pageText == nil ? "" : pageText!
+                        thoughtToEdit.editDate = Date()
+                    }
+                } catch {
+                    
                 }
             }
         }
     }
     
     static func likeMemory(memoryId: ObjectId, category: MemoryCategory) {
-            switch category {
-            case .sentence:
-                if let sentenceToEdit = realm.object(ofType: Sentence.self, forPrimaryKey: memoryId) {
-                    try! realm.write {
+        switch category {
+        case .sentence:
+            if let sentenceToEdit = realm.object(ofType: Sentence.self, forPrimaryKey: memoryId) {
+                do {
+                    try realm.write {
                         sentenceToEdit.liked.toggle()
                     }
-                }
-            case .word:
-                if let wordToEdit = realm.object(ofType: Word.self, forPrimaryKey: memoryId) {
-                    try! realm.write {
-                        wordToEdit.liked.toggle()
-                    }
-                }
-            case .thought:
-                if let thoughtToEdit = realm.object(ofType: Thought.self, forPrimaryKey: memoryId) {
-                    try! realm.write {
-                        thoughtToEdit.liked.toggle()
-                    }
+                } catch {
+                    
                 }
             }
-    }
-    
-    static func deleteMemories(_ memories: [Memory]) {
-        for memory in memories {
-            if let sentence = memory as? Sentence, let sentenceObject = realm.object(ofType: Sentence.self, forPrimaryKey: sentence.id) {
-                try! realm.write {
-                    realm.delete(sentenceObject)
+        case .word:
+            if let wordToEdit = realm.object(ofType: Word.self, forPrimaryKey: memoryId) {
+                do {
+                    try realm.write {
+                        wordToEdit.liked.toggle()
+                    }
+                } catch {
+                    
                 }
-            } else if let word = memory as? Word, let wordObject = realm.object(ofType: Word.self, forPrimaryKey: word.id) {
-                try! realm.write {
-                    realm.delete(wordObject)
-                }
-            } else if let thought = memory as? Thought, let thoughtObject = realm.object(ofType: Thought.self, forPrimaryKey: thought.id) {
-                try! realm.write {
-                    realm.delete(thoughtObject)
+            }
+        case .thought:
+            if let thoughtToEdit = realm.object(ofType: Thought.self, forPrimaryKey: memoryId) {
+                do {
+                    try realm.write {
+                        thoughtToEdit.liked.toggle()
+                    }
+                } catch {
+                    
                 }
             }
         }
     }
     
+    
+    /// 기억 배열 삭제 함수
+    /// - Parameter memories: Memory 프로토콜 배열
+    static func deleteMemories(_ memories: [Memory]) {
+        for memory in memories {
+            if let sentence = memory as? Sentence, let sentenceObject = realm.object(ofType: Sentence.self, forPrimaryKey: sentence.id) {
+                do {
+                    try realm.write {
+                        realm.delete(sentenceObject)
+                    }
+                } catch {
+                    
+                }
+            } else if let word = memory as? Word, let wordObject = realm.object(ofType: Word.self, forPrimaryKey: word.id) {
+                do {
+                    try realm.write {
+                        realm.delete(wordObject)
+                    }
+                } catch {
+                    
+                }
+            } else if let thought = memory as? Thought, let thoughtObject = realm.object(ofType: Thought.self, forPrimaryKey: thought.id) {
+                do {
+                    try realm.write {
+                        realm.delete(thoughtObject)
+                    }
+                } catch {
+                    
+                }
+            }
+        }
+    }
+    
+    
+    /// 도서 내부 기억 삭제 함수
+    /// - Parameter memories: Memory 프로토콜 배열
     static func deleteBookMemories(_ memories: [Memory]) {
         for memory in memories {
             if let sentence = memory as? Sentence, let sentenceObject = realm.object(ofType: Sentence.self, forPrimaryKey: sentence.id) {
@@ -319,7 +423,7 @@ extension Book {
             "thought": "My Thought"
         ])
         thoughts.append(thought)
-
+        
         return Book(value: [
             "authors": dummyAuthors,
             "contents": dummyContents,

@@ -37,13 +37,15 @@
 		CE5D49F02B5132C0005E22B0 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49EF2B5132C0005E22B0 /* Color+Extensions.swift */; };
 		CE5D49F22B516BC0005E22B0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49F12B516BC0005E22B0 /* SearchViewModel.swift */; };
 		CE5D49F72B526D7E005E22B0 /* SavedBookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D49F62B526D7E005E22B0 /* SavedBookDetailView.swift */; };
+		CE79FA602BC691F9002200FE /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79FA5F2BC691F9002200FE /* LoginViewModel.swift */; };
 		CE7E4BF82B7372F400F0CF83 /* RealmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E4BF72B7372F400F0CF83 /* RealmViewModel.swift */; };
 		CE7E4BFA2B74B68800F0CF83 /* AllSavedBookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E4BF92B74B68800F0CF83 /* AllSavedBookListView.swift */; };
 		CE7E4BFE2B76511200F0CF83 /* MemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E4BFD2B76511200F0CF83 /* MemoryView.swift */; };
 		CE7E4C012B7765A600F0CF83 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CE7E4C002B7765A600F0CF83 /* Kingfisher */; };
 		CE7E4C042B79F92A00F0CF83 /* MemoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E4C032B79F92A00F0CF83 /* MemoryCell.swift */; };
 		CE7E4C082B7A05CD00F0CF83 /* TextMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E4C072B7A05CD00F0CF83 /* TextMaster.swift */; };
-		CE8DE03A2B7C6CAA00960E1A /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE8DE0392B7C6CAA00960E1A /* Secrets.xcconfig */; };
+		CE81B7EE2BBAADCF008EBF6F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE81B7ED2BBAADCF008EBF6F /* FirebaseAuth */; };
+		CE81B7F02BBAAE44008EBF6F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE81B7EF2BBAAE44008EBF6F /* LoginView.swift */; };
 		CE8DE03D2B7C6E4300960E1A /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8DE03C2B7C6E4300960E1A /* Bundle+Extensions.swift */; };
 		CE9699762B5FA61E000D3135 /* TextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9699752B5FA61E000D3135 /* TextAlignment.swift */; };
 		CE9699782B5FBAD1000D3135 /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9699772B5FBAD1000D3135 /* BarcodeScannerView.swift */; };
@@ -60,6 +62,7 @@
 		CEE8A3A62B7F392B0068CA1E /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */; };
 		CEE8A3AA2B81980F0068CA1E /* MemoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */; };
 		CEE8B2D72B7A0B39005F7FED /* MemoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */; };
+		CEF16E782B95CC7F0026DAB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEF16E772B95CC7F0026DAB9 /* GoogleService-Info.plist */; };
 		CEF5E4E32B70B97B00D379D9 /* Sentence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E22B70B97B00D379D9 /* Sentence.swift */; };
 		CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E42B70BD2F00D379D9 /* Word.swift */; };
 		CEF5E4E72B721CB000D379D9 /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5E4E62B721CB000D379D9 /* Migrator.swift */; };
@@ -95,11 +98,13 @@
 		CE5D49EF2B5132C0005E22B0 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		CE5D49F12B516BC0005E22B0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		CE5D49F62B526D7E005E22B0 /* SavedBookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedBookDetailView.swift; sourceTree = "<group>"; };
+		CE79FA5F2BC691F9002200FE /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE7E4BF72B7372F400F0CF83 /* RealmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmViewModel.swift; sourceTree = "<group>"; };
 		CE7E4BF92B74B68800F0CF83 /* AllSavedBookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSavedBookListView.swift; sourceTree = "<group>"; };
 		CE7E4BFD2B76511200F0CF83 /* MemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryView.swift; sourceTree = "<group>"; };
 		CE7E4C032B79F92A00F0CF83 /* MemoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCell.swift; sourceTree = "<group>"; };
 		CE7E4C072B7A05CD00F0CF83 /* TextMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMaster.swift; sourceTree = "<group>"; };
+		CE81B7EF2BBAAE44008EBF6F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CE8DE0392B7C6CAA00960E1A /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		CE8DE03B2B7C6D9800960E1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE8DE03C2B7C6E4300960E1A /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
@@ -116,6 +121,8 @@
 		CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDetailView.swift; sourceTree = "<group>"; };
 		CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryEditorView.swift; sourceTree = "<group>"; };
+		CEF16E762B95BE190026DAB9 /* ReadingMemory.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReadingMemory.entitlements; sourceTree = "<group>"; };
+		CEF16E772B95CC7F0026DAB9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CEF5E4E22B70B97B00D379D9 /* Sentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sentence.swift; sourceTree = "<group>"; };
 		CEF5E4E42B70BD2F00D379D9 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		CEF5E4E62B721CB000D379D9 /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
@@ -127,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9699802B6B85A0000D3135 /* RealmSwift in Frameworks */,
+				CE81B7EE2BBAADCF008EBF6F /* FirebaseAuth in Frameworks */,
 				CE96997E2B6B85A0000D3135 /* Realm in Frameworks */,
 				CE3158B12B452A45006C3749 /* RealmSwift in Frameworks */,
 				CE3158AF2B452A45006C3749 /* Realm in Frameworks */,
@@ -157,6 +165,8 @@
 		CE31589E2B440974006C3749 /* ReadingMemory */ = {
 			isa = PBXGroup;
 			children = (
+				CEF16E772B95CC7F0026DAB9 /* GoogleService-Info.plist */,
+				CEF16E762B95BE190026DAB9 /* ReadingMemory.entitlements */,
 				CE4945672B888A65002449C2 /* Enum */,
 				CE8DE03B2B7C6D9800960E1A /* Info.plist */,
 				CE9699742B5FA5ED000D3135 /* Utils */,
@@ -183,6 +193,7 @@
 		CE3158B22B469C4B006C3749 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				CE79FA5B2BC67C6A002200FE /* Login */,
 				CE5D49E82B511415005E22B0 /* Library */,
 				CE49456E2B8B3860002449C2 /* Dictionary */,
 				CE7E4C022B78BBCA00F0CF83 /* Memory */,
@@ -209,8 +220,8 @@
 		CE49456E2B8B3860002449C2 /* Dictionary */ = {
 			isa = PBXGroup;
 			children = (
+				CE79FA5D2BC69153002200FE /* ViewModel */,
 				CE49456F2B8B90A2002449C2 /* DictionaryView.swift */,
-				CE4945712B8BB3DC002449C2 /* DictionaryViewModel.swift */,
 				CE4945752B8C8AA2002449C2 /* DictionaryCell.swift */,
 				CE4945782B8C8B2E002449C2 /* DictionaryDetailView.swift */,
 				CE49457A2B8E4AD8002449C2 /* SelectBookView.swift */,
@@ -229,11 +240,11 @@
 		CE5D49E82B511415005E22B0 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CE79FA5E2BC69163002200FE /* ViewModel */,
 				CE3158B32B46A013006C3749 /* LibraryView.swift */,
 				CE5D49E22B4FB2E2005E22B0 /* BookListView.swift */,
 				CE5D49F62B526D7E005E22B0 /* SavedBookDetailView.swift */,
 				CE7E4BF92B74B68800F0CF83 /* AllSavedBookListView.swift */,
-				CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -275,15 +286,48 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CE79FA5B2BC67C6A002200FE /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CE81B7EF2BBAAE44008EBF6F /* LoginView.swift */,
+				CE79FA5F2BC691F9002200FE /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CE79FA5C2BC69142002200FE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE4945652B872075002449C2 /* MemoryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CE79FA5D2BC69153002200FE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE4945712B8BB3DC002449C2 /* DictionaryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CE79FA5E2BC69163002200FE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CEE8A3A52B7F392B0068CA1E /* LibraryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		CE7E4C022B78BBCA00F0CF83 /* Memory */ = {
 			isa = PBXGroup;
 			children = (
+				CE79FA5C2BC69142002200FE /* ViewModel */,
 				CE7E4BFD2B76511200F0CF83 /* MemoryView.swift */,
 				CE7E4C032B79F92A00F0CF83 /* MemoryCell.swift */,
 				CEE8B2D62B7A0B39005F7FED /* MemoryEditorView.swift */,
 				CEE8A3A92B81980F0068CA1E /* MemoryDetailView.swift */,
 				CE4945632B872063002449C2 /* AllMemoryView.swift */,
-				CE4945652B872075002449C2 /* MemoryViewModel.swift */,
 			);
 			path = Memory;
 			sourceTree = "<group>";
@@ -338,6 +382,7 @@
 				CE96997D2B6B85A0000D3135 /* Realm */,
 				CE96997F2B6B85A0000D3135 /* RealmSwift */,
 				CE7E4C002B7765A600F0CF83 /* Kingfisher */,
+				CE81B7ED2BBAADCF008EBF6F /* FirebaseAuth */,
 			);
 			productName = ReadingMemory;
 			productReference = CE31589C2B440974006C3749 /* ReadingMemory.app */;
@@ -351,7 +396,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					CE31589B2B440974006C3749 = {
 						CreatedOnToolsVersion = 15.1;
@@ -370,6 +415,7 @@
 			packageReferences = (
 				CE3158AD2B452A45006C3749 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				CE7E4BFF2B7765A600F0CF83 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				CE71BC3B2BA0568B00F0E0C5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = CE31589D2B440974006C3749 /* Products */;
 			projectDirPath = "";
@@ -386,8 +432,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3158A72B440976006C3749 /* Preview Assets.xcassets in Resources */,
+				CEF16E782B95CC7F0026DAB9 /* GoogleService-Info.plist in Resources */,
 				CE3158A42B440976006C3749 /* Assets.xcassets in Resources */,
-				CE8DE03A2B7C6CAA00960E1A /* Secrets.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,11 +481,13 @@
 				CE3158B42B46A013006C3749 /* LibraryView.swift in Sources */,
 				CE4945792B8C8B2E002449C2 /* DictionaryDetailView.swift in Sources */,
 				CEF5E4E52B70BD2F00D379D9 /* Word.swift in Sources */,
+				CE81B7F02BBAAE44008EBF6F /* LoginView.swift in Sources */,
 				CE5D49F72B526D7E005E22B0 /* SavedBookDetailView.swift in Sources */,
 				CE5D49E52B510C7F005E22B0 /* AppScreen.swift in Sources */,
 				CE49456B2B888AAE002449C2 /* EditorMode.swift in Sources */,
 				CEE8A3AA2B81980F0068CA1E /* MemoryDetailView.swift in Sources */,
 				CEDA5E442B5BB5A20068A410 /* UIImage+Extensions.swift in Sources */,
+				CE79FA602BC691F9002200FE /* LoginViewModel.swift in Sources */,
 				CEE8A3A42B7CC5120068CA1E /* Thought.swift in Sources */,
 				CE7E4BF82B7372F400F0CF83 /* RealmViewModel.swift in Sources */,
 				CEDA5E422B5BB5760068A410 /* UIColor+Extensions.swift in Sources */,
@@ -577,6 +625,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ReadingMemory/ReadingMemory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReadingMemory/Preview Content\"";
@@ -615,6 +664,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ReadingMemory/ReadingMemory.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReadingMemory/Preview Content\"";
@@ -679,6 +729,14 @@
 				kind = branch;
 			};
 		};
+		CE71BC3B2BA0568B00F0E0C5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.22.1;
+			};
+		};
 		CE7E4BFF2B7765A600F0CF83 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -704,6 +762,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CE7E4BFF2B7765A600F0CF83 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		CE81B7ED2BBAADCF008EBF6F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE71BC3B2BA0568B00F0E0C5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		CE96997D2B6B85A0000D3135 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;

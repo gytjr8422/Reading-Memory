@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 final class SearchViewModel: ObservableObject {
     private let kakaoUrl: String = "https://dapi.kakao.com/v3/search/book"
     private let naverUrl: String = "https://openapi.naver.com/v1/search/book.json"
     private var page: Int = 0
     private var isEnd: Bool = false
+    private var cancellables = Set<AnyCancellable>()
     
     @Published var books: [BookDocument] = []
     
@@ -30,16 +32,36 @@ final class SearchViewModel: ObservableObject {
             request.httpMethod = "GET"
             request.addValue("KakaoAK \(apikey)", forHTTPHeaderField: "Authorization")
             
-            do {
-                let (data, _) = try await URLSession.shared.data(for: request)
-                let jsonDecoder = JSONDecoder()
-                let searchResult = try jsonDecoder.decode(SearchResult.self, from: data)
-                DispatchQueue.main.async {
-                    self.books = searchResult.documents
+            // Combine
+            URLSession.shared.dataTaskPublisher(for: request)
+                .map(\.data)
+                .decode(type: SearchResult.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    switch completion {
+                    case .failure(let error):
+                        print("error")
+                    case .finished:
+                        print("Search finished")
+                    }
+                } receiveValue: { [weak self] response in
+                    guard let self else { return }
+                    self.books = response.documents
                 }
-            } catch {
-                print("Error: \(error)")
-            }
+                .store(in: &cancellables)
+
+            // async/await
+//            do {
+//                let (data, _) = try await URLSession.shared.data(for: request)
+//                let jsonDecoder = JSONDecoder()
+//                let searchResult = try jsonDecoder.decode(SearchResult.self, from: data)
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self else { return }
+//                    self.books = searchResult.documents
+//                }
+//            } catch {
+//                print("Error: \(error)")
+//            }
         }
         
     }
@@ -109,7 +131,6 @@ final class SearchViewModel: ObservableObject {
             guard let uiColor = uiImage?.averageColor else { return UIColor.gray }
             return uiColor
         } catch {
-            // Handle errors, for example, print an error message.
             print("Error fetching image: \(error)")
             return UIColor.gray
         }

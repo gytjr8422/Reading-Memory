@@ -36,37 +36,13 @@ struct MemoryView: View {
             ZStack {
                 VStack {
                     headerFilterView
-                    memoryCardView(geometry)
-                        .gesture(
-                            DragGesture()
-                                .onChanged { gesture in
-                                    self.offset = gesture.translation
-                                }
-                                .onEnded { gesture in
-                                    withAnimation(.interactiveSpring(response: 0.5)) {
-                                        if gesture.translation.width < -100 {
-                                            switch selectedSegment {
-                                            case .sentence:
-                                                selectedSegment = .word
-                                            case .word:
-                                                selectedSegment = .thought
-                                            case .thought:
-                                                break
-                                            }
-                                        } else if gesture.translation.width > 100 {
-                                            switch selectedSegment {
-                                            case .sentence:
-                                                break
-                                            case .word:
-                                                selectedSegment = .sentence
-                                            case .thought:
-                                                selectedSegment = .word
-                                            }
-                                        }
-                                    }
-                                    self.offset = CGSize()
-                                }
-                        )
+                    TabView(selection: $selectedSegment) {
+                        ForEach(MemoryCategory.allCases, id: \.self) { segment in
+                            memoryCardView(geometry, segment)
+                            .tag(segment)
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 }
             }
             .navigationTitle(book.title)
@@ -145,11 +121,11 @@ struct MemoryView: View {
         }
     }
     
-    private func memoryCardView(_ geometry: GeometryProxy) -> some View {
+    private func memoryCardView(_ geometry: GeometryProxy, _ category: MemoryCategory) -> some View {
         ScrollView {
             addButton(geometry)
             LazyVGrid(columns: columns) {
-                switch selectedSegment {
+                switch category {
                 case .sentence:
                     if let sentences = savedBooks.filter("isbn == %@", book.isbn).first?.sentences.sorted(by: [
                         SortDescriptor(keyPath: "liked", ascending: false), // liked 속성이 true인 것이 먼저 오도록 내림차순 정렬

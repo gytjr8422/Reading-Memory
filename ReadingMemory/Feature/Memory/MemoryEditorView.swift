@@ -275,5 +275,11 @@ struct MemoryEditorView: View {
 }
 
 #Preview {
-    MemoryEditorView(firstText: "", secondText: "", isShowingEditSheet: .constant(true), book:Book.dummyBook, editCategory: .word, editorMode: .add, memoryId: nil)
+    MemoryEditorView(firstText: "",
+                     secondText: "",
+                     isShowingEditSheet: .constant(true),
+                     book:Book.dummyBook,
+                     editCategory: .word,
+                     editorMode: .add,
+                     memoryId: nil)
 }

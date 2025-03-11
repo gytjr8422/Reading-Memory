@@ -46,12 +46,15 @@ struct MemoryCell<T: Memory>: View {
                     TextAlignment(
                         text: sentence.sentence,
                         textAlignmentStyle: .justified,
-                        font: .systemFont(ofSize: 15), widthRatio: 0.35,
+                        font: .systemFont(ofSize: 15), 
+                        widthRatio: 0.35,
                         lineLimit: 5,
                         isLineLimit: .constant(true)
                     )
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    
                     Spacer()
+                    
                     HStack(alignment: .bottom) {
                         VStack(alignment: .leading) {
                             if route == .memoryRoute {
@@ -78,23 +81,28 @@ struct MemoryCell<T: Memory>: View {
                         TextAlignment(
                             text: word.word,
                             textAlignmentStyle: .justified,
-                            font: .systemFont(ofSize: 15), widthRatio: 0.35,
-                            lineLimit: 5,
-                            isLineLimit: .constant(true)
-                        )
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Divider()
-                            .background(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
-                        TextAlignment(
-                            text: word.meaning,
-                            textAlignmentStyle: .justified,
-                            font: .systemFont(ofSize: 15), widthRatio: 0.35,
+                            font: .systemFont(ofSize: 15),
+                            widthRatio: 0.35,
                             lineLimit: 5,
                             isLineLimit: .constant(true)
                         )
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
+                        Divider()
+                            .background(colorScheme == .light ? Color.cellBackgroud : Color(hexCode: "DCE2F0"))
+                        
+                        TextAlignment(
+                            text: word.meaning,
+                            textAlignmentStyle: .justified,
+                            font: .systemFont(ofSize: 15),
+                            widthRatio: 0.35,
+                            lineLimit: 3,
+                            isLineLimit: .constant(true)
+                        )
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
                         Spacer()
+                        
                         HStack(alignment: .bottom) {
                             VStack(alignment:. leading) {
                                 if route == .memoryRoute {
@@ -104,7 +112,9 @@ struct MemoryCell<T: Memory>: View {
                                 Text(DateToString.toString(word.editDate))
                             }
                             .font(.caption)
+                            
                             Spacer()
+                            
                             Image(systemName: word.liked ? "heart.fill" : "heart")
                                 .font(.title3)
                                 .foregroundStyle(.red)
@@ -126,6 +136,7 @@ struct MemoryCell<T: Memory>: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Spacer()
+                    
                     HStack(alignment: .bottom) {
                         VStack(alignment: .leading) {
                             if route == .memoryRoute {

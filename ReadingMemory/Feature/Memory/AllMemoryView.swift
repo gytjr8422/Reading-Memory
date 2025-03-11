@@ -57,43 +57,19 @@ struct AllMemoryView: View {
             NavigationStack(path: $router.memoryRoutes) {
                 VStack {
                     headerFilterView
-                    ScrollView {
-                        searchBar(geometry)
-                        Divider()
-                        editButtons(geometry)
-                        Divider()
-                        memoryCardView(geometry)
+                    TabView(selection: $selectedSegment) {
+                        ForEach(MemoryCategory.allCases, id: \.self) { segment in
+                            ScrollView {
+                                searchBar(geometry)
+                                Divider()
+                                editButtons(geometry)
+                                Divider()
+                                memoryCardView(geometry, segment)
+                            }
+                            .tag(segment)
+                        }
                     }
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                self.offset = gesture.translation
-                            }
-                            .onEnded { gesture in
-                                withAnimation(.interactiveSpring(response: 0.5)) {
-                                    if gesture.translation.width < -100 {
-                                        switch selectedSegment {
-                                        case .sentence:
-                                            selectedSegment = .word
-                                        case .word:
-                                            selectedSegment = .thought
-                                        case .thought:
-                                            break
-                                        }
-                                    } else if gesture.translation.width > 100 {
-                                        switch selectedSegment {
-                                        case .sentence:
-                                            break
-                                        case .word:
-                                            selectedSegment = .sentence
-                                        case .thought:
-                                            selectedSegment = .word
-                                        }
-                                    }
-                                }
-                                self.offset = CGSize()
-                            }
-                    )
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 }
                 .background(colorScheme == .light ? .white : Color.backgroundBlue)
                 .navigationDestination(for: MemoryRoute.self) { route in
@@ -164,7 +140,7 @@ struct AllMemoryView: View {
                     isEditing = true
                 } label: {
                     Text("편집")
-                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.06)
+                        .frame(width: geometry.size.width * 0.9, height: 45)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -177,7 +153,7 @@ struct AllMemoryView: View {
                     selectedMemories.removeAll()
                 } label: {
                     Text("취소")
-                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.06)
+                        .frame(width: geometry.size.width * 0.44, height: 45)
                         .foregroundStyle(colorScheme == .light ? .white : .black)
                         .background(colorScheme == .light ? Color.cellBackgroud : .white)
                         .clipped()
@@ -190,7 +166,7 @@ struct AllMemoryView: View {
                     }
                 } label: {
                     Text("삭제")
-                        .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.06)
+                        .frame(width: geometry.size.width * 0.44, height: 45)
                         .foregroundStyle(.white)
                         .background(.red)
                         .clipped()
@@ -201,9 +177,9 @@ struct AllMemoryView: View {
         }
     }
     
-    private func memoryCardView(_ geometry: GeometryProxy) -> some View {
+    private func memoryCardView(_ geometry: GeometryProxy, _ category: MemoryCategory) -> some View {
             LazyVGrid(columns: columns) {
-                switch selectedSegment {
+                switch category {
                 case .sentence:
                     let sortedSentences = searchedSentences.sorted { (s1, s2) -> Bool in
                         if s1.liked != s2.liked {

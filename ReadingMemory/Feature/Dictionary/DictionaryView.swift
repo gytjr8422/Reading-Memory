@@ -33,7 +33,7 @@ struct DictionaryView: View {
                         Divider()
                             .id(1)
                         
-                        makeDictionaryListView(geometry)
+                        makeDictionaryListView(geometry) 
                             .frame(width: geometry.size.width)
                     }
                 }
@@ -96,8 +96,8 @@ struct DictionaryView: View {
                             .padding(.vertical)
                     }
                 } else {
-                    Text("검색에 실패했습니다. 다시 검색해주세요.")
-                        .padding(.vertical)
+                    ProgressView()
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                 }
             } else {
                 ProgressView()
