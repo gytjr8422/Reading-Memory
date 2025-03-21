@@ -14,7 +14,6 @@
 		CE3158AF2B452A45006C3749 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = CE3158AE2B452A45006C3749 /* Realm */; };
 		CE3158B12B452A45006C3749 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE3158B02B452A45006C3749 /* RealmSwift */; };
 		CE3158B42B46A013006C3749 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3158B32B46A013006C3749 /* LibraryView.swift */; };
-		CE40CF502B49B5B40073EAFD /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE40CF4F2B49B5B40073EAFD /* TestView.swift */; };
 		CE4945622B8493FB002449C2 /* DateToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945612B8493FB002449C2 /* DateToString.swift */; };
 		CE4945642B872063002449C2 /* AllMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945632B872063002449C2 /* AllMemoryView.swift */; };
 		CE4945662B872075002449C2 /* MemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4945652B872075002449C2 /* MemoryViewModel.swift */; };
@@ -75,7 +74,6 @@
 		CE3158A32B440976006C3749 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE3158A62B440976006C3749 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE3158B32B46A013006C3749 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
-		CE40CF4F2B49B5B40073EAFD /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		CE4945612B8493FB002449C2 /* DateToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateToString.swift; sourceTree = "<group>"; };
 		CE4945632B872063002449C2 /* AllMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllMemoryView.swift; sourceTree = "<group>"; };
 		CE4945652B872075002449C2 /* MemoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViewModel.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 				CE5D49E92B511441005E22B0 /* Search */,
 				CE49457E2B905F00002449C2 /* Setting */,
 				CE3158A12B440974006C3749 /* AppTabView.swift */,
-				CE40CF4F2B49B5B40073EAFD /* TestView.swift */,
 				CE5D49EC2B512F53005E22B0 /* RMTextField.swift */,
 				CEDA5E452B5BDAA40068A410 /* SafariView.swift */,
 			);
@@ -447,7 +444,6 @@
 				CE4945692B888A7E002449C2 /* MemoryCategory.swift in Sources */,
 				CE5D49F22B516BC0005E22B0 /* SearchViewModel.swift in Sources */,
 				CE4945642B872063002449C2 /* AllMemoryView.swift in Sources */,
-				CE40CF502B49B5B40073EAFD /* TestView.swift in Sources */,
 				CE96997B2B61851F000D3135 /* UILabel+Extensions.swift in Sources */,
 				CED42B972B581A3B00F826E3 /* Book.swift in Sources */,
 				CE9699782B5FBAD1000D3135 /* BarcodeScannerView.swift in Sources */,

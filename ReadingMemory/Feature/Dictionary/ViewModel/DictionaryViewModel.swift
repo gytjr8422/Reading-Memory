@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class DictionaryViewModel: ObservableObject {
     private let dictionaryUrl: String = "https://opendict.korean.go.kr/api/search"
     

@@ -165,6 +165,29 @@ extension Book {
     }
     
     
+    static func addSentence(_ book: Book?, firstText: String, secondText: String?, pageText: String?) {
+        guard let book else { return }
+        
+        if let editingBook = realm.object(ofType: Book.self, forPrimaryKey: book.isbn) {
+            var sentence = Sentence(value: [
+                "sentence": firstText,
+                "idea": secondText == nil ? "" : secondText!,
+                "page": pageText == nil ? "" : pageText!,
+                "liked": false,
+                "addDate": Date(),
+                "isbn": book.isbn
+            ])
+            
+            do {
+                try realm.write {
+                    editingBook.sentences.append(sentence)
+                }
+            } catch {
+                print("문장 저장 실패")
+            }
+        }
+    }
+    
     /// 기억 저장 함수
     /// - Parameters:
     ///   - book: Book 인스턴스
@@ -375,7 +398,7 @@ extension Book {
         realm.object(ofType: Book.self, forPrimaryKey: isbn)
     }
     
-    
+
     static func isSavedBook(isbn: String) -> Bool {
         if let _ = realm.object(ofType: Book.self, forPrimaryKey: isbn) {
             return true
